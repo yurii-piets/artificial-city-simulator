@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class Agent {
+public class Agent implements Comparable<Agent> {
     private final Long id = id();
     private AgentType type;
     private Location location;
@@ -29,5 +29,10 @@ public class Agent {
 
     private static Long id() {
         return staticId++;
+    }
+
+    @Override
+    public int compareTo(Agent o) {
+        return id.compareTo(o.id);
     }
 }

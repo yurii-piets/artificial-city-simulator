@@ -39,8 +39,8 @@ public class MockSimulator implements Simulator {
             Supplier<Double> randomLatitudeFromRange = () -> minLatitude + (maxLatitude - minLatitude) * new Random().nextDouble();
 
             Agent agent = Agent.builder()
-                    .type(AgentType.HUMAN)
-                    .speed(5.0)
+                    .type(AgentType.CAR)
+                    .speed(40.0)
                     .location(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()))
                     .build();
 
