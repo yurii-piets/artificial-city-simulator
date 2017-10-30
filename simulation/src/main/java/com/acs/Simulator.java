@@ -7,4 +7,7 @@ import java.util.Set;
 public interface Simulator {
 
     Set<Agent> getAllAgents();
+
+    void removeById(Long id);
+    void removeAll();
 }
