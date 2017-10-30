@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/agent")
@@ -20,8 +20,8 @@ public class AgentController {
     private AgentService agentService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/all")
-    public ResponseEntity<List<Agent>> agents() {
-        List<Agent> agents = agentService.getAllAgents();
+    public ResponseEntity<Set<Agent>> agents() {
+        Set<Agent> agents = agentService.getAllAgents();
         return new ResponseEntity<>(agents, HttpStatus.OK);
     }
 

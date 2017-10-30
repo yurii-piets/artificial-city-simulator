@@ -2,8 +2,9 @@ package com.acs;
 
 import com.acs.models.agent.Agent;
 
-import java.util.List;
+import java.util.Set;
 
 public interface Simulator {
-    List<Agent> getAllAgents();
+
+    Set<Agent> getAllAgents();
 }

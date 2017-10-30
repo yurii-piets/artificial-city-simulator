@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Random;
+import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.function.Supplier;
 
 @Component
@@ -29,7 +29,7 @@ public class MockSimulator implements Simulator {
 
     private final static Integer amountOfMockSimulationUnits = 2;
 
-    private List<Agent> agents = new LinkedList<>();
+    private Set<Agent> agents = new ConcurrentSkipListSet<>();
 
     @PostConstruct
     public void initRandomAgents() {
@@ -51,7 +51,7 @@ public class MockSimulator implements Simulator {
     }
 
     @Override
-    public List<Agent> getAllAgents() {
+    public Set<Agent> getAllAgents() {
         return agents;
     }
 }
