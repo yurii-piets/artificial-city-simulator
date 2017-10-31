@@ -8,6 +8,7 @@ function setMapOnAll(map) {
             markers[i].setMap(map);
         }
     }
+    markers = [];
 }
 
 function createMarkerForAgents(agents) {
@@ -18,7 +19,8 @@ function createMarkerForAgent(agent){
     var marker = new google.maps.Marker({
         position: {lat: agent.location.latitude, lng: agent.location.longitude},
         map: map,
-        icon: getIconForAgentType(agent.type)
+        icon: getIconForAgentType(agent.type),
+        label: agent.id + ": " + agent.type.toLowerCase()
     });
     markers.push(marker);
 }
@@ -37,7 +39,7 @@ function getIconForAgentType(agentType) {
             return "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
         case "TRUCK":
             return "http://maps.google.com/mapfiles/ms/icons/green-dot.png";
-        case "UNKOWN":
+        case "UNKNOWN":
             return "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
     }
 }

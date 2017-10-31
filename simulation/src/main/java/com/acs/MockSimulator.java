@@ -6,6 +6,7 @@ import com.acs.models.agent.AgentType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -27,21 +28,20 @@ public class MockSimulator implements Simulator {
     @Value("${location.max.longitude}")
     private Double maxLongitude;
 
-    private final static Integer amountOfMockSimulationUnits = 2;
+    @Value("${simulation.max.unit}")
+    private Integer maxUnits;
 
     private Set<Agent> agents = new ConcurrentSkipListSet<>();
 
-    Supplier<Double> randomLongitudeFromRange = () -> minLongitude + (maxLongitude - minLongitude) * new Random().nextDouble();
+    private Supplier<Double> randomLongitudeFromRange = () -> minLongitude + (maxLongitude - minLongitude) * new Random().nextDouble();
 
-    Supplier<Double> randomLatitudeFromRange = () -> minLatitude + (maxLatitude - minLatitude) * new Random().nextDouble();
+    private Supplier<Double> randomLatitudeFromRange = () -> minLatitude + (maxLatitude - minLatitude) * new Random().nextDouble();
 
-    Supplier<AgentType> randomAgentType = () -> AgentType.values()[ThreadLocalRandom.current().nextInt(0, AgentType.values().length)];
+    private Supplier<AgentType> randomAgentType = () -> AgentType.values()[ThreadLocalRandom.current().nextInt(0, AgentType.values().length)];
 
+    @PostConstruct
     public void initRandomAgents() {
-        if (agents.size() > 100) {
-            return;
-        }
-        for (int i = 0; i < amountOfMockSimulationUnits; ++i) {
+        for (int i = 0; i < maxUnits; ++i) {
             Agent agent = Agent.builder()
                     .speed(40.0)
                     .type(randomAgentType.get())
@@ -56,7 +56,6 @@ public class MockSimulator implements Simulator {
 
     @Override
     public Set<Agent> getAllAgents() {
-        initRandomAgents();
         return agents;
     }
 
