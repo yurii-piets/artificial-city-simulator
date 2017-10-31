@@ -5,5 +5,6 @@ function initMap() {
         zoom: 15
     });
 
-    go();
+    //go();
 }
+

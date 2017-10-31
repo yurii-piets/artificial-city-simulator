@@ -1,3 +1,3 @@
 function go(){
-    setInterval(getAgentsAndShowAsMarkers, 5000);
+    setInterval(gs, 5000);
 }

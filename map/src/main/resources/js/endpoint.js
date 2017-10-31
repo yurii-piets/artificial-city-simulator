@@ -1,4 +1,4 @@
-function getAgentsAndShowAsMarkers() {
+function gs() {
     var request = getAjaxRequest();
     if (!request) {
         console.log("Ajax request error.");
