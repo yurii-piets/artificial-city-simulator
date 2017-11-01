@@ -59,15 +59,32 @@ public class MockSimulator implements Simulator {
         return agents;
     }
 
-
     @Override
-    public void removeById(Long id) {
+    public Agent findAgentById(Long id) {
         Agent agent = agents.stream()
                 .filter(a -> a.getId().equals(id))
                 .findFirst()
                 .orElse(null);
 
+        return agent;
+    }
+
+    @Override
+    public void save(Agent agent) {
+        agents.add(agent);
+    }
+
+    @Override
+    public void removeById(Long id) {
+        Agent agent = findAgentById(id);
+
         agents.remove(agent);
+    }
+
+    @Override
+    public void update(Agent agent){
+        removeById(agent.getId());
+        agents.add(agent);
     }
 
     @Override

@@ -8,6 +8,12 @@ public interface Simulator {
 
     Set<Agent> getAllAgents();
 
+    Agent findAgentById(Long id);
+
+    void save(Agent agent);
+
     void removeById(Long id);
     void removeAll();
+
+    void update(Agent agent);
 }
