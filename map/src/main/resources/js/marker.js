@@ -37,7 +37,7 @@ function calculateRoute(agent) {
     directionsService.route({
         origin: {lat: agent.location.latitude, lng: agent.location.longitude},
         destination: getDestination(agent),
-        travelMode: getTraveMode(agent.type)
+        travelMode: getTravelMode(agent.type)
     }, function (response, status) {
         if (status === 'OK') {
             directionsDisplay.setDirections(response);
@@ -74,7 +74,7 @@ function getIconForAgentType(agentType) {
     }
 }
 
-function getTraveMode(agentType) {
+function getTravelMode(agentType) {
     switch (agentType) {
         case "HUMAN":
             return 'WALKING';

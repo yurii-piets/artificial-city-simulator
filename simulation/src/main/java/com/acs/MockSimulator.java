@@ -16,19 +16,19 @@ import java.util.function.Supplier;
 @Component
 public class MockSimulator implements Simulator {
 
-    @Value("${location.min.latitude}")
+    @Value("${location.latitude.min}")
     private Double minLatitude;
 
-    @Value("${location.max.latitude}")
+    @Value("${location.latitude.max}")
     private Double maxLatitude;
 
-    @Value("${location.min.longitude}")
+    @Value("${location.longitude.min}")
     private Double minLongitude;
 
-    @Value("${location.max.longitude}")
+    @Value("${location.longitude.max}")
     private Double maxLongitude;
 
-    @Value("${simulation.max.unit}")
+    @Value("${simulation.unit.max}")
     private Integer maxUnits;
 
     private Set<Agent> agents = new ConcurrentSkipListSet<>();
