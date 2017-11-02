@@ -32,8 +32,6 @@ function createMarkerForAgent(agent) {
 
 function calculateRoute(agent, marker) {
     var directionsService = new google.maps.DirectionsService;
-    //var directionsDisplay = new google.maps.DirectionsRenderer;
-    //directionsDisplay.setMap(map);
 
     directionsService.route({
         origin: {lat: agent.location.latitude, lng: agent.location.longitude},
@@ -41,31 +39,16 @@ function calculateRoute(agent, marker) {
         travelMode: getTravelMode(agent.type)
     }, function (response, status) {
         if (status === 'OK') {
-            autoRefresh(response.routes[0].overview_path, marker);
-            //directionsDisplay.setDirections(response);
+            autoRefresh(response.routes[0].overview_path, marker, agent.speed);
         } else {
             window.alert('Directions request failed due to ' + status);
         }
     });
 }
 
-function autoRefresh(pathCoords, marker) {
-    var i, route;
-
-    route = new google.maps.Polyline({
-        path: [],
-        geodesic: true,
-        strokeOpacity: 1.0,
-        strokeWeight: 2,
-        editable: false,
-        map: map
-    });
-
-    for (i = 0; i < pathCoords.length; i++) {
-        setTimeout(function (coords) {
-            route.getPath().push(coords);
-            marker.setPosition(coords);
-        }, 200 * i, pathCoords[i]);
+function autoRefresh(pathCoords, marker, speed) {
+    for (var i = 0; i < pathCoords.length; i++) {
+        setTimeout(function (coords) {marker.setPosition(coords);}, speed * 6 * i, pathCoords[i]);
     }
 }
 
