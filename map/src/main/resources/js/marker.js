@@ -14,8 +14,8 @@ function clearMarkers() {
 
 function createMarkerForAgents(agents) {
     agents.forEach(function (agent) {
-        createMarkerForAgent(agent);
-        calculateRoute(agent);
+        var marker = createMarkerForAgent(agent);
+        calculateRoute(agent, marker);
     });
 }
 
@@ -27,12 +27,13 @@ function createMarkerForAgent(agent) {
         label: agent.id + ": " + agent.type.toLowerCase()
     });
     markers.push(marker);
+    return marker;
 }
 
-function calculateRoute(agent) {
+function calculateRoute(agent, marker) {
     var directionsService = new google.maps.DirectionsService;
-    var directionsDisplay = new google.maps.DirectionsRenderer;
-    directionsDisplay.setMap(map);
+    //var directionsDisplay = new google.maps.DirectionsRenderer;
+    //directionsDisplay.setMap(map);
 
     directionsService.route({
         origin: {lat: agent.location.latitude, lng: agent.location.longitude},
@@ -40,11 +41,32 @@ function calculateRoute(agent) {
         travelMode: getTravelMode(agent.type)
     }, function (response, status) {
         if (status === 'OK') {
-            directionsDisplay.setDirections(response);
+            autoRefresh(response.routes[0].overview_path, marker);
+            //directionsDisplay.setDirections(response);
         } else {
             window.alert('Directions request failed due to ' + status);
         }
     });
+}
+
+function autoRefresh(pathCoords, marker) {
+    var i, route;
+
+    route = new google.maps.Polyline({
+        path: [],
+        geodesic: true,
+        strokeOpacity: 1.0,
+        strokeWeight: 2,
+        editable: false,
+        map: map
+    });
+
+    for (i = 0; i < pathCoords.length; i++) {
+        setTimeout(function (coords) {
+            route.getPath().push(coords);
+            marker.setPosition(coords);
+        }, 200 * i, pathCoords[i]);
+    }
 }
 
 function getDestination(agent) {
@@ -54,6 +76,8 @@ function getDestination(agent) {
         return dest;
     }
 }
+
+google.maps.event.addDomListener(window, 'load', initialize);
 
 function getIconForAgentType(agentType) {
     switch (agentType) {
