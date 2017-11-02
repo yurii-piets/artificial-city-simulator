@@ -7,5 +7,5 @@ function initMap() {
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
 
-    gs();
+    initAgents();
 }

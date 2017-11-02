@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Queue;
 
 @Data
 @Builder
@@ -13,7 +13,7 @@ public class Agent implements Comparable<Agent> {
     private final Long id = id();
     private AgentType type;
     private Location location;
-    private List<Location> destinations;
+    private Queue<Location> destinations;
     private Double speed;
 
     public void addDestination(Location location) {

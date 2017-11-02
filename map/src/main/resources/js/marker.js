@@ -1,22 +1,7 @@
 var markers = [];
 
-function clearMarkers() {
-    setMapOnAll(null);
-
-    function setMapOnAll(map) {
-        for (var i = 0; i < markers.length; i++) {
-            markers[i].setMap(map);
-        }
-    }
-
-    markers = [];
-}
-
-function createMarkerForAgents(agents) {
-    agents.forEach(function (agent) {
-        var marker = createMarkerForAgent(agent);
-        calculateRoute(agent, marker);
-    });
+function processAgent(agent){
+    calculateRoute(agent, createMarkerForAgent(agent));
 }
 
 function createMarkerForAgent(agent) {
@@ -61,8 +46,6 @@ function getDestination(agent) {
     }
 }
 
-google.maps.event.addDomListener(window, 'load', initialize);
-
 function getIconForAgentType(agentType) {
     switch (agentType) {
         case "HUMAN":
@@ -99,4 +82,16 @@ function getTravelMode(agentType) {
         case "UNKNOWN":
             return 'DRIVING';
     }
+}
+
+function clearMarkers() {
+    setMapOnAll(null);
+
+    function setMapOnAll(map) {
+        for (var i = 0; i < markers.length; i++) {
+            markers[i].setMap(map);
+        }
+    }
+
+    markers = [];
 }

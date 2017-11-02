@@ -1,5 +1,6 @@
-function gs() {
+function initAgents() {
     var request = getAjaxRequest();
+
     if (!request) {
         console.log("Ajax request error.");
         return;
@@ -9,9 +10,30 @@ function gs() {
     request.send();
     request.onreadystatechange = function () {
         if (request.readyState === 3 && request.status === 200) {
-            createMarkerForAgents(JSON.parse(request.response));
+            var listOfLinks = JSON.parse(request.response);
+            getAgentAndMakeMarker(listOfLinks);
         }
     };
+}
+
+function getAgentAndMakeMarker(links) {
+    links.forEach(function (link) {
+        var request = getAjaxRequest();
+
+        if (!request) {
+            console.log("Ajax request error.");
+            return;
+        }
+
+        request.open("GET", link, true);
+        request.send();
+        request.onreadystatechange = function () {
+            if (request.readyState === 3 && request.status === 200) {
+                var agent = JSON.parse(request.response);
+                processAgent(agent);
+            }
+        }
+    });
 }
 
 function getAjaxRequest() {

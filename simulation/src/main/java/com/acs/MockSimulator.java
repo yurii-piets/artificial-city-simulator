@@ -49,6 +49,18 @@ public class MockSimulator implements Simulator {
                     .build();
 
             agent.addDestination(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()));
+            agent.addDestination(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()));
+            agent.addDestination(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()));
+            agent.addDestination(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()));
+            agent.addDestination(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()));
+            agent.addDestination(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()));
+            agent.addDestination(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()));
+            agent.addDestination(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()));
+            agent.addDestination(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()));
+            agent.addDestination(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()));
+            agent.addDestination(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()));
+            agent.addDestination(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()));
+            agent.addDestination(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()));
 
             agents.add(agent);
         }
@@ -82,9 +94,15 @@ public class MockSimulator implements Simulator {
     }
 
     @Override
-    public void update(Agent agent){
+    public void update(Agent agent) {
         removeById(agent.getId());
         agents.add(agent);
+    }
+
+    @Override
+    public void reset() {
+        agents.clear();
+        initRandomAgents();
     }
 
     @Override

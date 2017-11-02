@@ -5,18 +5,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.Optional;
 
-@Component
-public class JsonPatchUtility {
+@Service
+public class JsonPatchService {
 
     private final ObjectMapper mapper;
 
     @Autowired
-    public JsonPatchUtility(ObjectMapper mapper) {
+    public JsonPatchService(ObjectMapper mapper) {
         this.mapper = mapper;
     }
 

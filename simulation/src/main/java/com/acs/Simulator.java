@@ -16,4 +16,6 @@ public interface Simulator {
     void removeAll();
 
     void update(Agent agent);
+
+    void reset();
 }
