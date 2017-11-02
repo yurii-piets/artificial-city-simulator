@@ -41,7 +41,8 @@ function calculateRoute(agent, marker) {
         if (status === 'OK') {
             autoRefresh(response.routes[0].overview_path, marker, agent.speed);
         } else {
-            window.alert('Directions request failed due to ' + status);
+            //Fail silently
+            //window.alert('Directions request failed due to ' + status);
         }
     });
 }
