@@ -1,0 +1,12 @@
+#bound of area where simulation is being processed
+location:
+  latitude:
+    min: 50.054704
+    max: 50.068915
+  longitude:
+    min: 19.919248
+    max: 19.962085
+
+simulation:
+  unit:
+    max: 2

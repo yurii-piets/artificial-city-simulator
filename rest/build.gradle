@@ -1,0 +1,10 @@
+plugins {
+    id 'org.springframework.boot' version '1.5.4.RELEASE'
+}
+
+dependencies{
+    compile project(":common")
+    compile project(":simulation")
+
+    compile 'com.github.fge:json-patch:1.9'
+}
