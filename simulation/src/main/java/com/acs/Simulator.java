@@ -18,4 +18,10 @@ public interface Simulator {
     void update(Agent agent);
 
     void reset();
+
+    void changeSize(Integer count);
+
+    Long getMinId();
+
+    Long getMaxId();
 }

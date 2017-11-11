@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 
+// TODO: 11/11/2017 make all void methods async
 @Component
 public class MockSimulator implements Simulator {
 
@@ -39,27 +40,19 @@ public class MockSimulator implements Simulator {
 
     private Supplier<AgentType> randomAgentType = () -> AgentType.values()[ThreadLocalRandom.current().nextInt(0, AgentType.values().length)];
 
+    private Supplier<Double> randomSpeed = () -> 3 + (60 - 3) * new Random().nextDouble();
+
     @PostConstruct
     public void initRandomAgents() {
+        agents = new ConcurrentSkipListSet<>();
+
         for (int i = 0; i < maxUnits; ++i) {
             Agent agent = Agent.builder()
-                    .speed(40.0)
+                    .speed(randomSpeed.get())
                     .type(randomAgentType.get())
                     .location(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()))
                     .build();
 
-            agent.addDestination(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()));
-            agent.addDestination(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()));
-            agent.addDestination(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()));
-            agent.addDestination(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()));
-            agent.addDestination(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()));
-            agent.addDestination(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()));
-            agent.addDestination(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()));
-            agent.addDestination(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()));
-            agent.addDestination(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()));
-            agent.addDestination(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()));
-            agent.addDestination(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()));
-            agent.addDestination(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()));
             agent.addDestination(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()));
 
             agents.add(agent);
@@ -103,6 +96,28 @@ public class MockSimulator implements Simulator {
     public void reset() {
         agents.clear();
         initRandomAgents();
+    }
+
+    @Override
+    public void changeSize(Integer count) {
+        maxUnits = count;
+        initRandomAgents();
+    }
+
+    @Override
+    public Long getMinId() {
+        return agents.stream()
+                .map(Agent::getId)
+                .min(Long::compare)
+                .get();
+    }
+
+    @Override
+    public Long getMaxId() {
+        return agents.stream()
+                .map(Agent::getId)
+                .max(Long::compare)
+                .get();
     }
 
     @Override
