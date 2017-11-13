@@ -1,11 +1,14 @@
+basic:
+  url: http://localhost:8080
+
 #bound of area where simulation is being processed
 location:
   latitude:
-    min: 50.054704
-    max: 50.068915
+    min: 50.063696
+    max: 50.067456
   longitude:
-    min: 19.919248
-    max: 19.962085
+    min: 19.916326
+    max: 19.925553
 
 simulation:
   unit:
