@@ -1,6 +1,6 @@
 package com.acs.rest.controllers;
 
-import com.acs.Simulator;
+import com.acs.pool.def.AgentPool;
 import com.acs.models.RangeDTO;
 import com.acs.models.agent.Agent;
 import org.apache.log4j.LogManager;
@@ -25,21 +25,21 @@ public class AgentPoolController {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 
-    private final Simulator agentSimulator;
+    private final AgentPool agentAgentPool;
 
     @Value("${basic.url}")
     private String basicUrl;
 
     @Autowired
-    public AgentPoolController(Simulator agentSimulator) {
-        this.agentSimulator = agentSimulator;
+    public AgentPoolController(AgentPool agentAgentPool) {
+        this.agentAgentPool = agentAgentPool;
     }
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "/ids")
     public ResponseEntity<Set<Long>> agentsIds() {
 
-        Set<Long> agentIds = agentSimulator.getAgents().stream()
+        Set<Long> agentIds = agentAgentPool.getAgents().stream()
                 .map(Agent::getId)
                 .collect(Collectors.toSet());
 
@@ -49,7 +49,7 @@ public class AgentPoolController {
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "/links")
     public ResponseEntity<Set<URI>> agentsLinks() {
-        Set<Agent> agents = agentSimulator.getAgents();
+        Set<Agent> agents = agentAgentPool.getAgents();
 
         Set<URI> agentUrls = agents.stream()
                 .map(Agent::getId)
@@ -69,7 +69,7 @@ public class AgentPoolController {
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "/objects")
     public ResponseEntity<Set<Agent>> agentsObjects() {
-        Set<Agent> agents = agentSimulator.getAgents();
+        Set<Agent> agents = agentAgentPool.getAgents();
 
         return new ResponseEntity<>(agents, HttpStatus.OK);
     }
@@ -77,7 +77,7 @@ public class AgentPoolController {
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "/count")
     public ResponseEntity<Integer> agentsSize() {
-        Integer agents = agentSimulator.getAgents().size();
+        Integer agents = agentAgentPool.getAgents().size();
 
         return new ResponseEntity<>(agents, HttpStatus.OK);
     }
@@ -85,8 +85,8 @@ public class AgentPoolController {
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "/range")
     public ResponseEntity agentsRange() {
-        Long min = agentSimulator.getMinId();
-        Long max = agentSimulator.getMaxId();
+        Long min = agentAgentPool.getMinId();
+        Long max = agentAgentPool.getMaxId();
 
         RangeDTO range = new RangeDTO(min, max);
         return new ResponseEntity<>(range, HttpStatus.OK);

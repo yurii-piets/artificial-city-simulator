@@ -1,6 +1,6 @@
 package com.acs.rest.controllers;
 
-import com.acs.Simulator;
+import com.acs.pool.def.AgentPool;
 import com.acs.models.agent.Agent;
 import com.acs.service.JsonPatchService;
 import com.github.fge.jsonpatch.JsonPatchException;
@@ -22,23 +22,23 @@ import java.io.IOException;
 @RequestMapping(value = "/agent")
 public class AgentManagementController {
 
-    private final Simulator agentSimulator;
+    private final AgentPool agentPool;
 
     private final JsonPatchService patchService;
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 
     @Autowired
-    public AgentManagementController(Simulator agentSimulator,
+    public AgentManagementController(AgentPool agentAgentPool,
                                      JsonPatchService patchService) {
-        this.agentSimulator = agentSimulator;
+        this.agentPool = agentAgentPool;
         this.patchService = patchService;
     }
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "/{agentId}")
     public ResponseEntity agent(@PathVariable Long agentId) {
-        Agent agent = agentSimulator.findAgentById(agentId);
+        Agent agent = agentPool.findAgentById(agentId);
 
         if (agent == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -49,13 +49,13 @@ public class AgentManagementController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity createAgent(@RequestBody Agent agent) {
-        agentSimulator.save(agent);
+        agentPool.save(agent);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.PATCH, value = "/{agentId}")
     public ResponseEntity updateAgent(@PathVariable Long agentId, @RequestBody String updateBody) {
-        Agent agent = agentSimulator.findAgentById(agentId);
+        Agent agent = agentPool.findAgentById(agentId);
 
         if (agent == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -63,7 +63,7 @@ public class AgentManagementController {
 
         try {
             Agent mergedUser = (Agent) patchService.patch(updateBody, agent).get();
-            agentSimulator.update(mergedUser);
+            agentPool.update(mergedUser);
         } catch (IOException e) {
             logger.error(e.getMessage());
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -77,7 +77,7 @@ public class AgentManagementController {
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{agentId}")
     public ResponseEntity deleteAgent(@PathVariable Long agentId) {
-        agentSimulator.removeById(agentId);
+        agentPool.removeById(agentId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
