@@ -20,7 +20,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping(value = "/agent")
-public class AgentController {
+public class AgentManagementController {
 
     private final Simulator agentSimulator;
 
@@ -29,7 +29,8 @@ public class AgentController {
     private final Logger logger = LogManager.getLogger(this.getClass());
 
     @Autowired
-    public AgentController(Simulator agentSimulator, JsonPatchService patchService) {
+    public AgentManagementController(Simulator agentSimulator,
+                                     JsonPatchService patchService) {
         this.agentSimulator = agentSimulator;
         this.patchService = patchService;
     }
@@ -46,35 +47,10 @@ public class AgentController {
         return new ResponseEntity<>(agent, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/{agentId}/info")
-    public ResponseEntity agentInfo(@PathVariable Long agentId) {
-        Agent agent = agentSimulator.findAgentById(agentId);
-
-        if (agent == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        return new ResponseEntity<>(agent, HttpStatus.OK);
-    }
-
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity agent(@RequestBody Agent agent) {
+    public ResponseEntity createAgent(@RequestBody Agent agent) {
         agentSimulator.save(agent);
         return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @CrossOrigin
-    @RequestMapping(method = RequestMethod.PATCH, value = "/{agentId}/reached")
-    public ResponseEntity agentReached(@PathVariable Long agentId){
-        Agent agent = agentSimulator.findAgentById(agentId);
-
-        if(agent == null){
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
-
-        agent.reachDestination();
-
-        return new ResponseEntity(HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.PATCH, value = "/{agentId}")
@@ -100,7 +76,7 @@ public class AgentController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{agentId}")
-    public ResponseEntity deleteAll(@PathVariable Long agentId) {
+    public ResponseEntity deleteAgent(@PathVariable Long agentId) {
         agentSimulator.removeById(agentId);
         return new ResponseEntity<>(HttpStatus.OK);
     }

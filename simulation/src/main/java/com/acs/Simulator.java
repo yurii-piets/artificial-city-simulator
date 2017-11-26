@@ -6,7 +6,9 @@ import java.util.Set;
 
 public interface Simulator {
 
-    Set<Agent> getAllAgents();
+    void simulate() throws InterruptedException;
+
+    Set<Agent> getAgents();
 
     Agent findAgentById(Long id);
 
