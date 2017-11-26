@@ -3,7 +3,9 @@ package com.acs;
 import com.acs.models.Location;
 import com.acs.models.agent.Agent;
 import com.acs.models.agent.AgentType;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -11,6 +13,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 // TODO: 11/11/2017 make all void methods async
@@ -32,6 +35,7 @@ public class MockSimulator implements Simulator {
     @Value("${simulation.unit.max}")
     private Integer maxUnits;
 
+    @Getter
     private Set<Agent> agents = new ConcurrentSkipListSet<>();
 
     private Supplier<Double> randomLongitudeFromRange = () -> minLongitude + (maxLongitude - minLongitude) * new Random().nextDouble();
@@ -48,7 +52,8 @@ public class MockSimulator implements Simulator {
 
         for (int i = 0; i < maxUnits; ++i) {
             Agent agent = Agent.builder()
-                    .speed(randomSpeed.get())
+                    .dLatitude(0.00001)
+                    .dLongitude(0.00001)
                     .type(randomAgentType.get())
                     .location(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()))
                     .build();
@@ -59,9 +64,13 @@ public class MockSimulator implements Simulator {
         }
     }
 
+    @Async
     @Override
-    public Set<Agent> getAllAgents() {
-        return agents;
+    public void simulate() throws InterruptedException {
+        while (true){
+            agents.forEach(Agent::move);
+            TimeUnit.SECONDS.sleep(1);
+        }
     }
 
     @Override
@@ -82,6 +91,10 @@ public class MockSimulator implements Simulator {
     @Override
     public void removeById(Long id) {
         Agent agent = findAgentById(id);
+
+        if (agent == null) {
+            return;
+        }
 
         agents.remove(agent);
     }

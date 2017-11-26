@@ -10,28 +10,50 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 @Data
-@Builder
 public class Agent implements Comparable<Agent>, Cloneable {
-    private final Long id = id();
+
     private AgentType type;
     private Location location;
+
+    private final Long id = id();
+
+    @JsonIgnore
+    private Double dLatitude;
+
+    @JsonIgnore
+    private Double dLongitude;
+
+    @JsonIgnore
     private Queue<Location> destinations;
 
     @JsonIgnore
-    private Deque<Location> reachedDestination = new LinkedList<>();
+    private Deque<Location> reachedDestination;
 
-    private Double speed;
+    @Builder
+    public Agent(AgentType type, Location location, Double dLatitude, Double dLongitude) {
+        this.type = type;
+        this.location = location;
+        this.dLatitude = dLatitude;
+        this.dLongitude = dLongitude;
+
+        this.destinations = new LinkedList<>();
+        this.reachedDestination = new LinkedList<>();
+    }
+
+    public void move(){
+        Double latitude = location.getLatitude();
+        Double longitude = location.getLongitude();
+
+        location.setLatitude(latitude + dLatitude);
+        location.setLongitude(longitude + dLongitude);
+    }
 
     public void addDestination(Location location) {
-        if (destinations == null) {
-            destinations = new LinkedList<>();
-        }
-
         destinations.add(location);
     }
 
-    public void reachDestination(){
-        if(destinations != null && !destinations.isEmpty()){
+    public void reachDestination() {
+        if (destinations != null && !destinations.isEmpty()) {
             Location destination = destinations.poll();
             reachedDestination.addFirst(destination);
             location = destination;

@@ -6,6 +6,26 @@ function initAgents() {
         return;
     }
 
+    request.open("GET", REST_URL + "agent/all/objects", true);
+    request.send();
+
+    request.onreadystatechange = function () {
+        if (request.readyState === 3 && request.status === 200) {
+            var agents = JSON.parse(request.response);
+
+            agents.forEach(createMarkerForAgent);
+        }
+    }
+}
+
+function initAgentsWithPagination() {
+    var request = getAjaxRequest();
+
+    if (!request) {
+        console.log("Ajax request error.");
+        return;
+    }
+
     request.open("GET", REST_URL + "agent/all/count", true);
     request.send();
     request.onreadystatechange = function () {
