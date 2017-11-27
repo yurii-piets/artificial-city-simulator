@@ -18,6 +18,7 @@ function initAgents() {
     }
 }
 
+// todo oprtimize pagination
 function initAgentsWithPagination() {
     var request = getAjaxRequest();
 
@@ -55,7 +56,7 @@ function getAndMarkByObject() {
     request.onreadystatechange = function () {
         if (request.readyState === 3 && request.status === 200) {
             var agents = JSON.parse(request.response);
-            agents.forEach(processAgent);
+            agents.forEach(createMarkerForAgent);
         }
     }
 }
@@ -111,7 +112,7 @@ function processById(id) {
     request.onreadystatechange = function () {
         if (request.readyState === 3 && request.status === 200) {
             var agent = JSON.parse(request.response);
-            processAgent(agent);
+            createMarkerForAgent(agent);
         }
     }
 }
