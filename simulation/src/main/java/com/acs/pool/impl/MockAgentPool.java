@@ -43,14 +43,16 @@ public class MockAgentPool implements AgentPool {
 
     private Supplier<AgentType> randomAgentType = () -> AgentType.values()[ThreadLocalRandom.current().nextInt(0, AgentType.values().length)];
 
+    private Supplier<Integer> randomWay = () ->  ThreadLocalRandom.current().nextInt(-1, 2);
+
     @PostConstruct
     public void initRandomAgents() {
         agents = new ConcurrentSkipListSet<>();
 
         for (int i = 0; i < maxUnits; ++i) {
             Agent agent = Agent.builder()
-                    .dLatitude(0.00001)
-                    .dLongitude(0.00001)
+                    .dLatitude(randomWay.get() * 0.00001)
+                    .dLongitude(randomWay.get() * 0.00001)
                     .type(randomAgentType.get())
                     .location(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()))
                     .build();
