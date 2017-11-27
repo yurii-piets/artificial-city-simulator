@@ -15,7 +15,7 @@ public class AsyncConfig {
         executor.setCorePoolSize(2);
         executor.setMaxPoolSize(2);
         executor.setQueueCapacity(500);
-        executor.setThreadNamePrefix("Simulator-");
+        executor.setThreadNamePrefix("AgentPool-");
         executor.initialize();
         return executor;
     }

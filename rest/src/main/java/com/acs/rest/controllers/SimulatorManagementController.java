@@ -1,6 +1,6 @@
 package com.acs.rest.controllers;
 
-import com.acs.Simulator;
+import com.acs.pool.def.AgentPool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,30 +12,30 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController(value = "/simulator")
 public class SimulatorManagementController {
 
-    private final Simulator agentSimulator;
+    private final AgentPool agentAgentPool;
 
     @Autowired
-    public SimulatorManagementController(Simulator agentSimulator) {
-        this.agentSimulator = agentSimulator;
+    public SimulatorManagementController(AgentPool agentAgentPool) {
+        this.agentAgentPool = agentAgentPool;
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/count")
     public ResponseEntity<Integer> agentsChangeSize(@RequestBody Integer count) {
-        agentSimulator.changeSize(count);
+        agentAgentPool.changeSize(count);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/reset")
     public ResponseEntity reset() {
-        agentSimulator.reset();
+        agentAgentPool.reset();
 
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.DELETE)
     public ResponseEntity deleteAll() {
-        agentSimulator.removeAll();
+        agentAgentPool.removeAll();
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

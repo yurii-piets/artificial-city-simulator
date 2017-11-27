@@ -1,11 +1,11 @@
-package com.acs;
+package com.acs.pool.impl;
 
 import com.acs.models.Location;
 import com.acs.models.agent.Agent;
 import com.acs.models.agent.AgentType;
+import com.acs.pool.def.AgentPool;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -13,12 +13,11 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 // TODO: 11/11/2017 make all void methods async
 @Component
-public class MockSimulator implements Simulator {
+public class MockAgentPool implements AgentPool {
 
     @Value("${location.latitude.min}")
     private Double minLatitude;
@@ -44,7 +43,7 @@ public class MockSimulator implements Simulator {
 
     private Supplier<AgentType> randomAgentType = () -> AgentType.values()[ThreadLocalRandom.current().nextInt(0, AgentType.values().length)];
 
-    private Supplier<Double> randomSpeed = () -> 3 + (60 - 3) * new Random().nextDouble();
+    private Supplier<Integer> randomWay = () ->  ThreadLocalRandom.current().nextInt(-1, 2);
 
     @PostConstruct
     public void initRandomAgents() {
@@ -52,8 +51,8 @@ public class MockSimulator implements Simulator {
 
         for (int i = 0; i < maxUnits; ++i) {
             Agent agent = Agent.builder()
-                    .dLatitude(0.00001)
-                    .dLongitude(0.00001)
+                    .dLatitude(randomWay.get() * 0.00001)
+                    .dLongitude(randomWay.get() * 0.00001)
                     .type(randomAgentType.get())
                     .location(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()))
                     .build();
@@ -61,15 +60,6 @@ public class MockSimulator implements Simulator {
             agent.addDestination(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()));
 
             agents.add(agent);
-        }
-    }
-
-    @Async
-    @Override
-    public void simulate() throws InterruptedException {
-        while (true){
-            agents.forEach(Agent::move);
-            TimeUnit.SECONDS.sleep(1);
         }
     }
 

@@ -1,29 +1,20 @@
-package com.acs;
+package com.acs.pool.def;
 
 import com.acs.models.agent.Agent;
 
 import java.util.Set;
 
-public interface Simulator {
-
-    void simulate() throws InterruptedException;
-
-    Set<Agent> getAgents();
-
-    Agent findAgentById(Long id);
+public interface AgentPool {
 
     void save(Agent agent);
-
-    void removeById(Long id);
-    void removeAll();
-
     void update(Agent agent);
-
+    void removeById(Long id);
     void reset();
 
+    Set<Agent> getAgents();
+    Agent findAgentById(Long id);
     void changeSize(Integer count);
-
     Long getMinId();
-
     Long getMaxId();
+    void removeAll();
 }
