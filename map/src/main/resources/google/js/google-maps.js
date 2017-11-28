@@ -7,6 +7,8 @@ function initMap() {
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
 
+    initStatics();
+
     setInterval(function () {
         initAgents();
     }, 200);

@@ -1,20 +1,25 @@
-var markers = [];
-
-function processAgent(agent){
-    calculateRoute(agent, createMarkerForAgent(agent));
-}
+var agentMarkers = [];
 
 function createMarkerForAgent(agent) {
-    if(markers[agent.id] === undefined ) {
-        markers[agent.id] = new google.maps.Marker({
+    if(agentMarkers[agent.id] === undefined ) {
+        agentMarkers[agent.id] = new google.maps.Marker({
             position: {lat: agent.location.latitude, lng: agent.location.longitude},
             map: map,
             icon: getIconForAgentType(agent.type),
             label: agent.id + ": " + agent.type.toLowerCase()
         });
     } else {
-        markers[agent.id].setPosition({lat: agent.location.latitude, lng: agent.location.longitude});
+        agentMarkers[agent.id].setPosition({lat: agent.location.latitude, lng: agent.location.longitude});
     }
+}
+
+function createMarkerForStatic(staticObject){
+    new google.maps.Marker({
+        position: {lat: staticObject.location.latitude, lng: staticObject.location.longitude},
+        map: map,
+        icon: getIconForStaticType(staticObject.type),
+        label: staticObject.id + ": " + staticObject.type.toLowerCase()
+    });
 }
 
 function getIconForAgentType(agentType) {
@@ -36,36 +41,13 @@ function getIconForAgentType(agentType) {
     }
 }
 
-function calculateRoute(agent, marker) {
-    var directionsService = new google.maps.DirectionsService;
-
-    directionsService.route({
-        origin: {lat: agent.location.latitude, lng: agent.location.longitude},
-        destination: getDestination(agent),
-        travelMode: getTravelMode(agent.type)
-    }, function (response, status) {
-        if (status === 'OK') {
-            autoRefresh(response.routes[0].overview_path, marker, agent.speed);
-        } else {
-            console.log('Directions request failed due to ' + status);
-        }
-    });
-}
-
-function autoRefresh(pathCoords, marker, speed) {
-    for (var i = 0; i < pathCoords.length; i++) {
-        setTimeout(function (coords) {marker.setPosition(coords);}, speed * 6 * i, pathCoords[i]);
+function getIconForStaticType(staticType) {
+    switch (staticType) {
+        case "STOP":
+            return "http://maps.google.com/mapfiles/ms/icons/green-dot.png";
+        case "LIGHTS":
+            return "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
+        case "CROSSING":
+            return "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png";
     }
-}
-
-function clearMarkers() {
-    setMapOnAll(null);
-
-    function setMapOnAll(map) {
-        for (var i = 0; i < markers.length; i++) {
-            markers[i].setMap(map);
-        }
-    }
-
-    markers = [];
 }
