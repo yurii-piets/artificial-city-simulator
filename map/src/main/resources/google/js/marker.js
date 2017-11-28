@@ -22,6 +22,17 @@ function createMarkerForStatic(staticObject){
     });
 }
 
+function createPolylineForWay(way){
+    new google.maps.Polyline({
+        path: convertPoints(way.points),
+        geodesic: true,
+        strokeColor: getRandomColor(),// strokeColor: '#f33333',
+        strokeOpacity: 1.0,
+        strokeWeight: 2,
+        map: map
+    });
+}
+
 function getIconForAgentType(agentType) {
     switch (agentType) {
         case "HUMAN":
@@ -50,4 +61,21 @@ function getIconForStaticType(staticType) {
         case "CROSSING":
             return "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png";
     }
+}
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+function convertPoints(points){
+    var cumulated = [];
+    for(var i=0; i < points.length; i++){
+        cumulated[i] = {lat: points[i].latitude, lng: points[i].longitude};
+    }
+    return cumulated;
 }
