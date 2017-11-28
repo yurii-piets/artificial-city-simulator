@@ -79,6 +79,11 @@ public class ParserService {
                 Element element = result.get(key);
                 if (element instanceof Way) {
                     Way way = (Way) element;
+
+                    if(element.getTags().keySet().contains("building")){
+                        continue;
+                    }
+
                     Road road = new Road();
                     for (Node node : way.getNodes()) {
                         road.addPoint(new Location(node.getLon(), node.getLat()));
