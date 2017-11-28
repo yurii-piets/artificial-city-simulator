@@ -7,7 +7,10 @@ function initMap() {
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
 
-    setInterval(function () {
-        initAgents();
-    }, 200);
+    // initStatics();
+    initWays();
+
+    // setInterval(function () {
+    //     initAgents();
+    // }, 200);
 }

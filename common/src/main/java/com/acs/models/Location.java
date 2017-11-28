@@ -17,6 +17,7 @@ public class Location {
     private static final int MIN_LATITUDE = -90;
     private static final int MAX_LATITUDE = 90;
 
+    // TODO: 28/11/2017 rename variables longitude and latitude to lng and lat
     @NotNull
     @Min(value = MIN_LONGITUDE)
     @Max(value = MAX_LONGITUDE)

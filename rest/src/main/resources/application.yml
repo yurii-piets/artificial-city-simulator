@@ -13,4 +13,4 @@ location:
 simulation:
   unit:
     distance: 2
-    max: 100
+    max: 0

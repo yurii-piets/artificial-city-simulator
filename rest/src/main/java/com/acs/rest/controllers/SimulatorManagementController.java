@@ -1,6 +1,7 @@
 package com.acs.rest.controllers;
 
 import com.acs.pool.def.AgentPool;
+import com.acs.simulator.def.Simulator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,21 +15,25 @@ public class SimulatorManagementController {
 
     private final AgentPool agentAgentPool;
 
+    private final Simulator simulator;
+
     @Autowired
-    public SimulatorManagementController(AgentPool agentAgentPool) {
+    public SimulatorManagementController(AgentPool agentAgentPool,
+                                         Simulator simulator) {
         this.agentAgentPool = agentAgentPool;
+        this.simulator = simulator;
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/count")
     public ResponseEntity<Integer> agentsChangeSize(@RequestBody Integer count) {
-        agentAgentPool.changeSize(count);
+        simulator.changeAgentsAmount(count);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/reset")
     public ResponseEntity reset() {
-        agentAgentPool.reset();
+        simulator.resetSimulation();
 
         return new ResponseEntity(HttpStatus.OK);
     }
