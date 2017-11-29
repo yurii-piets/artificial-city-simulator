@@ -5,11 +5,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-// TODO: 29/11/2017 doesn't work, returns `PageNotFound: Request method 'GET' not supported`
-public class MapController {
+public class HomeController {
 
-    @RequestMapping(value = "/map", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index() {
-        return "public/google/map.html";
+        return "hello";
     }
+    
 }
