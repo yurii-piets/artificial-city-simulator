@@ -1,4 +1,3 @@
-include ':map'
 include ':web'
 include ':simulation'
 include ':common'
