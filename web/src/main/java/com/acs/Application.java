@@ -4,10 +4,9 @@ import com.acs.simulator.def.Simulator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @SpringBootApplication
-public class Application extends WebMvcConfigurerAdapter {
+public class Application {
 
     public static void main(String[] args) throws InterruptedException {
         ConfigurableApplicationContext applicationContext
