@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-// TODO: 28/11/2017 create not rest controller that returns map.html page
 @RestController
 public class StaticsController {
 
