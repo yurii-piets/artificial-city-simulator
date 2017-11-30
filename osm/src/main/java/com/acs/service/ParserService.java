@@ -9,16 +9,17 @@ import info.pavie.basicosmparser.model.Element;
 import info.pavie.basicosmparser.model.Node;
 import info.pavie.basicosmparser.model.Way;
 import lombok.Getter;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Paths;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -40,12 +41,18 @@ public class ParserService {
     public void postConstruct() {
         try {
             OSMParser p = new OSMParser();
-            File osmFile = Paths.get(getClass().getClassLoader().getResource(OSM_MAP_FILE).toURI()).toFile();
+
+            ClassPathResource classPathResource = new ClassPathResource(OSM_MAP_FILE);
+
+            InputStream inputStream = classPathResource.getInputStream();
+            File osmFile = File.createTempFile("map", ".osm");
+            FileUtils.copyInputStreamToFile(inputStream, osmFile);
+
             Map<String, Element> result = p.parse(osmFile);
 
             parseStatics(result);
             parseWays(result);
-        } catch (URISyntaxException | IOException | SAXException e) {
+        } catch (IOException | SAXException e) {
             logger.error("Unexpected: ", e);
         }
     }
