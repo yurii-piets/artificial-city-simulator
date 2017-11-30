@@ -1,4 +1,4 @@
-package com.acs.rest.controllers;
+package com.acs.rest.controller;
 
 import com.acs.pool.def.AgentPool;
 import com.acs.models.RangeDTO;

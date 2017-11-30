@@ -1,4 +1,4 @@
-package com.acs.rest.controllers;
+package com.acs.rest.controller;
 
 import com.acs.models.statics.Road;
 import com.acs.service.ParserService;
@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-// TODO: 28/11/2017 create not rest controller that returns index.html page
 @RestController
+@RequestMapping
 public class StaticsController {
 
     private final ParserService parserService;

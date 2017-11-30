@@ -1,14 +1,16 @@
-allprojects{
-    apply plugin: 'java'
-    apply plugin: 'idea'
-    apply plugin: 'maven'
-
+allprojects {
     group = 'com.artificial-city-simulator'
     version = '0.0.1-SNAPSHOT'
 
     ext {
         applicationName = 'artificial-city-simulator'
     }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'maven'
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8

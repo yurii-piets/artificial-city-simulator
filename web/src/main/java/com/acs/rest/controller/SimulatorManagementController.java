@@ -1,4 +1,4 @@
-package com.acs.rest.controllers;
+package com.acs.rest.controller;
 
 import com.acs.pool.def.AgentPool;
 import com.acs.simulator.def.Simulator;
@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController(value = "/simulator")
+@RestController
+@RequestMapping(value = "/simulator")
 public class SimulatorManagementController {
 
     private final AgentPool agentAgentPool;
