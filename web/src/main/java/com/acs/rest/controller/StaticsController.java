@@ -59,14 +59,14 @@ public class StaticsController {
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "/ways")
     public ResponseEntity ways(@RequestParam(value = "type") List<String> types) {
-
         Set<RoadType> roadTypes = types.stream()
                 .map(String::toUpperCase)
                 .map(RoadType::valueOf)
                 .collect(Collectors.toSet());
 
-        Set<Road> ways = parserService.getRoads().stream()
+        Set<Long> ways = parserService.getRoads().stream()
                 .filter(way -> roadTypes.contains(way.getRoadType()))
+                .map(Road::getId)
                 .collect(Collectors.toSet());
 
         return new ResponseEntity<>(ways, HttpStatus.OK);

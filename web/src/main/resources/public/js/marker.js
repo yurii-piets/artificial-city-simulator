@@ -1,4 +1,5 @@
 var agentMarkers = [];
+var polyLines = [];
 
 function createMarkerForAgent(agent) {
     if (agentMarkers[agent.id] === undefined) {
@@ -23,7 +24,7 @@ function createMarkerForStatic(staticObject) {
 }
 
 function createPolylineForWay(way) {
-    new google.maps.Polyline({
+    polyLine = new google.maps.Polyline({
         path: convertPoints(way.points),
         geodesic: true,
         strokeColor: getColorForWayType(way.roadType),
@@ -31,6 +32,8 @@ function createPolylineForWay(way) {
         strokeWeight: 2,
         map: map
     });
+
+    polyLines.push(polyLine);
 }
 
 function getIconForAgentType(agentType) {
@@ -127,4 +130,9 @@ function convertPoints(points) {
         cumulated[i] = {lat: points[i].latitude, lng: points[i].longitude};
     }
     return cumulated;
+}
+
+function clearPolylines() {
+    polyLines.forEach(function (line) { line.setMap(null) });
+    polyLines = [];
 }
