@@ -2,6 +2,7 @@ package com.acs.service;
 
 import com.acs.models.Location;
 import com.acs.models.statics.Road;
+import com.acs.models.statics.RoadType;
 import com.acs.models.statics.StaticPoint;
 import com.acs.models.statics.StaticType;
 import info.pavie.basicosmparser.controller.OSMParser;
@@ -87,17 +88,32 @@ public class ParserService {
                 if (element instanceof Way) {
                     Way way = (Way) element;
 
-                    if(element.getTags().keySet().contains("building")){
-                        continue;
-                    }
-
-                    Road road = new Road();
+                    RoadType roadType = parseRoadType(element);
+                    Road road = new Road(roadType);
                     for (Node node : way.getNodes()) {
                         road.addPoint(new Location(node.getLon(), node.getLat()));
                     }
+
                     roads.add(road);
                 }
             }
         }
     }
+
+    private RoadType parseRoadType(Element element) {
+        RoadType roadType;
+        if (element.getTags().keySet().contains("highway")) {
+            String highway = element.getTags().get("highway");
+            try {
+                roadType = RoadType.valueOf(highway.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                roadType = RoadType.UNKNOWN;
+                logger.warn("Unknown type of road: " + highway);
+            }
+        } else {
+            roadType = RoadType.OTHER;
+        }
+        return roadType;
+    }
+
 }
