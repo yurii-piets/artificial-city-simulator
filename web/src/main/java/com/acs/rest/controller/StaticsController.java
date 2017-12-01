@@ -2,6 +2,8 @@ package com.acs.rest.controller;
 
 import com.acs.models.statics.Road;
 import com.acs.models.statics.RoadType;
+import com.acs.models.statics.StaticPoint;
+import com.acs.models.statics.StaticType;
 import com.acs.service.ParserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +35,19 @@ public class StaticsController {
     @RequestMapping(method = RequestMethod.GET, value = "/statics")
     public ResponseEntity statics() {
         return new ResponseEntity<>(parserService.getStatics(), HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @RequestMapping(method = RequestMethod.GET, value = "/statics/types")
+    public ResponseEntity staticsTypes() {
+        Set<String> types = parserService.getStatics()
+                .stream()
+                .map(StaticPoint::getType)
+                .map(StaticType::toString)
+                .map(String::toLowerCase)
+                .collect(Collectors.toSet());
+
+        return new ResponseEntity<>(types, HttpStatus.OK);
     }
 
     @CrossOrigin

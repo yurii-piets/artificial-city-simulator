@@ -1,5 +1,5 @@
 var agentMarkers = [];
-var polyLinesMap = {};
+var cachedTypesMap = {};
 
 function createMarkerForAgent(agent) {
     if (agentMarkers[agent.id] === undefined) {
@@ -15,12 +15,13 @@ function createMarkerForAgent(agent) {
 }
 
 function createMarkerForStatic(staticObject) {
-    new google.maps.Marker({
+    var staticMarker = new google.maps.Marker({
         position: {lat: staticObject.location.latitude, lng: staticObject.location.longitude},
-        map: map,
         icon: getIconForStaticType(staticObject.type),
         label: staticObject.id + ": " + staticObject.type.toLowerCase()
     });
+
+    addValueToLineMap(staticObject.type, staticMarker);
 }
 
 function createPolylineForWay(way) {
@@ -32,8 +33,8 @@ function createPolylineForWay(way) {
         strokeWeight: 2
     });
 
-    // polyLinesMap[way.roadType].push(polyLine);
-    addValueToKey(way.roadType.toLowerCase(), polyLine);
+    // cachedTypesMap[way.roadType].push(polyLine);
+    addValueToLineMap(way.roadType, polyLine);
 }
 
 function getIconForAgentType(agentType) {
@@ -132,11 +133,7 @@ function convertPoints(points) {
     return cumulated;
 }
 
-function clearPolylines() {
-
-}
-
-function addValueToKey(key, value) {
-    polyLinesMap[key] = polyLinesMap[key] || [];
-    polyLinesMap[key].push(value);
+function addValueToLineMap(key, value) {
+    cachedTypesMap[key.toLowerCase()] = cachedTypesMap[key.toLowerCase()] || [];
+    cachedTypesMap[key.toLowerCase()].push(value);
 }
