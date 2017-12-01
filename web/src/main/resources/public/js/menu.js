@@ -1,4 +1,4 @@
-var checkboxPattern = "<li style=\"list-style: none;\"><input type=\"checkbox\" onclick=\"onMenuCheckBoxAction();\" class=\"checkTypes\" value=\"${value}\">${value}</li>";
+var checkboxPattern = "<li style=\"list-style: none;\"><input type=\"checkbox\" onclick=\"onMenuCheckBoxAction(this);\" class=\"checkTypes\" value=\"${value}\">${value}</li>";
 
 function onMenuBarClick() {
     var request = getAjaxRequest();
@@ -22,40 +22,10 @@ function onMenuBarClick() {
     }
 }
 
-var paramPattern = "type=${type}";
-
-function onMenuCheckBoxAction() {
-    var request = getAjaxRequest();
-
-    if (!request) {
-        console.log("Ajax request error.");
-        return;
+function onMenuCheckBoxAction(box) {
+    if(box.checked){
+        polyLinesMap[box.value].forEach(function (line) { line.setMap(map) })
+    } else {
+        polyLinesMap[box.value].forEach(function (line) { line.setMap(null) })
     }
-
-    var boxes = document.getElementsByClassName("checkTypes");
-
-    var params = "";
-    for (var i = 0; i < boxes.length; ++i){
-        var box = boxes[i];
-        if(box.checked){
-            var paramValue = "";
-            var param = paramPattern.replace("${type}", box.value);
-            params += param + "&"
-        }
-    }
-
-    clearPolylines();
-    if(params === ""){
-        return;
-    }
-
-    request.open("GET", REST_URL + "ways?" + params, true);
-    request.send();
-
-    request.onreadystatechange = function () {
-        if (request.readyState === 3 && request.status === 200) {
-            var wayIds = JSON.parse(request.response);
-            wayIds.forEach(getAndDrawWay);
-        }
-    };
 }

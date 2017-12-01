@@ -8,7 +8,7 @@ function initMap() {
     });
 
     initStatics();
-    // initWays();
+    initWays();
 
     // setInterval(function () {
     //     initAgents();
