@@ -10,6 +10,9 @@ function initMap() {
     initStatics();
     initWays();
 
+    createListOfWayTypes();
+    createListOfStaticsTypes();
+
     // setInterval(function () {
     //     initAgents();
     // }, 200);

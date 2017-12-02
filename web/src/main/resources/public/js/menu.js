@@ -1,8 +1,21 @@
 var checkboxPattern = "<li style=\"list-style: none;\"><input type=\"checkbox\" onclick=\"onMenuCheckBoxAction(this);\" class=\"checkTypes\" value=\"${value}\">${value}</li>";
+var menuOpen = false;
 
 function onMenuBarClick() {
-    createListOfWayTypes();
-    createListOfStaticsTypes();
+    showMenu();
+}
+
+function showMenu() {
+    var menuBar = document.getElementById("menu-bar");
+    var menuBarBtn = document.getElementById("menu-bar-button");
+    if(menuOpen){
+        menuBar.style.display = "none";
+        menuBarBtn.style.left = "0";
+    } else {
+        menuBar.style.display = "block";
+        menuBarBtn.style.left = "14.75%";
+    }
+    menuOpen = !menuOpen;
 }
 
 function createListOfWayTypes() {

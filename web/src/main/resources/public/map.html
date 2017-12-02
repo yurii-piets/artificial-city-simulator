@@ -14,9 +14,8 @@
     <script src="js/marker.js"></script>
     <script src="js/menu.js"></script>
 </head>
-<body onload="onMenuBarClick();">
-
-    <div class="menu-bar">
+<body>
+    <div id="menu-bar">
         <div class="road-type">
             Way types:
             <ul id="road-type-enumeration">
@@ -28,7 +27,10 @@
             <ul id="static-type-enumeration">
             </ul>
         </div>
+    </div>
 
+    <div id="menu-bar-button">
+        <img src="img/menu-btn.png" onclick="onMenuBarClick();">
     </div>
 
     <div class="map-container">
