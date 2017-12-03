@@ -12,8 +12,27 @@
     <script src="js/statics.js"></script>
     <script src="js/google-maps.js"></script>
     <script src="js/marker.js"></script>
+    <script src="js/menu.js"></script>
 </head>
 <body>
+    <div id="menu-bar">
+        <div class="road-type">
+            Way types:
+            <ul id="road-type-enumeration">
+            </ul>
+        </div>
+
+        <div class="static-type">
+            Statics types:
+            <ul id="static-type-enumeration">
+            </ul>
+        </div>
+    </div>
+
+    <div id="menu-bar-button">
+        <img src="img/menu-btn.png" onclick="onMenuBarClick();">
+    </div>
+
     <div class="map-container">
         <div id="map"></div>
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;libraries=geometry&amp;key=AIzaSyBZ9HNoT2fwWEEpYjR6p8LFGjITRYfpAsE&callback=initMap"

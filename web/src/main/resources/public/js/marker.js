@@ -1,7 +1,8 @@
 var agentMarkers = [];
+var cachedTypesMap = {};
 
 function createMarkerForAgent(agent) {
-    if(agentMarkers[agent.id] === undefined ) {
+    if (agentMarkers[agent.id] === undefined) {
         agentMarkers[agent.id] = new google.maps.Marker({
             position: {lat: agent.location.latitude, lng: agent.location.longitude},
             map: map,
@@ -13,24 +14,27 @@ function createMarkerForAgent(agent) {
     }
 }
 
-function createMarkerForStatic(staticObject){
-    new google.maps.Marker({
+function createMarkerForStatic(staticObject) {
+    var staticMarker = new google.maps.Marker({
         position: {lat: staticObject.location.latitude, lng: staticObject.location.longitude},
-        map: map,
         icon: getIconForStaticType(staticObject.type),
         label: staticObject.id + ": " + staticObject.type.toLowerCase()
     });
+
+    addValueToLineMap(staticObject.type, staticMarker);
 }
 
-function createPolylineForWay(way){
-    new google.maps.Polyline({
+function createPolylineForWay(way) {
+    var polyLine = new google.maps.Polyline({
         path: convertPoints(way.points),
         geodesic: true,
-        strokeColor: getRandomColor(),// strokeColor: '#f33333',
+        strokeColor: getColorForWayType(way.roadType),
         strokeOpacity: 1.0,
-        strokeWeight: 2,
-        map: map
+        strokeWeight: 2
     });
+
+    // cachedTypesMap[way.roadType].push(polyLine);
+    addValueToLineMap(way.roadType, polyLine);
 }
 
 function getIconForAgentType(agentType) {
@@ -63,6 +67,55 @@ function getIconForStaticType(staticType) {
     }
 }
 
+function getColorForWayType(roadType) {
+    switch (roadType) {
+        case "PATH":
+            return '#0b00ff';
+
+        case "FOOTWAY":
+            return '#daff00';
+
+        case "SERVICE":
+            return '#00ff46';
+
+        case "PEDESTRIAN":
+            return '#00fffd';
+
+        case "RESIDENTIAL":
+            return '#ff00ff';
+
+        case "PRIMARY":
+            return '#ff3568';
+
+        case "SECONDARY":
+            return '#507b4b';
+
+        case "TERTIARY":
+            return '#f5ffc9';
+
+        case "LIVING_STREET":
+            return '#a896ff';
+
+        case "STEPS":
+            return '#1effd0';
+
+        case "PRIMARY_LINK":
+            return '#74554a';
+
+        case "SECONDARY_LINK":
+            return '#679fff';
+
+        case "TRACK":
+            return '#ffbad0';
+
+        case "OTHER":
+            return '#8f8f8f';
+
+        case "UNKNOWN":
+            return '#ff0800';
+    }
+}
+
 function getRandomColor() {
     var letters = '0123456789ABCDEF';
     var color = '#';
@@ -72,10 +125,15 @@ function getRandomColor() {
     return color;
 }
 
-function convertPoints(points){
+function convertPoints(points) {
     var cumulated = [];
-    for(var i=0; i < points.length; i++){
+    for (var i = 0; i < points.length; i++) {
         cumulated[i] = {lat: points[i].latitude, lng: points[i].longitude};
     }
     return cumulated;
+}
+
+function addValueToLineMap(key, value) {
+    cachedTypesMap[key.toLowerCase()] = cachedTypesMap[key.toLowerCase()] || [];
+    cachedTypesMap[key.toLowerCase()].push(value);
 }

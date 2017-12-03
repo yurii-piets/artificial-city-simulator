@@ -12,7 +12,6 @@ function initStatics(){
     request.onreadystatechange = function () {
         if (request.readyState === 3 && request.status === 200) {
             var agents = JSON.parse(request.response);
-
             agents.forEach(createMarkerForStatic);
         }
     }
