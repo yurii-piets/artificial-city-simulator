@@ -13,13 +13,13 @@ public class Road {
 
     private List<Location> points = new LinkedList<>();
 
-    private RoadType roadType;
+    private RoadType type;
 
     public Road(RoadType roadType) {
-        this.roadType = roadType;
+        this.type = roadType;
     }
 
-    public void addPoint(Location location){
+    public void addPoint(Location location) {
         points.add(location);
     }
 

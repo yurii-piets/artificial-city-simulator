@@ -13,6 +13,8 @@ function initMap() {
     createListOfWayTypes();
     createListOfStaticsTypes();
 
+    initEdges();
+
     // setInterval(function () {
     //     initAgents();
     // }, 200);

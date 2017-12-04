@@ -80,7 +80,7 @@ public class StaticsController {
                 .collect(Collectors.toSet());
 
         Set<Long> ways = parserService.getRoads().stream()
-                .filter(way -> roadTypes.contains(way.getRoadType()))
+                .filter(way -> roadTypes.contains(way.getType()))
                 .map(Road::getId)
                 .collect(Collectors.toSet());
 

@@ -1,4 +1,4 @@
-package com.acs;
+package com.acs.algorithm;
 
 import com.acs.models.Location;
 
@@ -17,7 +17,7 @@ public class DistanceAlgorithm {
      * @return Distance rounded to full meters
      * @see <a href="https://en.wikipedia.org/wiki/Haversine_formula">http://wikipedia.org</a>
      */
-    public static Integer distance(Location location1, Location location2) {
+    public static Double distance(Location location1, Location location2) {
         Double longitude1 = location1.getLongitude();
         Double latitude1 = location1.getLatitude();
 
@@ -33,6 +33,6 @@ public class DistanceAlgorithm {
         Double a = Math.pow(Math.sin(deltaLat / 2), 2) + Math.pow(Math.sin(deltaLon / 2), 2) * Math.cos(latitude1) * Math.cos(latitude2);
         Double c = 2 * Math.asin(Math.sqrt(a)) * R;
 
-        return (int) Math.round(c);
+        return c;
     }
 }

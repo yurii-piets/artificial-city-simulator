@@ -1,4 +1,4 @@
-const REST_URL = "/";
+const REST_URL = "http://localhost:8080/";
 
 const humanColor = "#fffa06";
 const cycleColor = "#6fff00";

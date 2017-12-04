@@ -28,13 +28,13 @@ function createPolylineForWay(way) {
     var polyLine = new google.maps.Polyline({
         path: convertPoints(way.points),
         geodesic: true,
-        strokeColor: getColorForWayType(way.roadType),
+        strokeColor: getColorForWayType(way.type),
         strokeOpacity: 1.0,
         strokeWeight: 2
     });
 
-    // cachedTypesMap[way.roadType].push(polyLine);
-    addValueToLineMap(way.roadType, polyLine);
+    // cachedTypesMap[way.type].push(polyLine);
+    addValueToLineMap(way.type, polyLine);
 }
 
 function getIconForAgentType(agentType) {
