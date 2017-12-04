@@ -1,20 +1,33 @@
 package com.acs.service;
 
 import com.acs.models.Location;
+import com.acs.models.graph.Edge;
 import com.acs.models.graph.Graph;
+import com.acs.models.graph.Vertex;
 import com.acs.models.statics.Road;
 import com.acs.models.statics.RoadType;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.LinkedList;
+import java.util.Queue;
 
 @Service
 public class GraphService {
 
+    @Value("${simulation.cell.size}")
+    private Double cellSize;
+
     @Getter
     private Graph graph = new Graph();
+
+    @Getter
+    private final Graph rescaledGraph = new Graph();
 
     private final ParserService parserService;
 
@@ -24,7 +37,12 @@ public class GraphService {
     }
 
     @PostConstruct
-    public void initGraph() {
+    public void init() {
+        initGraph();
+        rescaleGraph();
+    }
+
+    private void initGraph() {
         for (Road road : parserService.getRoads()) {
             if (road.getType() == RoadType.PRIMARY_LINK
                     || road.getType() == RoadType.LIVING_STREET
@@ -48,5 +66,55 @@ public class GraphService {
                 }
             }
         }
+    }
+
+    private void rescaleGraph() {
+        for (Edge edge : graph.getEdges()) {
+
+            if (edge.getWeight() > cellSize) {
+                int n = (int) (edge.getWeight() / cellSize);
+                Queue<Vertex> vertices = vertices(edge, n);
+
+                Vertex poll = vertices.poll();
+                if (vertices.isEmpty()) {
+                    continue;
+                }
+                Location previousLocation = poll.getLocation();
+                rescaledGraph.addEdge(edge.getSource().getLocation(), previousLocation);
+                while(vertices.size() != 1){
+                    Location currentLocation = vertices.poll().getLocation();
+                    rescaledGraph.addEdge(previousLocation, currentLocation);
+                    previousLocation = currentLocation;
+                }
+                rescaledGraph.addEdge(vertices.poll().getLocation(), edge.getDestination().getLocation());
+            }
+        }
+    }
+
+    private Queue<Vertex> vertices(Edge edge, int n) {
+        Location source = edge.getSource().getLocation();
+        Location destination = edge.getDestination().getLocation();
+
+        Queue<Vertex> vertices = new LinkedList<>();
+
+        for (int i = 1; i < n; ++i) {
+            Double lat = calc(source.getLatitude(), destination.getLatitude(), edge.getWeight(), i);
+            Double lon = calc(source.getLongitude(), destination.getLongitude(), edge.getWeight(), i);
+            vertices.add(new Vertex(new Location(lon, lat)));
+        }
+
+        return vertices;
+    }
+
+    private Double calc(Double x1, Double x2, Double m, int n) {
+        BigDecimal b1 = new BigDecimal(x1);
+        BigDecimal b2 = new BigDecimal(x2);
+        BigDecimal dm = new BigDecimal(m);
+
+        BigDecimal subx2x1 = b2.subtract(b1);
+        BigDecimal subdiv = subx2x1.divide(dm,32, RoundingMode.HALF_UP);
+
+        BigDecimal v = new BigDecimal(cellSize * 2.0).multiply(subdiv).add(b1);
+        return v.doubleValue();
     }
 }

@@ -11,6 +11,8 @@ location:
     max: 19.925553
 
 simulation:
+  cell:
+    size: 2.0
   unit:
     distance: 2
     max: 0
