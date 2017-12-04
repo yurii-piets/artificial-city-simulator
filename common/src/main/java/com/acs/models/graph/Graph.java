@@ -26,4 +26,22 @@ public class Graph {
 
         return edges.add(new Edge(sourceVertex, destinationVertex));
     }
+
+    public void removeEdge(Edge removeEdge) {
+        for (Edge edge : edges) {
+            if (edge.getId().equals(removeEdge.getId())) {
+                edges.remove(edge);
+                return;
+            }
+        }
+    }
+
+    public void removeVertex(Vertex removeVertex){
+        for(Vertex vertex: vertices){
+            if(removeVertex.getId().equals(vertex.getId())){
+                vertices.remove(vertex);
+                return;
+            }
+        }
+    }
 }

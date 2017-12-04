@@ -7,14 +7,14 @@ function initMap() {
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
 
-    initStatics();
-    initWays();
+    // initStatics();
+    // initWays();
 
-    createListOfWayTypes();
-    createListOfStaticsTypes();
+    // createListOfWayTypes();
+    // createListOfStaticsTypes();
 
     initEdges();
-    initVertexes();
+    // initVertexes();
 
     // setInterval(function () {
     //     initAgents();

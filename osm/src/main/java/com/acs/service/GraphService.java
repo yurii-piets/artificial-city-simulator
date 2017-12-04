@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -29,6 +30,9 @@ public class GraphService {
     @Getter
     private final Graph rescaledGraph = new Graph();
 
+    @Getter
+    private final Graph minimizedGraph = new Graph();
+
     private final ParserService parserService;
 
     @Autowired
@@ -39,7 +43,7 @@ public class GraphService {
     @PostConstruct
     public void init() {
         initGraph();
-        rescaleGraph();
+        minimizeGraph();
     }
 
     private void initGraph() {
@@ -68,6 +72,36 @@ public class GraphService {
         }
     }
 
+    private void minimizeGraph() {
+        boolean cnt = true;
+        while (cnt) {
+            ArrayList<Edge> edges = new ArrayList<>(graph.getEdges());
+            cnt = false;
+            for(int i = 0; i < edges.size(); i++){
+                Edge edge = edges.get(i);
+                for(int j = i; j < edges.size(); j++){
+                    Edge subEdge = edges.get(j);
+                    if (edge == subEdge) {
+                        continue;
+                    }
+
+                    if (edge.getDestination().getLocation().equals(subEdge.getSource().getLocation())) {
+                        graph.removeEdge(edge);
+                        graph.removeEdge(subEdge);
+
+                        graph.removeVertex(edge.getSource());
+                        graph.removeVertex(edge.getDestination());
+                        graph.removeVertex(subEdge.getSource());
+                        graph.removeVertex(subEdge.getDestination());
+
+                        graph.addEdge(edge.getSource().getLocation(), subEdge.getDestination().getLocation());
+                        cnt = true;
+                    }
+                }
+            }
+        }
+    }
+
     private void rescaleGraph() {
         for (Edge edge : graph.getEdges()) {
 
@@ -81,7 +115,7 @@ public class GraphService {
                 }
                 Location previousLocation = poll.getLocation();
                 rescaledGraph.addEdge(edge.getSource().getLocation(), previousLocation);
-                while(vertices.size() != 1){
+                while (vertices.size() != 1) {
                     Location currentLocation = vertices.poll().getLocation();
                     rescaledGraph.addEdge(previousLocation, currentLocation);
                     previousLocation = currentLocation;
@@ -112,7 +146,7 @@ public class GraphService {
         BigDecimal dm = new BigDecimal(m);
 
         BigDecimal subx2x1 = b2.subtract(b1);
-        BigDecimal subdiv = subx2x1.divide(dm,32, RoundingMode.HALF_UP);
+        BigDecimal subdiv = subx2x1.divide(dm, 32, RoundingMode.HALF_UP);
 
         BigDecimal v = new BigDecimal(cellSize * 2.0).multiply(subdiv).add(b1);
         return v.doubleValue();
