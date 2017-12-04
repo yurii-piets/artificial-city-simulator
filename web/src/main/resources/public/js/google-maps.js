@@ -14,6 +14,7 @@ function initMap() {
     createListOfStaticsTypes();
 
     initEdges();
+    initVertexes();
 
     // setInterval(function () {
     //     initAgents();

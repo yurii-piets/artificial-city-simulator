@@ -19,6 +19,25 @@ function initEdges() {
     }
 }
 
+function initVertexes() {
+    var request = getAjaxRequest();
+
+    if (!request) {
+        console.log("Ajax request error.");
+        return;
+    }
+
+    request.open("GET", REST_URL + "graph/vertexes/ids", true);
+    request.send();
+
+    request.onreadystatechange = function () {
+        if (request.readyState === 3 && request.status === 200) {
+            var ids = JSON.parse(request.response);
+            ids.forEach(getVertexAndMarker);
+        }
+    }
+}
+
 function getAndShowEdge(id) {
     var request = getAjaxRequest();
 
@@ -38,6 +57,25 @@ function getAndShowEdge(id) {
     }
 }
 
+function getVertexAndMarker(id) {
+    var request = getAjaxRequest();
+
+    if (!request) {
+        console.log("Ajax request error.");
+        return;
+    }
+
+    request.open("GET", REST_URL + "graph/vertex/" + id, true);
+    request.send();
+
+    request.onreadystatechange = function () {
+        if (request.readyState === 3 && request.status === 200) {
+            var vertex = JSON.parse(request.response);
+            showVertex(vertex);
+        }
+    }
+}
+
 function showEdge(edge) {
     var polyLine = new google.maps.Polyline({
         path: convertPoints([edge.source.location, edge.destination.location]),
@@ -49,4 +87,12 @@ function showEdge(edge) {
     });
 
     edgesPolyLines.push(polyLine);
+}
+
+function showVertex(vertex) {
+    var marer = new google.maps.Marker({
+        position: {lat: vertex.location.latitude, lng: vertex.location.longitude},
+        label: vertex.id,
+        map: map
+    });
 }

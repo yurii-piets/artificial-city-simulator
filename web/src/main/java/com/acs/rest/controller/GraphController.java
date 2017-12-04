@@ -2,6 +2,7 @@ package com.acs.rest.controller;
 
 import com.acs.models.graph.Edge;
 import com.acs.models.graph.Graph;
+import com.acs.models.graph.Vertex;
 import com.acs.service.GraphService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,5 +47,28 @@ public class GraphController {
                 .orElse(null);
 
         return new ResponseEntity<>(edge, HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @RequestMapping(path = "/vertexes/ids")
+    public ResponseEntity<Set<Long>> vertexes() {
+        Graph graph = graphService.getGraph();
+        Set<Long> ids = graph.getVertices().stream()
+                .map(Vertex::getId)
+                .collect(Collectors.toSet());
+
+        return new ResponseEntity<>(ids, HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @RequestMapping(path = "/vertex/{id}")
+    public ResponseEntity<Vertex> vertex(@PathVariable Long id) {
+        Graph graph = graphService.getGraph();
+        Vertex vertex = graph.getVertices().stream()
+                .filter(e -> e.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+
+        return new ResponseEntity<>(vertex, HttpStatus.OK);
     }
 }
