@@ -1,11 +1,11 @@
 package com.acs.models.graph;
 
 import com.acs.models.Location;
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Data
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class Vertex {
 
     private final Location location;

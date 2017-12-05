@@ -1,5 +1,6 @@
 package com.acs.service;
 
+import com.acs.algorithm.DistanceAlgorithm;
 import com.acs.models.Location;
 import com.acs.models.graph.Edge;
 import com.acs.models.graph.Graph;
@@ -24,6 +25,12 @@ public class GraphService {
     @Value("${simulation.cell.size}")
     private Double cellSize;
 
+    @Value("${simulation.map.correction.reachable.max}")
+    private Double reachableDistanceMax;
+
+    @Value("${simulation.map.correction.reachable.min}")
+    private Double reachableDistanceMin;
+
     @Getter
     private Graph graph = new Graph();
 
@@ -42,8 +49,28 @@ public class GraphService {
 
     @PostConstruct
     public void init() {
+        // TODO: 05/12/2017 refactor all methods
         initGraph();
+        rescaleGraph();
+        correction();
         minimizeGraph();
+    }
+
+    public void correction() {
+        for (Vertex mainVertex : rescaledGraph.getVertices()) {
+            Location mainLocation = mainVertex.getLocation();
+            for (Vertex subVertex : rescaledGraph.getVertices()) {
+                if (mainVertex == subVertex) {
+                    continue;
+                }
+
+                Location subLocation = subVertex.getLocation();
+                if (DistanceAlgorithm.distance(mainLocation, subLocation) > reachableDistanceMin
+                        && DistanceAlgorithm.distance(mainLocation, subLocation) < reachableDistanceMax) {
+                    rescaledGraph.addEdge(mainVertex, subVertex);
+                }
+            }
+        }
     }
 
     private void initGraph() {
@@ -75,26 +102,26 @@ public class GraphService {
     private void minimizeGraph() {
         boolean cnt = true;
         while (cnt) {
-            ArrayList<Edge> edges = new ArrayList<>(graph.getEdges());
+            ArrayList<Edge> edges = new ArrayList<>(rescaledGraph.getEdges());
             cnt = false;
-            for(int i = 0; i < edges.size(); i++){
+            for (int i = 0; i < edges.size(); i++) {
                 Edge edge = edges.get(i);
-                for(int j = i; j < edges.size(); j++){
+                for (int j = i; j < edges.size(); j++) {
                     Edge subEdge = edges.get(j);
                     if (edge == subEdge) {
                         continue;
                     }
 
                     if (edge.getDestination().getLocation().equals(subEdge.getSource().getLocation())) {
-                        graph.removeEdge(edge);
-                        graph.removeEdge(subEdge);
+                        rescaledGraph.removeEdge(edge);
+                        rescaledGraph.removeEdge(subEdge);
 
-                        graph.removeVertex(edge.getSource());
-                        graph.removeVertex(edge.getDestination());
-                        graph.removeVertex(subEdge.getSource());
-                        graph.removeVertex(subEdge.getDestination());
+                        rescaledGraph.removeVertex(edge.getSource());
+                        rescaledGraph.removeVertex(edge.getDestination());
+                        rescaledGraph.removeVertex(subEdge.getSource());
+                        rescaledGraph.removeVertex(subEdge.getDestination());
 
-                        graph.addEdge(edge.getSource().getLocation(), subEdge.getDestination().getLocation());
+                        rescaledGraph.addEdge(edge.getSource().getLocation(), subEdge.getDestination().getLocation());
                         cnt = true;
                     }
                 }
