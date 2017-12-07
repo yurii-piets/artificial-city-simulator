@@ -22,9 +22,6 @@ public class GraphService {
     @Getter
     private Graph graph = new Graph();
 
-    @Getter
-    private Graph connectedGraph = new Graph();
-
     private final ParserService parserService;
 
     @Autowired
@@ -65,6 +62,7 @@ public class GraphService {
     }
 
     private void connectCloseVertexes() {
+        Graph connectedGraph = new Graph();
         for (Edge edge1 : graph.getEdges()) {
             for (Edge edge2 : graph.getEdges()) {
                 if (edge1 == edge2) {
@@ -80,5 +78,7 @@ public class GraphService {
             }
             connectedGraph.addEdge(edge1);
         }
+
+        this.graph = connectedGraph;
     }
 }

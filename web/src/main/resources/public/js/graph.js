@@ -80,7 +80,7 @@ function showEdge(edge) {
     var polyLine = new google.maps.Polyline({
         path: convertPoints([edge.source.location, edge.destination.location]),
         geodesic: true,
-        strokeColor: getRandomColor(),
+        strokeColor: "#ff0000",
         strokeOpacity: 1.0,
         strokeWeight: 2,
         map: map
