@@ -15,19 +15,21 @@ public class Graph {
 
     private Set<Vertex> vertices = new HashSet<>();
 
-    public boolean addEdge(Vertex source, Vertex destiantion){
-        return edges.add(new Edge(source, destiantion));
+    public boolean addEdge(Edge edge) {
+        Location source = edge.getSource().getLocation();
+        Location destination = edge.getDestination().getLocation();
+
+        return addEdge(source, destination);
     }
 
-    public boolean addEdge(Location source, Location destination) {
-        // TODO: 05/12/2017 refactor if vertex with current location already exist
-        Vertex sourceVertex = new Vertex(source);
-        Vertex destinationVertex = new Vertex(destination);
+    public boolean addEdge(Location sourceLocation, Location destinationLocation) {
+        Vertex sourceVertex = findVertexOrCreateNew(sourceLocation);
+        Vertex destinationVertex = findVertexOrCreateNew(destinationLocation);
 
         vertices.add(sourceVertex);
         vertices.add(destinationVertex);
 
-        return addEdge(sourceVertex, destinationVertex);
+        return edges.add(new Edge(sourceVertex, destinationVertex));
     }
 
     public boolean removeEdge(Edge removeEdge) {
@@ -40,13 +42,30 @@ public class Graph {
         return false;
     }
 
-    public boolean removeVertex(Vertex removeVertex){
-        for(Vertex vertex: vertices){
-            if(removeVertex.getId().equals(vertex.getId())){
+    public boolean removeVertex(Vertex removeVertex) {
+        for (Vertex vertex : vertices) {
+            if (removeVertex.getId().equals(vertex.getId())) {
                 return vertices.remove(vertex);
             }
         }
 
         return false;
+    }
+
+    private Vertex findVertexOrCreateNew(Location location) {
+        Vertex vertex = findVertexByLocation(location);
+
+        if (vertex == null) {
+            vertex = new Vertex(location);
+        }
+
+        return vertex;
+    }
+
+    private Vertex findVertexByLocation(Location source) {
+        return vertices.stream()
+                .filter(v -> v.getLocation().equals(source))
+                .findFirst()
+                .orElse(null);
     }
 }

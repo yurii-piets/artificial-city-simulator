@@ -13,14 +13,13 @@ location:
 osm:
   map:
     file:
-      path: map-piastowska.osm
+      path: map.osm
 
 simulation:
   map:
     correction:
       reachable:
-        min: 1.0
-        max: 2.0
+        max: 5.0
   cell:
     size: 2.0
   unit:

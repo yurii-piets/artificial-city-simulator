@@ -19,17 +19,16 @@ import java.util.stream.Collectors;
 @RequestMapping(path = "/graph")
 public class GraphController {
 
-    private final GraphService graphService;
+    private final Graph graph;
 
     @Autowired
     public GraphController(GraphService graphService) {
-        this.graphService = graphService;
+        this.graph = graphService.getConnectedGraph();
     }
 
     @CrossOrigin
     @RequestMapping(path = "/edges/ids")
     public ResponseEntity<Set<Long>> edges() {
-        Graph graph = graphService.getRescaledGraph();
         Set<Long> ids = graph.getEdges().stream()
                 .map(Edge::getId)
                 .collect(Collectors.toSet());
@@ -40,7 +39,6 @@ public class GraphController {
     @CrossOrigin
     @RequestMapping(path = "/edge/{id}")
     public ResponseEntity<Edge> edge(@PathVariable Long id) {
-        Graph graph = graphService.getRescaledGraph();
         Edge edge = graph.getEdges().stream()
                 .filter(e -> e.getId().equals(id))
                 .findFirst()
@@ -52,7 +50,6 @@ public class GraphController {
     @CrossOrigin
     @RequestMapping(path = "/vertexes/ids")
     public ResponseEntity<Set<Long>> vertexes() {
-        Graph graph = graphService.getRescaledGraph();
         Set<Long> ids = graph.getVertices().stream()
                 .map(Vertex::getId)
                 .collect(Collectors.toSet());
@@ -63,7 +60,6 @@ public class GraphController {
     @CrossOrigin
     @RequestMapping(path = "/vertex/{id}")
     public ResponseEntity<Vertex> vertex(@PathVariable Long id) {
-        Graph graph = graphService.getRescaledGraph();
         Vertex vertex = graph.getVertices().stream()
                 .filter(e -> e.getId().equals(id))
                 .findFirst()
