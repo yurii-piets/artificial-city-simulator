@@ -91,13 +91,15 @@ public class GraphService {
         for (Edge edge : graph.getEdges()) {
             Double distance = edge.getWeight();
 
-            Location sourceLocation = edge.getSource().getLocation();
-            Location destinationLocation = edge.getDestination().getLocation();
             int n = (int) (distance / cellSize);
 
             if (n > 0) {
+                Location sourceLocation = edge.getSource().getLocation();
+                Location destinationLocation = edge.getDestination().getLocation();
+
                 Location previousLocation = sourceLocation;
                 Location currentLocation = null;
+
                 for (int i = 1; i <= n; i++) {
                     currentLocation =
                             new Location(
@@ -118,8 +120,8 @@ public class GraphService {
         this.graph = rescaledGraph;
     }
 
-    private Double scale(Double s, Double d, int i, Double distance) {
-        Double res = ((d - s) * i / distance) + s;
+    private Double scale(Double s, Double d, int i, Double n) {
+        Double res = ((d - s) * i / n) + s;
         return res;
     }
 }
