@@ -1,4 +1,5 @@
 var edgesPolyLines = [];
+var markerVertex = [];
 
 function initEdges() {
     var request = getAjaxRequest();
@@ -19,7 +20,7 @@ function initEdges() {
     }
 }
 
-function initVertexes() {
+function initVertices() {
     var request = getAjaxRequest();
 
     if (!request) {
@@ -27,7 +28,7 @@ function initVertexes() {
         return;
     }
 
-    request.open("GET", REST_URL + "graph/vertexes/ids", true);
+    request.open("GET", REST_URL + "graph/vertices/ids", true);
     request.send();
 
     request.onreadystatechange = function () {
@@ -80,7 +81,7 @@ function showEdge(edge) {
     var polyLine = new google.maps.Polyline({
         path: convertPoints([edge.source.location, edge.destination.location]),
         geodesic: true,
-        strokeColor: "#ff0000",
+        strokeColor: getRandomColor(),
         strokeOpacity: 1.0,
         strokeWeight: 2,
         map: map
@@ -90,9 +91,11 @@ function showEdge(edge) {
 }
 
 function showVertex(vertex) {
-    var marer = new google.maps.Marker({
+    var marker = new google.maps.Marker({
         position: {lat: vertex.location.latitude, lng: vertex.location.longitude},
-        label: vertex.id,
+        label: vertex.id.toString(),
         map: map
     });
+
+    markerVertex.push(marker)
 }

@@ -23,7 +23,7 @@ public class GraphController {
 
     @Autowired
     public GraphController(GraphService graphService) {
-        this.graph = graphService.getConnectedGraph();
+        this.graph = graphService.getGraph();
     }
 
     @CrossOrigin
@@ -48,8 +48,8 @@ public class GraphController {
     }
 
     @CrossOrigin
-    @RequestMapping(path = "/vertexes/ids")
-    public ResponseEntity<Set<Long>> vertexes() {
+    @RequestMapping(path = "/vertices/ids")
+    public ResponseEntity<Set<Long>> vertices() {
         Set<Long> ids = graph.getVertices().stream()
                 .map(Vertex::getId)
                 .collect(Collectors.toSet());

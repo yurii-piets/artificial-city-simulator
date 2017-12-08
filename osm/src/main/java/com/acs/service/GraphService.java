@@ -19,6 +19,9 @@ public class GraphService {
     @Value("${simulation.map.correction.reachable.max}")
     private Double maxReachable;
 
+    @Value("${simulation.cell.size}")
+    private Double cellSize;
+
     @Getter
     private Graph graph = new Graph();
 
@@ -32,7 +35,8 @@ public class GraphService {
     @PostConstruct
     public void postConstruct() {
         initGraph();
-        connectCloseVertexes();
+        connectCloseVertices();
+        rescaleGraph();
     }
 
     private void initGraph() {
@@ -61,7 +65,7 @@ public class GraphService {
         }
     }
 
-    private void connectCloseVertexes() {
+    private void connectCloseVertices() {
         Graph connectedGraph = new Graph();
         for (Edge edge1 : graph.getEdges()) {
             for (Edge edge2 : graph.getEdges()) {
@@ -80,5 +84,42 @@ public class GraphService {
         }
 
         this.graph = connectedGraph;
+    }
+
+    private void rescaleGraph() {
+        Graph rescaledGraph = new Graph();
+        for (Edge edge : graph.getEdges()) {
+            Double distance = edge.getWeight();
+
+            Location sourceLocation = edge.getSource().getLocation();
+            Location destinationLocation = edge.getDestination().getLocation();
+            int n = (int) (distance / cellSize);
+
+            if (n > 0) {
+                Location previousLocation = sourceLocation;
+                Location currentLocation = null;
+                for (int i = 1; i <= n; i++) {
+                    currentLocation =
+                            new Location(
+                                    scale(sourceLocation.getLongitude(), destinationLocation.getLongitude(), i, (double) n),
+                                    scale(sourceLocation.getLatitude(), destinationLocation.getLatitude(), i, (double) n)
+                            );
+
+                    rescaledGraph.addEdge(previousLocation, currentLocation);
+                    previousLocation = currentLocation;
+                }
+
+                rescaledGraph.addEdge(currentLocation, destinationLocation);
+            } else {
+                rescaledGraph.addEdge(edge);
+            }
+        }
+
+        this.graph = rescaledGraph;
+    }
+
+    private Double scale(Double s, Double d, int i, Double distance) {
+        Double res = ((d - s) * i / distance) + s;
+        return res;
     }
 }
