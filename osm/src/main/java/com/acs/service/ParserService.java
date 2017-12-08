@@ -1,6 +1,7 @@
 package com.acs.service;
 
 import com.acs.models.Location;
+import com.acs.models.LocationRange;
 import com.acs.models.statics.Road;
 import com.acs.models.statics.RoadType;
 import com.acs.models.statics.StaticPoint;
@@ -16,9 +17,14 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.annotation.PostConstruct;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,6 +46,9 @@ public class ParserService {
     @Getter
     private List<Road> roads = new ArrayList<>();
 
+    @Getter
+    private LocationRange locationRange;
+
     @PostConstruct
     public void postConstruct() {
         try {
@@ -55,6 +64,7 @@ public class ParserService {
 
             parseStatics(result);
             parseWays(result);
+            parseLocationRange(osmFile);
         } catch (IOException | SAXException e) {
             logger.error("Unexpected: ", e);
         }
@@ -116,6 +126,32 @@ public class ParserService {
             roadType = RoadType.OTHER;
         }
         return roadType;
+    }
+
+    private void parseLocationRange(File file) {
+        try {
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse(file);
+            org.w3c.dom.Element root = document.getDocumentElement();
+            NodeList bounds = root.getElementsByTagName("bounds");
+            org.w3c.dom.Node bound =  bounds.item(0);
+
+            String minLat = bound.getAttributes().getNamedItem("minlat").getNodeValue();
+            String maxLat = bound.getAttributes().getNamedItem("maxlat").getNodeValue();
+            String minLng = bound.getAttributes().getNamedItem("minlon").getNodeValue();
+            String maxLng = bound.getAttributes().getNamedItem("maxlon").getNodeValue();
+
+            this.locationRange = LocationRange.builder()
+                    .minLat(new Double(minLat))
+                    .maxLat(new Double(maxLat))
+                    .minLng(new Double(minLng))
+                    .maxLng(new Double(maxLng))
+                    .build();
+
+        } catch (IOException | SAXException | ParserConfigurationException e) {
+            e.printStackTrace();
+        }
     }
 
 }
