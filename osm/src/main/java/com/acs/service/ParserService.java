@@ -13,6 +13,7 @@ import lombok.Getter;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
@@ -28,7 +29,8 @@ import java.util.Map;
 @Service
 public class ParserService {
 
-    private static final String OSM_MAP_FILE = "map.osm";
+    @Value("${osm.map.file.path}")
+    private String OSM_MAP_FILE;
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 
