@@ -7,7 +7,6 @@ import com.acs.service.GraphService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,7 +25,6 @@ public class GraphController {
         this.graph = graphService.getGraph();
     }
 
-    @CrossOrigin
     @RequestMapping(path = "/edges/ids")
     public ResponseEntity<Set<Long>> edges() {
         Set<Long> ids = graph.getEdges().stream()
@@ -36,7 +34,6 @@ public class GraphController {
         return new ResponseEntity<>(ids, HttpStatus.OK);
     }
 
-    @CrossOrigin
     @RequestMapping(path = "/edge/{id}")
     public ResponseEntity<Edge> edge(@PathVariable Long id) {
         Edge edge = graph.getEdges().stream()
@@ -47,7 +44,6 @@ public class GraphController {
         return new ResponseEntity<>(edge, HttpStatus.OK);
     }
 
-    @CrossOrigin
     @RequestMapping(path = "/vertices/ids")
     public ResponseEntity<Set<Long>> vertices() {
         Set<Long> ids = graph.getVertices().stream()
@@ -57,7 +53,6 @@ public class GraphController {
         return new ResponseEntity<>(ids, HttpStatus.OK);
     }
 
-    @CrossOrigin
     @RequestMapping(path = "/vertex/{id}")
     public ResponseEntity<Vertex> vertex(@PathVariable Long id) {
         Vertex vertex = graph.getVertices().stream()
