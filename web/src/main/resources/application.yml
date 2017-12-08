@@ -1,5 +1,10 @@
 basic:
   url: http://localhost:8080
+  actuator:
+    username: actuator
+    password: actuator
+
+management.contextPath: /actuator
 
 #bound of area where simulation is being processed
 location:
