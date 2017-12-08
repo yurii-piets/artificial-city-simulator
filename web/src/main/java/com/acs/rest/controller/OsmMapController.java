@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(path = "/map")
-public class Map2Controller {
+public class OsmMapController {
 
     private final ParserService parserService;
 
     @Autowired
-    public Map2Controller(ParserService parserService) {
+    public OsmMapController(ParserService parserService) {
         this.parserService = parserService;
     }
 
