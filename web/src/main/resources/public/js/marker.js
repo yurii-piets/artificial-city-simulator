@@ -113,6 +113,9 @@ function getColorForWayType(roadType) {
 
         case "UNKNOWN":
             return '#ff0800';
+
+        default :
+            return '#000000';
     }
 }
 

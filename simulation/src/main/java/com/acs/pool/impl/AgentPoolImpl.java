@@ -3,6 +3,7 @@ package com.acs.pool.impl;
 import com.acs.models.agent.Agent;
 import com.acs.pool.def.AgentPool;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -10,7 +11,11 @@ import java.util.concurrent.ConcurrentSkipListSet;
 
 // TODO: 11/11/2017 make all void methods async
 @Component
-public class MockAgentPool implements AgentPool {
+public class AgentPoolImpl implements AgentPool {
+
+    @Getter
+    @Value("${simulation.unit.max}")
+    private Integer maxUnits;
 
     @Getter
     private Set<Agent> agents = new ConcurrentSkipListSet<>();
@@ -45,6 +50,11 @@ public class MockAgentPool implements AgentPool {
     public void update(Agent agent) {
         removeById(agent.getId());
         agents.add(agent);
+    }
+
+    @Override
+    public void changeAgentsAmount(Integer count) {
+        maxUnits = count;
     }
 
     @Override

@@ -63,6 +63,11 @@ function createListOfStaticsTypes(){
 }
 
 function onMenuCheckBoxAction(box) {
+    if(cachedTypesMap[box.value] === undefined) {
+        console.log(box.value + " contains 0 values");
+        return;
+    }
+
     if(box.checked){
         cachedTypesMap[box.value].forEach(function (type) { type.setMap(map) })
     } else {

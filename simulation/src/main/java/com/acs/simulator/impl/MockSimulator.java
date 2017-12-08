@@ -9,7 +9,6 @@ import com.acs.simulator.def.Simulator;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
@@ -34,9 +33,6 @@ public class MockSimulator implements Simulator {
 
     private Double maxLongitude;
 
-    @Value("${simulation.unit.max}")
-    private Integer maxUnits;
-
     private Supplier<Double> randomLongitudeFromRange = () -> minLongitude + (maxLongitude - minLongitude) * new Random().nextDouble();
 
     private Supplier<Double> randomLatitudeFromRange = () -> minLatitude + (maxLatitude - minLatitude) * new Random().nextDouble();
@@ -57,7 +53,7 @@ public class MockSimulator implements Simulator {
     @PostConstruct
     public void initRandomAgents() {
         pool.removeAll();
-        for (int i = 0; i < maxUnits; ++i) {
+        for (int i = 0; i < pool.getMaxUnits(); ++i) {
             Agent agent = Agent.builder()
                     .dLatitude(randomWay.get() * 0.00001)
                     .dLongitude(randomWay.get() * 0.00001)
@@ -82,12 +78,6 @@ public class MockSimulator implements Simulator {
                 logger.error("Unexpected: ", e);
             }
         }
-    }
-
-    @Override
-    public void changeAgentsAmount(Integer count) {
-        maxUnits = count;
-        initRandomAgents();
     }
 
     @Override
