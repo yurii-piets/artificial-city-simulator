@@ -9,7 +9,7 @@ location:
     min: 19.916326
     max: 19.925553
 
-osm.map.file.path: map-piastowska.osm
+osm.map.file.path: osm/map.osm
 
 simulation:
   map.correction.reachable.max: 5.0
