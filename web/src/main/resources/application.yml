@@ -1,4 +1,4 @@
-osm.map.file.path: osm/map-new-delhi
+osm.map.file.path: osm/map-czarn.osm
 
 simulation:
   map.correction.reachable.max: 5.0
