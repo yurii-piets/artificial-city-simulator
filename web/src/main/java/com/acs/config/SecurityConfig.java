@@ -20,10 +20,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final static String ACTUATOR_ROLE = "ACTUATOR";
 
-    @Value("${basic.actuator.username}")
+    @Value("${actuator.username}")
     private String actuatorUser;
 
-    @Value("${basic.actuator.password}")
+    @Value("${actuator.password}")
     private String actuatorPassword;
 
     @Override
