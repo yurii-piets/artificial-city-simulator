@@ -1,7 +1,7 @@
 package com.acs.rest.controller;
 
-import com.acs.pool.def.AgentPool;
 import com.acs.models.agent.Agent;
+import com.acs.pool.def.AgentPool;
 import com.acs.service.JsonPatchService;
 import com.github.fge.jsonpatch.JsonPatchException;
 import org.apache.log4j.LogManager;
@@ -9,7 +9,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,7 +34,6 @@ public class AgentManagementController {
         this.patchService = patchService;
     }
 
-    @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "/{agentId}")
     public ResponseEntity agent(@PathVariable Long agentId) {
         Agent agent = agentPool.findAgentById(agentId);
