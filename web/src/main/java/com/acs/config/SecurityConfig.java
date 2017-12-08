@@ -16,7 +16,7 @@ import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
-public class CorsConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final static String ACTUATOR_ROLE = "ACTUATOR";
 
