@@ -4,6 +4,7 @@ import com.acs.models.Location;
 import com.acs.models.agent.Agent;
 import com.acs.models.agent.AgentType;
 import com.acs.pool.def.AgentPool;
+import com.acs.service.ParserService;
 import com.acs.simulator.def.Simulator;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -25,21 +26,16 @@ public class MockSimulator implements Simulator {
 
     private final AgentPool pool;
 
-    @Value("${location.latitude.min}")
     private Double minLatitude;
 
-    @Value("${location.latitude.max}")
     private Double maxLatitude;
 
-    @Value("${location.longitude.min}")
     private Double minLongitude;
 
-    @Value("${location.longitude.max}")
     private Double maxLongitude;
 
     @Value("${simulation.unit.max}")
     private Integer maxUnits;
-
 
     private Supplier<Double> randomLongitudeFromRange = () -> minLongitude + (maxLongitude - minLongitude) * new Random().nextDouble();
 
@@ -50,8 +46,12 @@ public class MockSimulator implements Simulator {
     private Supplier<Integer> randomWay = () ->  ThreadLocalRandom.current().nextInt(-1, 2);
 
     @Autowired
-    public MockSimulator(AgentPool pool) {
+    public MockSimulator(AgentPool pool, ParserService parserService) {
         this.pool = pool;
+        this.minLatitude = parserService.getLocationRange().getMinLat();
+        this.maxLatitude = parserService.getLocationRange().getMaxLat();
+        this.minLongitude = parserService.getLocationRange().getMinLng();
+        this.maxLongitude = parserService.getLocationRange().getMaxLng();
     }
 
     @PostConstruct
