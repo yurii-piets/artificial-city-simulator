@@ -8,7 +8,6 @@ import com.acs.service.ParserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,13 +30,11 @@ public class StaticsController {
         this.parserService = parserService;
     }
 
-    @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "/statics")
     public ResponseEntity statics() {
         return new ResponseEntity<>(parserService.getStatics(), HttpStatus.OK);
     }
 
-    @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "/statics/types")
     public ResponseEntity staticsTypes() {
         Set<String> types = parserService.getStatics()
@@ -50,7 +47,6 @@ public class StaticsController {
         return new ResponseEntity<>(types, HttpStatus.OK);
     }
 
-    @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "/ways/ids")
     public ResponseEntity waysIds() {
         Set<Long> ids = parserService.getRoads().stream()
@@ -60,7 +56,6 @@ public class StaticsController {
         return new ResponseEntity<>(ids, HttpStatus.OK);
     }
 
-    @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "/ways/{wayId}")
     public ResponseEntity ways(@PathVariable Long wayId) {
         Road road = parserService.getRoads().stream()
@@ -71,7 +66,6 @@ public class StaticsController {
         return new ResponseEntity<>(road, HttpStatus.OK);
     }
 
-    @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "/ways")
     public ResponseEntity ways(@RequestParam(value = "type") List<String> types) {
         Set<RoadType> roadTypes = types.stream()
@@ -87,7 +81,6 @@ public class StaticsController {
         return new ResponseEntity<>(ways, HttpStatus.OK);
     }
 
-    @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "/ways/types")
     public ResponseEntity types() {
         Set<String> types = Arrays.stream(RoadType.values())
@@ -97,6 +90,4 @@ public class StaticsController {
 
         return new ResponseEntity<>(types, HttpStatus.OK);
     }
-
-
 }
