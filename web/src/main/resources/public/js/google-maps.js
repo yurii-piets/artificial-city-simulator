@@ -34,7 +34,7 @@ function initGoogleMap(centerLocation) {
     // initEdges();
     // initVertices();
 
-    // setInterval(function () {
-    //     initAgents();
-    // }, 200);
+    setInterval(function () {
+        initAgents();
+    }, 200);
 }

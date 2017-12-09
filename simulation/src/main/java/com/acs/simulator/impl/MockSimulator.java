@@ -9,6 +9,7 @@ import com.acs.simulator.def.Simulator;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
+@Primary
 @Component
 public class MockSimulator implements Simulator {
 
@@ -39,7 +41,7 @@ public class MockSimulator implements Simulator {
 
     private Supplier<AgentType> randomAgentType = () -> AgentType.values()[ThreadLocalRandom.current().nextInt(0, AgentType.values().length)];
 
-    private Supplier<Integer> randomWay = () ->  ThreadLocalRandom.current().nextInt(-1, 2);
+    private Supplier<Integer> randomWay = () -> ThreadLocalRandom.current().nextInt(-1, 2);
 
     @Autowired
     public MockSimulator(AgentPool pool, ParserService parserService) {
@@ -70,13 +72,13 @@ public class MockSimulator implements Simulator {
     @Async
     @Override
     public void simulate() {
-        while (true){
-            pool.getAgents().forEach(Agent::move);
-            try {
+        try {
+            while (!Thread.interrupted()) {
+                pool.getAgents().forEach(Agent::move);
                 TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                logger.error("Unexpected: ", e);
             }
+        } catch (InterruptedException e) {
+            logger.error("Unexpected: ", e);
         }
     }
 
