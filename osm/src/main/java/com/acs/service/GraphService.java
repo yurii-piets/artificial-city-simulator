@@ -46,11 +46,10 @@ public class GraphService {
     private void initGraph() {
         for (Road road : parserService.getRoads()) {
             if (road.getType() == RoadType.PRIMARY_LINK
-                    || road.getType() == RoadType.LIVING_STREET
-                    || road.getType() == RoadType.SECONDARY
-                    || road.getType() == RoadType.RESIDENTIAL
                     || road.getType() == RoadType.SECONDARY_LINK
-                    || road.getType() == RoadType.PRIMARY) {
+                    || road.getType() == RoadType.PRIMARY
+                    || road.getType() == RoadType.SECONDARY
+                    || road.getType() == RoadType.RESIDENTIAL) {
 
                 Location currentLocation;
                 Location previousLocation = null;
@@ -70,24 +69,21 @@ public class GraphService {
     }
 
     private void connectCloseVertices() {
-        Graph connectedGraph = new Graph();
-        for (Edge edge1 : graph.getEdges()) {
-            for (Edge edge2 : graph.getEdges()) {
-                if (edge1 == edge2) {
+        for (Vertex vertex1 : graph.getVertices()) {
+            for (Vertex vertex2 : graph.getVertices()) {
+                if (vertex1 == vertex2) {
                     continue;
                 }
 
-                Location destinationLocation1 = edge1.getDestination().getLocation();
-                Location sourceLocation2 = edge2.getSource().getLocation();
+                Location locationVertex1 = vertex1.getLocation();
+                Location locationVertex2 = vertex2.getLocation();
 
-                if(DistanceAlgorithm.distance(destinationLocation1, sourceLocation2) <= maxReachable){
-                    connectedGraph.addEdge(destinationLocation1, sourceLocation2);
+                if (DistanceAlgorithm.distance(locationVertex1, locationVertex2) <= maxReachable) {
+                    graph.addEdge(locationVertex1, locationVertex2);
+                    graph.addEdge(locationVertex2, locationVertex1);
                 }
             }
-            connectedGraph.addEdge(edge1);
         }
-
-        this.graph = connectedGraph;
     }
 
     private void rescaleGraph() {

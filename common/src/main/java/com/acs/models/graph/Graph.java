@@ -32,6 +32,8 @@ public class Graph {
         vertices.add(sourceVertex);
         vertices.add(destinationVertex);
 
+        sourceVertex.addReachableVertex(destinationVertex);
+
         return edges.add(new Edge(sourceVertex, destinationVertex));
     }
 
