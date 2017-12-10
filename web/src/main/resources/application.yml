@@ -4,8 +4,8 @@ simulation:
   map.correction.reachable.max: 5.0
   cell.size: 2.0
   unit:
+    max: 5
     distance: 2
-    max: 3
 
 basic.url: http://localhost:8080
 

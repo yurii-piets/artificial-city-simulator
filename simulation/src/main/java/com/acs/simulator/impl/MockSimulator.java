@@ -9,9 +9,7 @@ import com.acs.simulator.def.Simulator;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.Random;
@@ -19,8 +17,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
-@Primary
-@Component
+//@Component
 public class MockSimulator implements Simulator {
 
     private final Logger logger = LogManager.getLogger(this.getClass());

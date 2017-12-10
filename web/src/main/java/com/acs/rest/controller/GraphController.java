@@ -46,7 +46,7 @@ public class GraphController {
 
     @RequestMapping(path = "/vertices/ids")
     public ResponseEntity<Set<Long>> vertices() {
-        Set<Long> ids = graph.getVertices().stream()
+        Set<Long> ids = graph.getStartVertices().stream()
                 .map(Vertex::getId)
                 .collect(Collectors.toSet());
 

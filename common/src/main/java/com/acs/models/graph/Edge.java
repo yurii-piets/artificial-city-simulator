@@ -1,6 +1,7 @@
 package com.acs.models.graph;
 
 import com.acs.algorithm.DistanceAlgorithm;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 
 @Getter
@@ -12,6 +13,7 @@ public class Edge {
 
     private final Vertex destination;
 
+    @JsonIgnore
     private Double weight;
 
     Edge(Vertex source, Vertex destination) {

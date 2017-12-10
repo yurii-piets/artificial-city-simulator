@@ -9,7 +9,9 @@ import lombok.Data;
 public class StaticPoint {
 
     private final Long id = id();
+
     private Location location;
+
     private StaticType type;
 
     private static Long staticId = 1L;

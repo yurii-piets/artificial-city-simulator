@@ -57,6 +57,7 @@ public class AgentPoolImpl implements AgentPool {
         maxUnits = count;
     }
 
+    // TODO: 10/12/2017 optimize this meyhod
     @Override
     public Long getMinId() {
         return agents.stream()
@@ -65,6 +66,7 @@ public class AgentPoolImpl implements AgentPool {
                 .get();
     }
 
+    // TODO: 10/12/2017 optimize this meyhod
     @Override
     public Long getMaxId() {
         return agents.stream()

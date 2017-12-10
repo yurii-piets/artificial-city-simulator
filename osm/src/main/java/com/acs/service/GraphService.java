@@ -4,8 +4,10 @@ import com.acs.algorithm.DistanceAlgorithm;
 import com.acs.models.Location;
 import com.acs.models.graph.Edge;
 import com.acs.models.graph.Graph;
+import com.acs.models.graph.Vertex;
 import com.acs.models.statics.Road;
 import com.acs.models.statics.RoadType;
+import com.acs.models.statics.StaticPoint;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,6 +39,8 @@ public class GraphService {
         initGraph();
         connectCloseVertices();
         rescaleGraph();
+        putStaticsOnGraph();
+        initStartVertex();
     }
 
     private void initGraph() {
@@ -118,6 +122,27 @@ public class GraphService {
         }
 
         this.graph = rescaledGraph;
+    }
+
+    private void putStaticsOnGraph() {
+        for (StaticPoint staticPoint : parserService.getStatics()) {
+            Location location = staticPoint.getLocation();
+            Vertex vertex = graph.getClosestVertexForLocation(location);
+            vertex.addStaticPoint(staticPoint);
+        }
+    }
+
+    private void initStartVertex() {
+        nextVertex:
+        for (Vertex vertex : graph.getVertices()) {
+            for (Edge edge : graph.getEdges()) {
+                if (edge.getDestination().equals(vertex)) {
+                    continue nextVertex;
+                }
+            }
+
+            graph.addStartVertex(vertex);
+        }
     }
 
     private Double scale(Double s, Double d, int i, Double n) {

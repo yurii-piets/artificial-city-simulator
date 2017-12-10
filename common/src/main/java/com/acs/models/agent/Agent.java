@@ -1,6 +1,7 @@
 package com.acs.models.agent;
 
 import com.acs.models.Location;
+import com.acs.models.graph.Vertex;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
@@ -12,10 +13,14 @@ import java.util.Queue;
 @Data
 public class Agent implements Comparable<Agent>, Cloneable {
 
-    private AgentType type;
+    private final Long id = id();
+
     private Location location;
 
-    private final Long id = id();
+    private AgentType type;
+
+    @JsonIgnore
+    private Vertex vertex;
 
     @JsonIgnore
     private Double dLatitude;
@@ -28,6 +33,16 @@ public class Agent implements Comparable<Agent>, Cloneable {
 
     @JsonIgnore
     private Deque<Location> reachedDestination;
+
+    @Builder
+    public Agent(Location location, AgentType type, Vertex vertex) {
+        this.location = location;
+        this.type = type;
+        this.vertex = vertex;
+
+        this.destinations = new LinkedList<>();
+        this.reachedDestination = new LinkedList<>();
+    }
 
     @Builder
     public Agent(AgentType type, Location location, Double dLatitude, Double dLongitude) {
@@ -58,6 +73,11 @@ public class Agent implements Comparable<Agent>, Cloneable {
             reachedDestination.addFirst(destination);
             location = destination;
         }
+    }
+
+    public void setVertex(Vertex vertex){
+        this.vertex = vertex;
+        this.location = vertex.getLocation();
     }
 
     private static Long staticId = 1L;
