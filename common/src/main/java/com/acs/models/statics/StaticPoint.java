@@ -12,7 +12,7 @@ public class StaticPoint {
 
     private StaticType type;
 
-    private Boolean locked = false;
+    private volatile boolean locked = false;
 
     public StaticPoint(Location location, StaticType type) {
         this.location = location;

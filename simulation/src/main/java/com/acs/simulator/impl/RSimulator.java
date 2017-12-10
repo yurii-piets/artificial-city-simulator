@@ -35,9 +35,12 @@ public class RSimulator implements Simulator {
 
     @Autowired
     public RSimulator(AgentPool pool,
-                      GraphService graphService) {
+                      GraphService graphService,
+                      StaticSimulator staticSimulator) {
         this.pool = pool;
         this.graphService = graphService;
+//        uncomment next line when bug with 0 vertices will be fixed
+//        staticSimulator.startLightsDaemon();
     }
 
     @PostConstruct
@@ -121,9 +124,9 @@ public class RSimulator implements Simulator {
         }
 
         Boolean isStatusPointLocked = vertex.getStaticPoints().stream()
-                .filter(StaticPoint::getLocked)
+                .filter(StaticPoint::isLocked)
                 .findFirst()
-                .map(StaticPoint::getLocked)
+                .map(StaticPoint::isLocked)
                 .orElse(false);
 
         if (isStatusPointLocked) {

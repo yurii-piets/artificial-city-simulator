@@ -28,7 +28,6 @@ public class Graph {
     public boolean addEdge(Location sourceLocation, Location destinationLocation) {
         Vertex sourceVertex = findVertexOrCreateNew(sourceLocation);
         Vertex destinationVertex = findVertexOrCreateNew(destinationLocation);
-        sourceVertex.addReachableVertex(destinationVertex);
 
         vertices.add(sourceVertex);
         vertices.add(destinationVertex);
