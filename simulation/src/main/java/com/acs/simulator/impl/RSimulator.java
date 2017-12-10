@@ -103,13 +103,18 @@ public class RSimulator implements Simulator {
     private Vertex calculateNextVertex(Agent agent) {
         Set<Vertex> reachableVertices = agent.getVertex().getReachableVertices();
         if (reachableVertices.size() == 0) {
-            logger.error("Vertex with no reachable vertices: " + agent.getVertex().getId());
+            Vertex vertex = agent.getVertex();
+
+            if (vertex != null) {
+                vertex.setAgent(null);
+            }
+
             pool.kill(agent);
             return null;
         } else if (reachableVertices.size() == 1) {
             Vertex vertex = reachableVertices.stream().findFirst().get();
 
-            if(vertex == agent.getVertex()){
+            if (vertex == agent.getVertex()) {
                 vertex.setAgent(null);
                 pool.kill(agent);
                 return null;
@@ -132,7 +137,7 @@ public class RSimulator implements Simulator {
     }
 
     private boolean checkAndSetNextVertex(Agent agent, Vertex vertex) {
-        if(agent == null || vertex == null){
+        if (agent == null || vertex == null) {
             return false;
         }
 
@@ -162,18 +167,20 @@ public class RSimulator implements Simulator {
     }
 
     private void checkIfIsInBound(Agent agent, Vertex vertex) {
-        if(agent == null){
+        if (agent == null) {
             return;
         }
 
-        if(vertex == null){
+        if (vertex == null) {
             agent.setVertex(null);
             pool.kill(agent);
             createRandomAgent(graphService.getGraph().getStartVertices());
         }
 
-        if(graphService.getGraph().getStartVertices().contains(vertex)) {
-            vertex.setAgent(null);
+        if (graphService.getGraph().getStartVertices().contains(vertex)) {
+            if(vertex != null){
+                vertex.setAgent(null);
+            }
             agent.setVertex(null);
             pool.kill(agent);
             createRandomAgent(graphService.getGraph().getStartVertices());
