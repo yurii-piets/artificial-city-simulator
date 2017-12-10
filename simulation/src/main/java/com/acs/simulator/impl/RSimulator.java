@@ -15,8 +15,10 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 @Primary
@@ -29,6 +31,8 @@ public class RSimulator implements Simulator {
 
     private final GraphService graphService;
 
+    private final Queue<Agent> queueToAppear = new LinkedBlockingQueue<>();
+
     @Autowired
     public RSimulator(AgentPool pool,
                       GraphService graphService) {
@@ -39,6 +43,7 @@ public class RSimulator implements Simulator {
     @PostConstruct
     public void postConstruct() {
         initRandomAgents();
+        initDaemonForQueueToAppear();
     }
 
     private void initRandomAgents() {
@@ -47,12 +52,17 @@ public class RSimulator implements Simulator {
             Vertex vertex = randomValueFromSet(startVertices);
             Agent agent = Agent.builder()
                     .type(AgentType.CAR)
-                    .vertex(vertex)
                     .location(vertex.getLocation())
                     .build();
 
-            vertex.setAgent(agent);
+            agent.setVertex(vertex);
             pool.save(agent);
+
+            if (checkAndSetNextVertex(agent, vertex)) {
+                vertex.setAgent(agent);
+            } else {
+                queueToAppear.add(agent);
+            }
         }
     }
 
@@ -69,17 +79,18 @@ public class RSimulator implements Simulator {
         }
     }
 
-    private void oneStep() {
-        for (Agent agent : pool.getAgents()) {
-            Vertex nextVertex = calculateNextVertex(agent);
-            checkAndSetNextVertex(agent, nextVertex);
-        }
-    }
-
     @Override
     public void resetSimulation() {
         pool.removeAll();
         initRandomAgents();
+    }
+
+    private void oneStep() {
+        for (Agent agent : pool.getAgents()) {
+            Vertex nextVertex = calculateNextVertex(agent);
+            checkAndSetNextVertex(agent, nextVertex);
+            checkIfIsInBound(agent, nextVertex);
+        }
     }
 
     private Vertex calculateNextVertex(Agent agent) {
@@ -104,9 +115,9 @@ public class RSimulator implements Simulator {
         return null;
     }
 
-    private void checkAndSetNextVertex(Agent agent, Vertex vertex) {
+    private boolean checkAndSetNextVertex(Agent agent, Vertex vertex) {
         if (vertex.getAgent() != null) {
-            return;
+            return false;
         }
 
         Boolean isStatusPointLocked = vertex.getStaticPoints().stream()
@@ -116,9 +127,8 @@ public class RSimulator implements Simulator {
                 .orElse(false);
 
         if (isStatusPointLocked) {
-            return;
+            return false;
         }
-
 
         Vertex prevVertex = agent.getVertex();
         if (prevVertex != null) {
@@ -127,6 +137,38 @@ public class RSimulator implements Simulator {
 
         agent.setVertex(vertex);
         vertex.setAgent(agent);
+
+        return true;
+    }
+
+    private void checkIfIsInBound(Agent agent, Vertex vertex) {
+        if(graphService.getGraph().getStartVertices().contains(vertex)) {
+            vertex.setAgent(null);
+            agent.setVertex(null);
+            pool.removeById(agent.getId());
+        }
+    }
+
+    private void initDaemonForQueueToAppear() {
+        new Thread(() -> {
+            try {
+                while (!Thread.interrupted()) {
+                    if (queueToAppear.isEmpty()) {
+                        TimeUnit.SECONDS.sleep(5);
+                    } else {
+                        while (!queueToAppear.isEmpty()) {
+                            Agent agent = queueToAppear.poll();
+                            Vertex vertex = agent.getVertex();
+                            if (vertex != null) {
+                                vertex.setAgent(agent);
+                            }
+                        }
+                    }
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     private Vertex randomValueFromSet(Set<Vertex> set) {

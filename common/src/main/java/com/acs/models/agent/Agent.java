@@ -68,7 +68,9 @@ public class Agent implements Comparable<Agent>, Cloneable {
 
     public void setVertex(Vertex vertex) {
         this.vertex = vertex;
-        this.location = vertex.getLocation();
+        if(vertex != null) {
+            this.location = vertex.getLocation();
+        }
     }
 
     private static Long staticId = 1L;
