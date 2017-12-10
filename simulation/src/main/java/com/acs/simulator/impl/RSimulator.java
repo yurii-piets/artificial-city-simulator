@@ -3,6 +3,7 @@ package com.acs.simulator.impl;
 import com.acs.models.agent.Agent;
 import com.acs.models.agent.AgentType;
 import com.acs.models.graph.Vertex;
+import com.acs.models.statics.StaticPoint;
 import com.acs.pool.def.AgentPool;
 import com.acs.service.GraphService;
 import com.acs.simulator.def.Simulator;
@@ -70,26 +71,8 @@ public class RSimulator implements Simulator {
 
     private void oneStep() {
         for (Agent agent : pool.getAgents()) {
-            Vertex vertex = agent.getVertex();
-            Set<Vertex> reachableVertices = vertex.getReachableVertices();
-            Vertex nextVertex = null;
-            if (reachableVertices.size() == 0) {
-                logger.error("Found vertex with no reachable vertexes");
-            } else if (reachableVertices.size() == 1) {
-                nextVertex = reachableVertices.stream().findFirst().get();
-            } else {
-                // TODO: 10/12/2017 refactor this logic
-                nextVertex = reachableVertices.stream().findFirst().get();
-            }
-
-            if(nextVertex != null){
-                // TODO: 10/12/2017 refactor this logic
-                boolean canBeAdded = nextVertex.setAgent(agent);
-                if(canBeAdded) {
-                    agent.setVertex(nextVertex);
-                    vertex.setAgent(null);
-                }
-            }
+            Vertex nextVertex = calculateNextVertex(agent);
+            checkAndSetNextVertex(agent, nextVertex);
         }
     }
 
@@ -99,9 +82,48 @@ public class RSimulator implements Simulator {
         initRandomAgents();
     }
 
+    private Vertex calculateNextVertex(Agent agent){
+        Set<Vertex> reachableVertices = agent.getVertex().getReachableVertices();
+        if(reachableVertices.size() == 0){
+            logger.error("Vertex with no reachable vertices.");
+        } else if(reachableVertices.size() == 1){
+            return reachableVertices.stream().findFirst().get();
+        } else {
+            int size = reachableVertices.size();
+            int item = new Random().nextInt(size);
+            int i = 0;
+            for (Vertex vertex : reachableVertices) {
+                if (i == item) {
+                    return vertex;
+                }
+                i++;
+            }
+        }
+        return null;
+    }
+
+    private void checkAndSetNextVertex(Agent agent, Vertex vertex) {
+        if (vertex.getAgent() != null){
+            return;
+        }
+
+        Boolean isStatusPointLocked = vertex.getStaticPoints().stream()
+                .filter(StaticPoint::getLocked)
+                .findFirst()
+                .map(StaticPoint::getLocked)
+                .orElse(false);
+
+        if(isStatusPointLocked) {
+           return;
+        }
+
+        agent.setVertex(vertex);
+        vertex.setAgent(agent);
+    }
+
     private Vertex randomValueFromSet(Set<Vertex> set) {
         int size = set.size();
-        int item = new Random().nextInt(size); // In real life, the Random object should be rather more shared than this
+        int item = new Random().nextInt(size);
         int i = 0;
         for (Vertex vertex : set) {
             if (i == item) {
