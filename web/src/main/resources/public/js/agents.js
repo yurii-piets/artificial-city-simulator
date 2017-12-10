@@ -125,7 +125,7 @@ function processDeadAgents() {
         return;
     }
 
-    request.open("GET", REST_URL + "agent/" + id, true);
+    request.open("GET", REST_URL + "agent/all/dead/ids", true);
     request.send();
     request.onreadystatechange = function () {
         if (request.readyState === 3 && request.status === 200) {

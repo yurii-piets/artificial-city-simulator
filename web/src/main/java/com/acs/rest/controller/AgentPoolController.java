@@ -89,9 +89,11 @@ public class AgentPoolController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/dead/ids")
     public ResponseEntity deadAgents(){
-        Set<Agent> deadAgents = agentAgentPool.getDeadAgents();
+        Set<Long> deadAgentsIds = agentAgentPool.getDeadAgents().stream()
+                .map(Agent::getId)
+                .collect(Collectors.toSet());
 
-        return new ResponseEntity<>(deadAgents, HttpStatus.OK);
+        return new ResponseEntity<>(deadAgentsIds, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/count")
