@@ -77,11 +77,11 @@ public class GraphService {
                     continue;
                 }
 
-                Location source1 = edge1.getSource().getLocation();
-                Location destination2 = edge2.getDestination().getLocation();
+                Location destinationLocation1 = edge1.getDestination().getLocation();
+                Location sourceLocation2 = edge2.getSource().getLocation();
 
-                if (DistanceAlgorithm.distance(source1, destination2) < maxReachable) {
-                    connectedGraph.addEdge(destination2, source1);
+                if(DistanceAlgorithm.distance(destinationLocation1, sourceLocation2) <= maxReachable){
+                    connectedGraph.addEdge(destinationLocation1, sourceLocation2);
                 }
             }
             connectedGraph.addEdge(edge1);

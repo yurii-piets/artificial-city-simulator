@@ -62,7 +62,7 @@ public class RSimulator implements Simulator {
         try {
             while (!Thread.interrupted()) {
                 oneStep();
-                TimeUnit.SECONDS.sleep(1);
+                TimeUnit.MILLISECONDS.sleep(500);
             }
         } catch (InterruptedException e) {
             logger.error("Unexpected: ", e);
@@ -85,7 +85,7 @@ public class RSimulator implements Simulator {
     private Vertex calculateNextVertex(Agent agent) {
         Set<Vertex> reachableVertices = agent.getVertex().getReachableVertices();
         if (reachableVertices.size() == 0) {
-            logger.error("Vertex with no reachable vertices.");
+            logger.error("Vertex with no reachable vertices: " + agent.getVertex().getId());
             return agent.getVertex();
         } else if (reachableVertices.size() == 1) {
             return reachableVertices.stream().findFirst().get();
