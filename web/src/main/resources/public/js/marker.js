@@ -8,6 +8,7 @@ function createMarkerForAgent(agent) {
             map: map,
             icon: 'img/car-marker.png',
             // icon: getIconForAgentType(agent.type),
+            // label: agent.id
         });
     } else {
         agentMarkers[agent.id].setPosition({lat: agent.location.latitude, lng: agent.location.longitude});
@@ -35,6 +36,13 @@ function createPolylineForWay(way) {
 
     // cachedTypesMap[way.type].push(polyLine);
     addValueToLineMap(way.type, polyLine);
+}
+
+function deleteMarker(id) {
+    var deadAgent = agentMarkers[id];
+    if(deadAgent !== undefined){
+        deadAgent.setMap(null);
+    }
 }
 
 function getIconForAgentType(agentType) {

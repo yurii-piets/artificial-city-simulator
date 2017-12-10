@@ -117,6 +117,24 @@ function processById(id) {
     }
 }
 
+function processDeadAgents() {
+    var request = getAjaxRequest();
+
+    if (!request) {
+        console.log("Ajax request error.");
+        return;
+    }
+
+    request.open("GET", REST_URL + "agent/" + id, true);
+    request.send();
+    request.onreadystatechange = function () {
+        if (request.readyState === 3 && request.status === 200) {
+            var ids = JSON.parse(request.response);
+            ids.forEach(deleteMarker);
+        }
+    }
+}
+
 function getAjaxRequest() {
     try {
         var request = new XMLHttpRequest();

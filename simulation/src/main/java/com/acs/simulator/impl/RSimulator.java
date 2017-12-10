@@ -52,20 +52,24 @@ public class RSimulator implements Simulator {
     private void initRandomAgents() {
         Set<Vertex> startVertices = graphService.getGraph().getStartVertices();
         while (pool.getAgents().size() < pool.getMaxUnits()) {
-            Vertex vertex = randomValueFromSet(startVertices);
-            Agent agent = Agent.builder()
-                    .type(AgentType.CAR)
-                    .location(vertex.getLocation())
-                    .build();
+            createRandomAgent(startVertices);
+        }
+    }
 
-            agent.setVertex(vertex);
-            pool.save(agent);
+    private void createRandomAgent(Set<Vertex> startVertices) {
+        Vertex vertex = randomValueFromSet(startVertices);
+        Agent agent = Agent.builder()
+                .type(AgentType.CAR)
+                .location(vertex.getLocation())
+                .build();
 
-            if (checkAndSetNextVertex(agent, vertex)) {
-                vertex.setAgent(agent);
-            } else {
-                queueToAppear.add(agent);
-            }
+        agent.setVertex(vertex);
+        pool.save(agent);
+
+        if (checkAndSetNextVertex(agent, vertex)) {
+            vertex.setAgent(agent);
+        } else {
+            queueToAppear.add(agent);
         }
     }
 
@@ -84,7 +88,7 @@ public class RSimulator implements Simulator {
 
     @Override
     public void resetSimulation() {
-        pool.removeAll();
+        pool.killAll();
         initRandomAgents();
     }
 
@@ -148,7 +152,9 @@ public class RSimulator implements Simulator {
         if(graphService.getGraph().getStartVertices().contains(vertex)) {
             vertex.setAgent(null);
             agent.setVertex(null);
-            pool.removeById(agent.getId());
+            pool.kill(agent);
+
+            createRandomAgent(graphService.getGraph().getStartVertices());
         }
     }
 

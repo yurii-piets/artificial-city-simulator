@@ -20,6 +20,9 @@ public class AgentPoolImpl implements AgentPool {
     @Getter
     private Set<Agent> agents = new ConcurrentSkipListSet<>();
 
+    @Getter
+    private Set<Agent> deadAgents = new ConcurrentSkipListSet<>();
+
     @Override
     public Agent findAgentById(Long id) {
         Agent agent = agents.stream()
@@ -33,6 +36,12 @@ public class AgentPoolImpl implements AgentPool {
     @Override
     public void save(Agent agent) {
         agents.add(agent);
+    }
+
+    @Override
+    public void kill(Agent agent){
+        agents.remove(agent);
+        deadAgents.add(agent);
     }
 
     @Override
@@ -78,5 +87,10 @@ public class AgentPoolImpl implements AgentPool {
     @Override
     public void removeAll() {
         agents.clear();
+    }
+
+    @Override
+    public void killAll() {
+        agents.forEach(this::kill);
     }
 }

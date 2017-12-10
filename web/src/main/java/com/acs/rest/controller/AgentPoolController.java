@@ -87,6 +87,13 @@ public class AgentPoolController {
         return new ResponseEntity<>(range, HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/dead/ids")
+    public ResponseEntity deadAgents(){
+        Set<Agent> deadAgents = agentAgentPool.getDeadAgents();
+
+        return new ResponseEntity<>(deadAgents, HttpStatus.OK);
+    }
+
     @RequestMapping(method = RequestMethod.PUT, value = "/count")
     public ResponseEntity<Integer> agentsChangeSize(@RequestBody Integer count) {
         agentAgentPool.changeAgentsAmount(count);
@@ -96,7 +103,7 @@ public class AgentPoolController {
 
     @RequestMapping(method = RequestMethod.DELETE)
     public ResponseEntity deleteAll() {
-        agentAgentPool.removeAll();
+        agentAgentPool.killAll();
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

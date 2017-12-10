@@ -10,11 +10,15 @@ public interface AgentPool {
     void update(Agent agent);
     void changeAgentsAmount(Integer count);
     void removeById(Long id);
+    void kill(Agent agent);
 
     Set<Agent> getAgents();
+    Set<Agent> getDeadAgents();
     Integer getMaxUnits();
     Agent findAgentById(Long id);
     Long getMinId();
     Long getMaxId();
     void removeAll();
+
+    void killAll();
 }

@@ -37,4 +37,8 @@ function initGoogleMap(centerLocation) {
     setInterval(function () {
         initAgents();
     }, 200);
+
+    setInterval(function () {
+        processDeadAgents();
+    }, 1000);
 }
