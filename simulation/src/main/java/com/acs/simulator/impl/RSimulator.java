@@ -82,11 +82,12 @@ public class RSimulator implements Simulator {
         initRandomAgents();
     }
 
-    private Vertex calculateNextVertex(Agent agent){
+    private Vertex calculateNextVertex(Agent agent) {
         Set<Vertex> reachableVertices = agent.getVertex().getReachableVertices();
-        if(reachableVertices.size() == 0){
+        if (reachableVertices.size() == 0) {
             logger.error("Vertex with no reachable vertices.");
-        } else if(reachableVertices.size() == 1){
+            return agent.getVertex();
+        } else if (reachableVertices.size() == 1) {
             return reachableVertices.stream().findFirst().get();
         } else {
             int size = reachableVertices.size();
@@ -99,11 +100,12 @@ public class RSimulator implements Simulator {
                 i++;
             }
         }
+
         return null;
     }
 
     private void checkAndSetNextVertex(Agent agent, Vertex vertex) {
-        if (vertex.getAgent() != null){
+        if (vertex.getAgent() != null) {
             return;
         }
 
@@ -113,8 +115,14 @@ public class RSimulator implements Simulator {
                 .map(StaticPoint::getLocked)
                 .orElse(false);
 
-        if(isStatusPointLocked) {
-           return;
+        if (isStatusPointLocked) {
+            return;
+        }
+
+
+        Vertex prevVertex = agent.getVertex();
+        if (prevVertex != null) {
+            prevVertex.setAgent(null);
         }
 
         agent.setVertex(vertex);
