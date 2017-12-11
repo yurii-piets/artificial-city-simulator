@@ -14,7 +14,7 @@ function createMarkerForAgent(agent) {
     }
 }
 
-function createMarkerForStatic(staticObject) {
+function cacheMarkerForStatic(staticObject) {
     var staticMarker = new google.maps.Marker({
         position: {lat: staticObject.location.latitude, lng: staticObject.location.longitude},
         icon: getIconForStaticType(staticObject.type),
@@ -24,7 +24,7 @@ function createMarkerForStatic(staticObject) {
     addValueToLineMap(staticObject.type, staticMarker);
 }
 
-function createPolylineForWay(way) {
+function cachePolylineForWay(way) {
     var polyLine = new google.maps.Polyline({
         path: convertPoints(way.points),
         geodesic: true,
@@ -33,7 +33,6 @@ function createPolylineForWay(way) {
         strokeWeight: 2
     });
 
-    // cachedTypesMap[way.type].push(polyLine);
     addValueToLineMap(way.type, polyLine);
 }
 

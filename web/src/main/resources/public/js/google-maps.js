@@ -1,21 +1,9 @@
 var map;
 
 function initMap() {
-    var request = getAjaxRequest();
-
-    if (!request) {
-        console.log("Ajax request error.");
-        return;
-    }
-
-    request.open("GET", REST_URL + "map/center", true);
-    request.send();
-    request.onreadystatechange = function () {
-        if (request.readyState === 3 && request.status === 200) {
-            var centerLocation = JSON.parse(request.response);
-            initGoogleMap(centerLocation);
-        }
-    }
+    $.ajax({
+        url: REST_URL + 'map/center'
+    }).then(initGoogleMap);
 }
 
 function initGoogleMap(centerLocation) {
@@ -34,11 +22,11 @@ function initGoogleMap(centerLocation) {
     // initEdges();
     // initVertices();
 
-    setInterval(function () {
-        initAgents();
-    }, 200);
-
-    setInterval(function () {
-        processDeadAgents();
-    }, 1000);
+    // setInterval(function () {
+    //     initAgents();
+    // }, 200);
+    //
+    // setInterval(function () {
+    //     processDeadAgents();
+    // }, 1000);
 }

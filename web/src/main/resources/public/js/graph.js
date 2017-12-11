@@ -2,79 +2,31 @@ var edgesPolyLines = [];
 var markerVertex = [];
 
 function initEdges() {
-    var request = getAjaxRequest();
-
-    if (!request) {
-        console.log("Ajax request error.");
-        return;
-    }
-
-    request.open("GET", REST_URL + "graph/edges/ids", true);
-    request.send();
-
-    request.onreadystatechange = function () {
-        if (request.readyState === 3 && request.status === 200) {
-            var ids = JSON.parse(request.response);
-            ids.forEach(getAndShowEdge);
-        }
-    }
+    $.ajax({
+        url: REST_URL + 'graph/edges/ids'
+    }).then(function (ids) {
+        ids.forEach(getAndShowEdge);
+    });
 }
 
 function initVertices() {
-    var request = getAjaxRequest();
-
-    if (!request) {
-        console.log("Ajax request error.");
-        return;
-    }
-
-    request.open("GET", REST_URL + "graph/vertices/ids", true);
-    request.send();
-
-    request.onreadystatechange = function () {
-        if (request.readyState === 3 && request.status === 200) {
-            var ids = JSON.parse(request.response);
-            ids.forEach(getVertexAndMarker);
-        }
-    }
+    $.ajax({
+        url: REST_URL + 'graph/vertices/ids'
+    }).then(function (ids) {
+        ids.forEach(getVertexAndMarker);
+    });
 }
 
 function getAndShowEdge(id) {
-    var request = getAjaxRequest();
-
-    if (!request) {
-        console.log("Ajax request error.");
-        return;
-    }
-
-    request.open("GET", REST_URL + "graph/edge/" + id, true);
-    request.send();
-
-    request.onreadystatechange = function () {
-        if (request.readyState === 3 && request.status === 200) {
-            var edge = JSON.parse(request.response);
-            showEdge(edge);
-        }
-    }
+    $.ajax({
+        url: REST_URL + 'graph/edge/' + id
+    }).then(showEdge);
 }
 
 function getVertexAndMarker(id) {
-    var request = getAjaxRequest();
-
-    if (!request) {
-        console.log("Ajax request error.");
-        return;
-    }
-
-    request.open("GET", REST_URL + "graph/vertex/" + id, true);
-    request.send();
-
-    request.onreadystatechange = function () {
-        if (request.readyState === 3 && request.status === 200) {
-            var vertex = JSON.parse(request.response);
-            showVertex(vertex);
-        }
-    }
+    $.ajax({
+        url: REST_URL + 'graph/vertex/' + id
+    }).then(showVertex);
 }
 
 function showEdge(edge) {
