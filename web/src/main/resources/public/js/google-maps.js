@@ -16,17 +16,14 @@ function initGoogleMap(centerLocation) {
     initStatics();
     initWays();
 
-    createListOfWayTypes();
-    createListOfStaticsTypes();
-
-    // initEdges();
+    // initEdges(); // can be to heavy for your browser
     // initVertices();
 
-    // setInterval(function () {
-    //     initAgents();
-    // }, 200);
-    //
-    // setInterval(function () {
-    //     processDeadAgents();
-    // }, 1000);
+    setInterval(function () {
+        initAgents();
+    }, 200);
+
+    setInterval(function () {
+        processDeadAgents();
+    }, 1000);
 }

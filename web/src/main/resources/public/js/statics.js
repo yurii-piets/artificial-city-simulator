@@ -3,7 +3,8 @@ function initStatics() {
         url: REST_URL + 'statics'
     }).then(function (statics) {
         statics.forEach(cacheMarkerForStatic)
-    })
+    });
+    createListOfStaticsTypes();
 }
 
 function initWays() {
@@ -11,7 +12,8 @@ function initWays() {
         url: REST_URL + 'ways/ids'
     }).then(function (wayIds) {
         wayIds.forEach(getAndDrawWay)
-    })
+    });
+    createListOfWayTypes();
 }
 
 function getAndDrawWay(id) {
