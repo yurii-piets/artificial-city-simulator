@@ -1,8 +1,8 @@
 package com.acs.simulator.impl;
 
 import com.acs.models.Location;
-import com.acs.models.agent.Agent;
 import com.acs.models.agent.AgentType;
+import com.acs.models.agent.MockAgent;
 import com.acs.pool.def.AgentPool;
 import com.acs.service.ParserService;
 import com.acs.simulator.def.Simulator;
@@ -53,16 +53,16 @@ public class MockSimulator implements Simulator {
     public void initRandomAgents() {
         pool.removeAll();
         for (int i = 0; i < pool.getMaxUnits(); ++i) {
-            Agent agent = Agent.builder()
+            MockAgent agent = MockAgent.builder()
                     .dLatitude(randomWay.get() * 0.00001)
                     .dLongitude(randomWay.get() * 0.00001)
-                    .type(AgentType.CAR)
+                    .type(randomAgentType.get())
                     .location(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()))
                     .build();
 
             agent.addDestination(new Location(randomLongitudeFromRange.get(), randomLatitudeFromRange.get()));
 
-            pool.save(agent);
+//            pool.save(agent);
         }
     }
 
@@ -71,7 +71,7 @@ public class MockSimulator implements Simulator {
     public void simulate() {
         try {
             while (!Thread.interrupted()) {
-                pool.getAgents().forEach(Agent::move);
+//                pool.getAgents().forEach(MockAgent::move);
                 TimeUnit.SECONDS.sleep(1);
             }
         } catch (InterruptedException e) {
