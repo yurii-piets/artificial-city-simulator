@@ -1,7 +1,7 @@
-const REST_URL = "http://localhost:8080/";
-// const REST_URL = "/";
+// const REST_URL = "http://localhost:8080/";
+const REST_URL = "/";
 
-function ajaxError(jqXHR, exception) {
+function ajaxErrorHandler(jqXHR, exception) {
     var msg = '';
     if (jqXHR.status === 0) {
         msg = 'Not connect.\n Verify Network.';

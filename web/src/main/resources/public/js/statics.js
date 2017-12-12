@@ -1,6 +1,7 @@
 function initStatics() {
     $.ajax({
-        url: REST_URL + 'statics'
+        url: REST_URL + 'statics',
+        error: ajaxErrorHandler
     }).then(function (statics) {
         statics.forEach(cacheMarkerForStatic)
     });
@@ -9,7 +10,8 @@ function initStatics() {
 
 function initWays() {
     $.ajax({
-        url: REST_URL + 'ways/ids'
+        url: REST_URL + 'ways/ids',
+        error: ajaxErrorHandler
     }).then(function (wayIds) {
         wayIds.forEach(getAndDrawWay)
     });
@@ -18,6 +20,7 @@ function initWays() {
 
 function getAndDrawWay(id) {
     $.ajax({
-        url: REST_URL + 'ways/' + id
+        url: REST_URL + 'ways/' + id,
+        error: ajaxErrorHandler
     }).then(cachePolylineForWay)
 }

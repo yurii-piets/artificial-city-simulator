@@ -20,7 +20,8 @@ function showMenu() {
 
 function createListOfWayTypes() {
     $.ajax({
-        url: REST_URL + 'ways/types'
+        url: REST_URL + 'ways/types',
+        error: ajaxErrorHandler
     }).then(function (wayTypes) {
         var ul = $('#road-type-enumeration');
         wayTypes.forEach(function (type) {
@@ -32,7 +33,8 @@ function createListOfWayTypes() {
 
 function createListOfStaticsTypes() {
     $.ajax({
-        url: REST_URL + 'statics/types'
+        url: REST_URL + 'statics/types',
+        error: ajaxErrorHandler
     }).then(function (staticTypes) {
         var ul = $('#static-type-enumeration');
         staticTypes.forEach(function (type) {

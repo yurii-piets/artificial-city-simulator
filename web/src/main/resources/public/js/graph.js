@@ -3,7 +3,8 @@ var markerVertex = [];
 
 function initEdges() {
     $.ajax({
-        url: REST_URL + 'graph/edges/ids'
+        url: REST_URL + 'graph/edges/ids',
+        error: ajaxErrorHandler
     }).then(function (ids) {
         ids.forEach(getAndShowEdge);
     });
@@ -11,7 +12,8 @@ function initEdges() {
 
 function initVertices() {
     $.ajax({
-        url: REST_URL + 'graph/vertices/ids'
+        url: REST_URL + 'graph/vertices/ids',
+        error: ajaxErrorHandler
     }).then(function (ids) {
         ids.forEach(getVertexAndMarker);
     });
@@ -19,13 +21,15 @@ function initVertices() {
 
 function getAndShowEdge(id) {
     $.ajax({
-        url: REST_URL + 'graph/edge/' + id
+        url: REST_URL + 'graph/edge/' + id,
+        error: ajaxErrorHandler
     }).then(showEdge);
 }
 
 function getVertexAndMarker(id) {
     $.ajax({
-        url: REST_URL + 'graph/vertex/' + id
+        url: REST_URL + 'graph/vertex/' + id,
+        error: ajaxErrorHandler
     }).then(showVertex);
 }
 

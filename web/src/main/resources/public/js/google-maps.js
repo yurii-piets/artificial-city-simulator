@@ -2,7 +2,8 @@ var map;
 
 function initMap() {
     $.ajax({
-        url: REST_URL + 'map/center'
+        url: REST_URL + 'map/center',
+        error: ajaxErrorHandler
     }).then(initGoogleMap);
 }
 
