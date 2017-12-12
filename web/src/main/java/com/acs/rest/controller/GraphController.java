@@ -46,7 +46,7 @@ public class GraphController {
 
     @RequestMapping(path = "/vertices/ids")
     public ResponseEntity<Set<Long>> vertices() {
-        Set<Long> ids = graph.getStartVertices().stream()
+        Set<Long> ids = graph.getVertices().stream()
                 .map(Vertex::getId)
                 .collect(Collectors.toSet());
 
@@ -61,5 +61,12 @@ public class GraphController {
                 .orElse(null);
 
         return new ResponseEntity<>(vertex, HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "/startVertices")
+    public ResponseEntity<Set<Vertex>> startVertices(){
+        Set<Vertex> startVertices = graph.getStartVertices();
+
+        return new ResponseEntity<>(startVertices, HttpStatus.OK);
     }
 }

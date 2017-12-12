@@ -1,5 +1,7 @@
 var edgesPolyLines = [];
-var markerVertex = [];
+var vertexMarkers = [];
+var startVerticesPolyLines = [];
+
 
 function initEdges() {
     $.ajax({
@@ -16,6 +18,15 @@ function initVertices() {
         error: ajaxErrorHandler
     }).then(function (ids) {
         ids.forEach(getVertexAndMarker);
+    });
+}
+
+function initStartVertices() {
+    $.ajax({
+        url: REST_URL + 'graph/startVertices',
+        error: ajaxErrorHandler
+    }).then(function (startVertices) {
+        startVertices.forEach(showStartVertex);
     });
 }
 
@@ -53,5 +64,15 @@ function showVertex(vertex) {
         map: map
     });
 
-    markerVertex.push(marker)
+    vertexMarkers.push(marker)
+}
+
+function showStartVertex(startVertex){
+    var marker = new google.maps.Marker({
+        position: {lat: startVertex.location.latitude, lng: startVertex.location.longitude},
+        label: startVertex.id.toString(),
+        map: map
+    });
+
+    startVerticesPolyLines.push(marker);
 }
