@@ -7,8 +7,6 @@ simulation:
     max: 100
     distance: 2
 
-basic.url: http://localhost:8080
-
 actuator:
   username: actuator
   password: f19f555c0d327ea86fef73c5efd09697

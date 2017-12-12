@@ -1,34 +1,40 @@
-//todo improve pagination
-function getAndMarkByObject() {
-    $.ajax({
-        url: REST_URL + 'agent/all/objects'
-    }).then(function (agents) {
-        agents.forEach(createMarkerForAgent);
-    });
-}
+var loadSize = 20;
 
-function getAndMarkByIds() {
+function initAgentsWithPagination() {
     $.ajax({
-        url: REST_URL + 'agent/all/ids'
+        url: REST_URL + 'agents/ids',
+        error: ajaxErrorHandler
     }).then(function (ids) {
-        ids.forEach(processById);
-    });
-}
+        if (ids.length < 50) {
+            getAndMarkByObject();
+        } else {
+            var accum = [];
+            for (var i = 0; i < ids.length; ++i) {
+                accum.push(ids[i]);
 
-function getAndMarkByRange() {
-    $.ajax({
-        url: REST_URL + 'agent/all/range'
-    }).then(function (range) {
-        for (var i = range.min; i <= range.max; ++i) {
-            processById(i);
+                if (accum.length === loadSize || i === accum.length - 1) {
+                    $.ajax({
+                        url: REST_URL + 'agents/objects',
+                        type: 'POST',
+                        data: JSON.stringify(accum),
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        error: ajaxErrorHandler
+                    }).then(function (agents) {
+                        agents.forEach(createMarkerForAgent);
+                    });
+                    accum = [];
+                }
+
+            }
         }
     });
 }
 
-function processById(id) {
+function getAndMarkByObject() {
     $.ajax({
-        url: REST_URL + 'agent/' + id
-    }).then(function (agent) {
-        createMarkerForAgent(agent);
+        url: REST_URL + 'agents/objects'
+    }).then(function (agents) {
+        agents.forEach(createMarkerForAgent);
     });
 }

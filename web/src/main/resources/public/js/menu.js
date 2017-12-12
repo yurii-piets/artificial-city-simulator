@@ -61,10 +61,6 @@ function onMenuCheckBoxAction(box) {
     }
 }
 
-var verticesLines = [];
-var edgeLines = [];
-var startLines = [];
-
 function onMenuGraphAction(box) {
     if (box.checked) {
         switch (box.value) {

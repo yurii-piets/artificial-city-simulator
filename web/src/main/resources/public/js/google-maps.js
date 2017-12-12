@@ -17,14 +17,10 @@ function initGoogleMap(centerLocation) {
     initStatics();
     initWays();
 
-    // initEdges(); // can be to heavy for your browser
-    // initVertices();
+    setInterval(
+        // initAgents,
+        initAgentsWithPagination,
+        200);
 
-    setInterval(function () {
-        initAgents();
-    }, 200);
-
-    setInterval(function () {
-        processDeadAgents();
-    }, 1000);
+    setInterval(processDeadAgents, 1000);
 }
