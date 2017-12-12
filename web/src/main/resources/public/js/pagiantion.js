@@ -1,11 +1,11 @@
-var loadSize = 20;
+var loadSize = 100;
 
 function initAgentsWithPagination() {
     $.ajax({
         url: REST_URL + 'agents/ids',
         error: ajaxErrorHandler
     }).then(function (ids) {
-        if (ids.length < 50) {
+        if (ids.length <= loadSize) {
             getAndMarkByObject();
         } else {
             var accum = [];

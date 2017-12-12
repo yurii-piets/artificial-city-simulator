@@ -9,6 +9,8 @@ import com.acs.models.statics.Road;
 import com.acs.models.statics.RoadType;
 import com.acs.models.statics.StaticPoint;
 import lombok.Getter;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,8 @@ import javax.annotation.PostConstruct;
 
 @Service
 public class GraphService {
+
+    private final Logger logger = LogManager.getLogger(this.getClass());
 
     @Value("${simulation.map.correction.reachable.max}")
     private Double maxReachable;
@@ -44,12 +48,17 @@ public class GraphService {
     }
 
     private void initGraph() {
+        logger.info("Initializing graph.");
         for (Road road : parserService.getRoads()) {
             if (road.getType() == RoadType.PRIMARY_LINK
                     || road.getType() == RoadType.SECONDARY_LINK
                     || road.getType() == RoadType.PRIMARY
                     || road.getType() == RoadType.SECONDARY
-                    || road.getType() == RoadType.RESIDENTIAL) {
+                    || road.getType() == RoadType.RESIDENTIAL
+                    || road.getType() == RoadType.TERTIARY
+                    || road.getType() == RoadType.TERTIARY_LINK
+                    || road.getType() == RoadType.CONSTRUCTION
+                    || road.getType() == RoadType.UNCLASSIFIED) {
 
                 Location currentLocation;
                 Location previousLocation = null;
@@ -69,6 +78,7 @@ public class GraphService {
     }
 
     private void connectCloseVertices() {
+        logger.info("Connecting close vertices.");
         for (Vertex vertex1 : graph.getVertices()) {
             for (Vertex vertex2 : graph.getVertices()) {
                 if (vertex1 == vertex2) {
@@ -87,6 +97,7 @@ public class GraphService {
     }
 
     private void rescaleGraph() {
+        logger.info("Rescaling graph.");
         Graph rescaledGraph = new Graph();
         for (Edge edge : graph.getEdges()) {
             Double distance = edge.getWeight();
@@ -121,6 +132,7 @@ public class GraphService {
     }
 
     private void putStaticsOnGraph() {
+        logger.info("Putting statics on graph.");
         for (StaticPoint staticPoint : parserService.getStatics()) {
             Location location = staticPoint.getLocation();
             Vertex vertex = graph.getClosestVertexForLocation(location);
@@ -129,6 +141,7 @@ public class GraphService {
     }
 
     private void initStartVertex() {
+        logger.info("Initializing start vertices.");
         nextVertex:
         for (Vertex vertex : graph.getVertices()) {
             for (Edge edge : graph.getEdges()) {
