@@ -58,6 +58,12 @@ public class RSimulator implements Simulator {
 
     private void createRandomAgent(Set<Vertex> startVertices) {
         Vertex vertex = randomValueFromSet(startVertices);
+        if(vertex == null){
+            vertex = randomValueFromSet(graphService.getGraph().getVertices());
+            if(vertex == null) {
+                return;
+            }
+        }
         Agent agent = Agent.builder()
                 .type(AgentType.CAR)
                 .location(vertex.getLocation())
@@ -178,7 +184,7 @@ public class RSimulator implements Simulator {
         }
 
         if (graphService.getGraph().getStartVertices().contains(vertex)) {
-            if(vertex != null){
+            if (vertex != null) {
                 vertex.setAgent(null);
             }
             agent.setVertex(null);
@@ -211,6 +217,9 @@ public class RSimulator implements Simulator {
 
     private Vertex randomValueFromSet(Set<Vertex> set) {
         int size = set.size();
+        if (size == 0) {
+            return null;
+        }
         int item = new Random().nextInt(size);
         int i = 0;
         for (Vertex vertex : set) {
