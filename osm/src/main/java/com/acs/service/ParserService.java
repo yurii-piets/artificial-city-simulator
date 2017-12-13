@@ -54,6 +54,7 @@ public class ParserService {
         try {
             OSMParser p = new OSMParser();
 
+            logger.info("Parsing file: " + OSM_MAP_FILE);
             ClassPathResource classPathResource = new ClassPathResource(OSM_MAP_FILE);
 
             InputStream inputStream = classPathResource.getInputStream();

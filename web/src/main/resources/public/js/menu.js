@@ -65,29 +65,35 @@ function onMenuGraphAction(box) {
     if (box.checked) {
         switch (box.value) {
             case "vertices":
-                if(vertexMarkers.length === 0) {
+                if (vertexMarkers.length === 0) {
                     //todo add alert with confirmation
                     initVertices();
                 } else {
-                    vertexMarkers.forEach(function (marker) { marker.setMap(map); })
+                    vertexMarkers.forEach(function (marker) {
+                        marker.setMap(map);
+                    })
                 }
                 break;
 
             case "edges":
-                if(edgesPolyLines.length === 0){
+                if (edgesPolyLines.length === 0) {
                     //todo add alert with confirmation
                     initEdges();
                 } else {
-                    edgesPolyLines.forEach(function (line) { line.setMap(map); })
+                    edgesPolyLines.forEach(function (line) {
+                        line.setMap(map);
+                    })
                 }
                 break;
 
             case "startVertices":
-                if(startVerticesPolyLines.length === 0) {
+                if (startVerticesPolyLines.length === 0) {
                     //todo add alert with confirmation
                     initStartVertices();
                 } else {
-                    startVerticesPolyLines.forEach(function (line) { line.setMap(map); })
+                    startVerticesPolyLines.forEach(function (line) {
+                        line.setMap(map);
+                    })
                 }
                 break;
         }

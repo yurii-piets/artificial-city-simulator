@@ -1,10 +1,10 @@
-osm.map.file.path: osm/map-miasteczko.osm
+osm.map.file.path: osm/map-kiev-pznk.osm
 
 simulation:
   map.correction.reachable.max: 5.0
   cell.size: 2.0
   unit:
-    max: 100
+    max: 1000
     distance: 2
 
 actuator:

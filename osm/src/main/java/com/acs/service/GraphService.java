@@ -50,15 +50,7 @@ public class GraphService {
     private void initGraph() {
         logger.info("Initializing graph.");
         for (Road road : parserService.getRoads()) {
-            if (road.getType() == RoadType.PRIMARY_LINK
-                    || road.getType() == RoadType.SECONDARY_LINK
-                    || road.getType() == RoadType.PRIMARY
-                    || road.getType() == RoadType.SECONDARY
-                    || road.getType() == RoadType.RESIDENTIAL
-                    || road.getType() == RoadType.TERTIARY
-                    || road.getType() == RoadType.TERTIARY_LINK
-                    || road.getType() == RoadType.CONSTRUCTION
-                    || road.getType() == RoadType.UNCLASSIFIED) {
+            if (RoadType.isInCarGroup(road.getType())) {
 
                 Location currentLocation;
                 Location previousLocation = null;
