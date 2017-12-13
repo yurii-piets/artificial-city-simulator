@@ -12,10 +12,8 @@ processResources{
                 content = content.replaceAll("REST_URL = \".*\";", "REST_URL = \"/\";")
                 file.write(content, 'UTF-8')
             } else {
-                println 'WARNING: Url with host can be set.'
+                println 'WARNING: REST_URL cannot be set.'
             }
-        } else {
-            println 'WARNING not release version'
         }
     }
 }
