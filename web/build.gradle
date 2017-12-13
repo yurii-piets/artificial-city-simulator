@@ -2,6 +2,24 @@ plugins {
     id 'org.springframework.boot' version '1.5.4.RELEASE'
 }
 
+processResources{
+    doLast {
+        if (version.contains('RELEASE')) {
+            File file = file("${buildDir}/resources/main/public/js/common.js")
+
+            if (file.exists()) {
+                String content = file.getText('UTF-8')
+                content = content.replaceAll("REST_URL = \".*\";", "REST_URL = \"/\";")
+                file.write(content, 'UTF-8')
+            } else {
+                println 'WARNING: Url with host can be set.'
+            }
+        } else {
+            println 'WARNING not release version'
+        }
+    }
+}
+
 dependencies{
     compile project(":common")
     compile project(":osm")
