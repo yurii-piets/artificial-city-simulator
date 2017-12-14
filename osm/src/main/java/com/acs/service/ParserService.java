@@ -54,6 +54,7 @@ public class ParserService {
         try {
             OSMParser p = new OSMParser();
 
+            logger.info("Parsing file: " + OSM_MAP_FILE);
             ClassPathResource classPathResource = new ClassPathResource(OSM_MAP_FILE);
 
             InputStream inputStream = classPathResource.getInputStream();
@@ -71,6 +72,7 @@ public class ParserService {
     }
 
     private void parseStatics(Map<String, Element> result) {
+        logger.info("Parsing statics.");
         for (String key : result.keySet()) {
             if (key.contains("N")) {
                 Element element = result.get(key);
@@ -94,6 +96,7 @@ public class ParserService {
     }
 
     private void parseWays(Map<String, Element> result) {
+        logger.info("Parsing ways.");
         for (String key : result.keySet()) {
             if (key.contains("W")) {
                 Element element = result.get(key);
@@ -129,6 +132,7 @@ public class ParserService {
     }
 
     private void parseLocationRange(File file) {
+        logger.info("Parsing location range.");
         try {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();

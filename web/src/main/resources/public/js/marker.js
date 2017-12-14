@@ -6,15 +6,15 @@ function createMarkerForAgent(agent) {
         agentMarkers[agent.id] = new google.maps.Marker({
             position: {lat: agent.location.latitude, lng: agent.location.longitude},
             map: map,
-            icon: getIconForAgentType(agent.type),
-            label: agent.id + ": " + agent.type.toLowerCase()
+            icon: 'img/car-marker.png',
+            // icon: getIconForAgentType(agent.type),
         });
     } else {
         agentMarkers[agent.id].setPosition({lat: agent.location.latitude, lng: agent.location.longitude});
     }
 }
 
-function createMarkerForStatic(staticObject) {
+function cacheMarkerForStatic(staticObject) {
     var staticMarker = new google.maps.Marker({
         position: {lat: staticObject.location.latitude, lng: staticObject.location.longitude},
         icon: getIconForStaticType(staticObject.type),
@@ -24,7 +24,7 @@ function createMarkerForStatic(staticObject) {
     addValueToLineMap(staticObject.type, staticMarker);
 }
 
-function createPolylineForWay(way) {
+function cachePolylineForWay(way) {
     var polyLine = new google.maps.Polyline({
         path: convertPoints(way.points),
         geodesic: true,
@@ -33,8 +33,14 @@ function createPolylineForWay(way) {
         strokeWeight: 2
     });
 
-    // cachedTypesMap[way.type].push(polyLine);
     addValueToLineMap(way.type, polyLine);
+}
+
+function deleteMarker(id) {
+    var deadAgentMarker = agentMarkers[id];
+    if(deadAgentMarker !== undefined){
+        deadAgentMarker.setMap(null);
+    }
 }
 
 function getIconForAgentType(agentType) {
@@ -113,6 +119,9 @@ function getColorForWayType(roadType) {
 
         case "UNKNOWN":
             return '#ff0800';
+
+        default :
+            return '#000000';
     }
 }
 

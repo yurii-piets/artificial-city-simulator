@@ -62,4 +62,11 @@ public class GraphController {
 
         return new ResponseEntity<>(vertex, HttpStatus.OK);
     }
+
+    @RequestMapping(path = "/startVertices")
+    public ResponseEntity<Set<Vertex>> startVertices(){
+        Set<Vertex> startVertices = graph.getStartVertices();
+
+        return new ResponseEntity<>(startVertices, HttpStatus.OK);
+    }
 }

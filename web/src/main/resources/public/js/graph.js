@@ -1,80 +1,47 @@
 var edgesPolyLines = [];
-var markerVertex = [];
+var vertexMarkers = [];
+var startVerticesPolyLines = [];
+
 
 function initEdges() {
-    var request = getAjaxRequest();
-
-    if (!request) {
-        console.log("Ajax request error.");
-        return;
-    }
-
-    request.open("GET", REST_URL + "graph/edges/ids", true);
-    request.send();
-
-    request.onreadystatechange = function () {
-        if (request.readyState === 3 && request.status === 200) {
-            var ids = JSON.parse(request.response);
-            ids.forEach(getAndShowEdge);
-        }
-    }
+    $.ajax({
+        url: REST_URL + 'graph/edges/ids',
+        error: ajaxErrorHandler
+    }).then(function (ids) {
+        ids.forEach(getAndShowEdge);
+    });
 }
 
 function initVertices() {
-    var request = getAjaxRequest();
+    $.ajax({
+        url: REST_URL + 'graph/vertices/ids',
+        error: ajaxErrorHandler
+    }).then(function (ids) {
+        ids.forEach(getVertexAndMarker);
+    });
+}
 
-    if (!request) {
-        console.log("Ajax request error.");
-        return;
-    }
-
-    request.open("GET", REST_URL + "graph/vertices/ids", true);
-    request.send();
-
-    request.onreadystatechange = function () {
-        if (request.readyState === 3 && request.status === 200) {
-            var ids = JSON.parse(request.response);
-            ids.forEach(getVertexAndMarker);
-        }
-    }
+function initStartVertices() {
+    $.ajax({
+        url: REST_URL + 'graph/startVertices',
+        error: ajaxErrorHandler
+    }).then(function (startVertices) {
+        startVertices.forEach(showStartVertex);
+    });
 }
 
 function getAndShowEdge(id) {
-    var request = getAjaxRequest();
-
-    if (!request) {
-        console.log("Ajax request error.");
-        return;
-    }
-
-    request.open("GET", REST_URL + "graph/edge/" + id, true);
-    request.send();
-
-    request.onreadystatechange = function () {
-        if (request.readyState === 3 && request.status === 200) {
-            var edge = JSON.parse(request.response);
-            showEdge(edge);
-        }
-    }
+    $.ajax({
+        url: REST_URL + 'graph/edge/' + id,
+        error: ajaxErrorHandler
+    }).then(showEdge);
 }
 
 function getVertexAndMarker(id) {
-    var request = getAjaxRequest();
-
-    if (!request) {
-        console.log("Ajax request error.");
-        return;
-    }
-
-    request.open("GET", REST_URL + "graph/vertex/" + id, true);
-    request.send();
-
-    request.onreadystatechange = function () {
-        if (request.readyState === 3 && request.status === 200) {
-            var vertex = JSON.parse(request.response);
-            showVertex(vertex);
-        }
-    }
+    $.ajax({
+        url: REST_URL + 'graph/vertex/' + id,
+        error: ajaxErrorHandler
+    }).then(showVertex);
 }
 
 function showEdge(edge) {
@@ -97,5 +64,15 @@ function showVertex(vertex) {
         map: map
     });
 
-    markerVertex.push(marker)
+    vertexMarkers.push(marker)
+}
+
+function showStartVertex(startVertex){
+    var marker = new google.maps.Marker({
+        position: {lat: startVertex.location.latitude, lng: startVertex.location.longitude},
+        label: startVertex.id.toString(),
+        map: map
+    });
+
+    startVerticesPolyLines.push(marker);
 }

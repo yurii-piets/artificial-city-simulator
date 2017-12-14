@@ -1,13 +1,11 @@
-osm.map.file.path: osm/map-czarn.osm
+osm.map.file.path: osm/map-kiev-pznk.osm
 
 simulation:
   map.correction.reachable.max: 5.0
   cell.size: 2.0
   unit:
+    max: 1000
     distance: 2
-    max: 3
-
-basic.url: http://localhost:8080
 
 actuator:
   username: actuator

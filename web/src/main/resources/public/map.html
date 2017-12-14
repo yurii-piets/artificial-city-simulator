@@ -7,13 +7,16 @@
     <title>Artificial City Simulator</title>
 
     <link rel="stylesheet" href="css/main.css">
-    <script src="js/const.js"></script>
+    <script src="vendor/jquery-3.2.1.min.js"></script>
+
+    <script src="js/common.js"></script>
     <script src="js/agents.js"></script>
     <script src="js/statics.js"></script>
     <script src="js/google-maps.js"></script>
     <script src="js/marker.js"></script>
     <script src="js/menu.js"></script>
     <script src="js/graph.js"></script>
+    <script src="js/pagiantion.js"></script>
 </head>
 <body onload="initMap()">
     <div id="menu-bar">
@@ -26,6 +29,15 @@
         <div class="static-type">
             Statics types:
             <ul id="static-type-enumeration">
+            </ul>
+        </div>
+
+        <div class="graph-type">
+            Graph:
+            <ul>
+                <li><input type="checkbox" onclick="onMenuGraphAction(this);" class="checkTypes" value="vertices">Vertices</li>
+                <li><input type="checkbox" onclick="onMenuGraphAction(this);" class="checkTypes" value="edges">Edges</li>
+                <li><input type="checkbox" onclick="onMenuGraphAction(this);" class="checkTypes" value="startVertices">Start Vertices</li>
             </ul>
         </div>
     </div>

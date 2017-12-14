@@ -4,9 +4,13 @@ import com.acs.algorithm.DistanceAlgorithm;
 import com.acs.models.Location;
 import com.acs.models.graph.Edge;
 import com.acs.models.graph.Graph;
+import com.acs.models.graph.Vertex;
 import com.acs.models.statics.Road;
 import com.acs.models.statics.RoadType;
+import com.acs.models.statics.StaticPoint;
 import lombok.Getter;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,6 +19,8 @@ import javax.annotation.PostConstruct;
 
 @Service
 public class GraphService {
+
+    private final Logger logger = LogManager.getLogger(this.getClass());
 
     @Value("${simulation.map.correction.reachable.max}")
     private Double maxReachable;
@@ -37,16 +43,14 @@ public class GraphService {
         initGraph();
         connectCloseVertices();
         rescaleGraph();
+        putStaticsOnGraph();
+        initStartVertex();
     }
 
     private void initGraph() {
+        logger.info("Initializing graph.");
         for (Road road : parserService.getRoads()) {
-            if (road.getType() == RoadType.PRIMARY_LINK
-                    || road.getType() == RoadType.LIVING_STREET
-                    || road.getType() == RoadType.SECONDARY
-                    || road.getType() == RoadType.RESIDENTIAL
-                    || road.getType() == RoadType.SECONDARY_LINK
-                    || road.getType() == RoadType.PRIMARY) {
+            if (RoadType.isInCarGroup(road.getType())) {
 
                 Location currentLocation;
                 Location previousLocation = null;
@@ -66,27 +70,26 @@ public class GraphService {
     }
 
     private void connectCloseVertices() {
-        Graph connectedGraph = new Graph();
-        for (Edge edge1 : graph.getEdges()) {
-            for (Edge edge2 : graph.getEdges()) {
-                if (edge1 == edge2) {
+        logger.info("Connecting close vertices.");
+        for (Vertex vertex1 : graph.getVertices()) {
+            for (Vertex vertex2 : graph.getVertices()) {
+                if (vertex1 == vertex2) {
                     continue;
                 }
 
-                Location source1 = edge1.getSource().getLocation();
-                Location destination2 = edge2.getDestination().getLocation();
+                Location locationVertex1 = vertex1.getLocation();
+                Location locationVertex2 = vertex2.getLocation();
 
-                if (DistanceAlgorithm.distance(source1, destination2) < maxReachable) {
-                    connectedGraph.addEdge(destination2, source1);
+                if (DistanceAlgorithm.distance(locationVertex1, locationVertex2) <= maxReachable) {
+                    graph.addEdge(locationVertex1, locationVertex2);
+                    graph.addEdge(locationVertex2, locationVertex1);
                 }
             }
-            connectedGraph.addEdge(edge1);
         }
-
-        this.graph = connectedGraph;
     }
 
     private void rescaleGraph() {
+        logger.info("Rescaling graph.");
         Graph rescaledGraph = new Graph();
         for (Edge edge : graph.getEdges()) {
             Double distance = edge.getWeight();
@@ -118,6 +121,29 @@ public class GraphService {
         }
 
         this.graph = rescaledGraph;
+    }
+
+    private void putStaticsOnGraph() {
+        logger.info("Putting statics on graph.");
+        for (StaticPoint staticPoint : parserService.getStatics()) {
+            Location location = staticPoint.getLocation();
+            Vertex vertex = graph.getClosestVertexForLocation(location);
+            vertex.addStaticPoint(staticPoint);
+        }
+    }
+
+    private void initStartVertex() {
+        logger.info("Initializing start vertices.");
+        nextVertex:
+        for (Vertex vertex : graph.getVertices()) {
+            for (Edge edge : graph.getEdges()) {
+                if (edge.getDestination().equals(vertex)) {
+                    continue nextVertex;
+                }
+            }
+
+            graph.addStartVertex(vertex);
+        }
     }
 
     private Double scale(Double s, Double d, int i, Double n) {

@@ -8,7 +8,7 @@ function onMenuBarClick() {
 function showMenu() {
     var menuBar = document.getElementById("menu-bar");
     var menuBarBtn = document.getElementById("menu-bar-button");
-    if(menuOpen){
+    if (menuOpen) {
         menuBar.style.display = "none";
         menuBarBtn.style.left = "0";
     } else {
@@ -19,53 +19,103 @@ function showMenu() {
 }
 
 function createListOfWayTypes() {
-    var request = getAjaxRequest();
-
-    if (!request) {
-        console.log("Ajax request error.");
-        return;
-    }
-
-    request.open("GET", REST_URL + "ways/types", true);
-    request.send();
-
-    request.onreadystatechange = function () {
-        if (request.readyState === 3 && request.status === 200) {
-            var types = JSON.parse(request.response);
-            var ul = document.getElementById("road-type-enumeration");
-            types.forEach(function (type) {
-                ul.innerHTML += checkboxPattern.replace("${value}", type).replace("${value}", type)
-            });
-        }
-    }
+    $.ajax({
+        url: REST_URL + 'ways/types',
+        error: ajaxErrorHandler
+    }).then(function (wayTypes) {
+        var ul = $('#road-type-enumeration');
+        wayTypes.forEach(function (type) {
+            var html = checkboxPattern.replace("${value}", type).replace("${value}", type);
+            ul.html(ul.html() + html);
+        });
+    });
 }
 
-function createListOfStaticsTypes(){
-    var request = getAjaxRequest();
-
-    if (!request) {
-        console.log("Ajax request error.");
-        return;
-    }
-
-    request.open("GET", REST_URL + "statics/types", true);
-    request.send();
-
-    request.onreadystatechange = function () {
-        if (request.readyState === 3 && request.status === 200) {
-            var types = JSON.parse(request.response);
-            var ul = document.getElementById("static-type-enumeration");
-            types.forEach(function (type) {
-                ul.innerHTML += checkboxPattern.replace("${value}", type).replace("${value}", type)
-            });
-        }
-    }
+function createListOfStaticsTypes() {
+    $.ajax({
+        url: REST_URL + 'statics/types',
+        error: ajaxErrorHandler
+    }).then(function (staticTypes) {
+        var ul = $('#static-type-enumeration');
+        staticTypes.forEach(function (type) {
+            var html = checkboxPattern.replace("${value}", type).replace("${value}", type);
+            ul.html(ul.html() + html);
+        });
+    });
 }
 
 function onMenuCheckBoxAction(box) {
-    if(box.checked){
-        cachedTypesMap[box.value].forEach(function (type) { type.setMap(map) })
+    if (cachedTypesMap[box.value] === undefined) {
+        console.log(box.value + " contains 0 values");
+        return;
+    }
+
+    if (box.checked) {
+        cachedTypesMap[box.value].forEach(function (type) {
+            type.setMap(map)
+        })
     } else {
-        cachedTypesMap[box.value].forEach(function (type) { type.setMap(null) })
+        cachedTypesMap[box.value].forEach(function (type) {
+            type.setMap(null)
+        })
+    }
+}
+
+function onMenuGraphAction(box) {
+    if (box.checked) {
+        switch (box.value) {
+            case "vertices":
+                if (vertexMarkers.length === 0) {
+                    //todo add alert with confirmation
+                    initVertices();
+                } else {
+                    vertexMarkers.forEach(function (marker) {
+                        marker.setMap(map);
+                    })
+                }
+                break;
+
+            case "edges":
+                if (edgesPolyLines.length === 0) {
+                    //todo add alert with confirmation
+                    initEdges();
+                } else {
+                    edgesPolyLines.forEach(function (line) {
+                        line.setMap(map);
+                    })
+                }
+                break;
+
+            case "startVertices":
+                if (startVerticesPolyLines.length === 0) {
+                    //todo add alert with confirmation
+                    initStartVertices();
+                } else {
+                    startVerticesPolyLines.forEach(function (line) {
+                        line.setMap(map);
+                    })
+                }
+                break;
+        }
+    } else {
+        switch (box.value) {
+            case "vertices":
+                vertexMarkers.forEach(function (marker) {
+                    marker.setMap(null);
+                });
+                break;
+
+            case "edges":
+                edgesPolyLines.forEach(function (edgeLine) {
+                    edgeLine.setMap(null);
+                });
+                break;
+
+            case "startVertices":
+                startVerticesPolyLines.forEach(function (marker) {
+                    marker.setMap(null);
+                });
+                break;
+        }
     }
 }
