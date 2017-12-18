@@ -46,4 +46,10 @@ public class StatisticController {
         StatisticDto statisticDto = new StatisticDto(vertex.getLocation(), agentCount);
         return new ResponseEntity<>(statisticDto, HttpStatus.OK);
     }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/uptime")
+    public ResponseEntity<Double> uptime(){
+        Double uptime = timeService.countTimeDifference();
+        return new ResponseEntity<>(uptime, HttpStatus.OK);
+    }
 }

@@ -39,11 +39,11 @@ public class Vertex {
     }
 
     public void setAgent(Agent agent) {
-        this.agent = agent;
-
-        if(agent != null && !this.agent.equals(agent)){
+        if(agent != null && !agent.equals(this.agent)){
             agentsCount = agentsCount + 1;
         }
+
+        this.agent = agent;
     }
 
     private static Long staticId = 1L;
