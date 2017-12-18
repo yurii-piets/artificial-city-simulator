@@ -18,12 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "/statistic")
 public class StatisticController {
 
-    private final static Double MAGIC_NUMBER = 0.25;
+    private final static Double MAGIC_NUMBER = 4.0;
 
     private final Graph graph;
 
     private final TimeService timeService;
-
 
     @Autowired
     public StatisticController(GraphService graphService, TimeService timeService) {
@@ -39,9 +38,11 @@ public class StatisticController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        Double hourDifference = timeService.countTimeDifference() * MAGIC_NUMBER;
+        Integer agentsCount = vertex.getAgentsCount();
+        Double hourDifference = timeService.countTimeDifference();
+        Double rescaledHourDifference = hourDifference * MAGIC_NUMBER;
 
-        int agentCount = hourDifference != 0 ? (int) (vertex.getAgentsCount() / hourDifference) : vertex.getAgentsCount();
+        int agentCount = rescaledHourDifference < 1 ? (int) (agentsCount / rescaledHourDifference) : agentsCount;
 
         StatisticDto statisticDto = new StatisticDto(vertex.getLocation(), agentCount);
         return new ResponseEntity<>(statisticDto, HttpStatus.OK);
