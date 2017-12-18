@@ -14,7 +14,7 @@ function initGoogleMap(centerLocation) {
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
 
-    iniMapListener();
+    initMapListener();
 
     initStatics();
     initWays();
@@ -27,7 +27,7 @@ function initGoogleMap(centerLocation) {
     setInterval(processDeadAgents, 1000);
 }
 
-function iniMapListener() {
+function initMapListener() {
     map.addListener('click', function (event) {
         var latitude = event.latLng.lat();
         var longitude = event.latLng.lng();
