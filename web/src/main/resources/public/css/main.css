@@ -1,0 +1,32 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#map {
+    height: 960px;
+}
+
+#menu-bar {
+    width: 15%;
+    height: 100%;
+    position: fixed;
+    background-color: rgba(151, 151, 151, 0.8);
+    z-index: 10;
+
+    overflow: auto;
+
+    display: none;
+}
+
+#menu-bar-button {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    z-index: 11;
+}
+
+li {
+    list-style: none;
+}
