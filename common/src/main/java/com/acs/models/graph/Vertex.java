@@ -6,7 +6,6 @@ import com.acs.models.statics.StaticPoint;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -21,8 +20,9 @@ public class Vertex {
 
     private final Location location;
 
-    @Setter
     private Agent agent;
+
+    private Integer agentsCount = 0;
 
     @JsonIgnore
     private List<StaticPoint> staticPoints = new LinkedList<>();
@@ -36,6 +36,14 @@ public class Vertex {
 
     public boolean addReachableVertex(Vertex vertex) {
         return reachableVertices.add(vertex);
+    }
+
+    public void setAgent(Agent agent) {
+        if(agent != null && !agent.equals(this.agent)){
+            agentsCount = agentsCount + 1;
+        }
+
+        this.agent = agent;
     }
 
     private static Long staticId = 1L;

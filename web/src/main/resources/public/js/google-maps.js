@@ -14,6 +14,8 @@ function initGoogleMap(centerLocation) {
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
 
+    initMapListener();
+
     initStatics();
     initWays();
 
@@ -23,4 +25,16 @@ function initGoogleMap(centerLocation) {
         200);
 
     setInterval(processDeadAgents, 1000);
+}
+
+function initMapListener() {
+    map.addListener('click', function (event) {
+        var latitude = event.latLng.lat();
+        var longitude = event.latLng.lng();
+
+        $.ajax({
+            url: REST_URL + 'statistic?' + 'longitude=' + longitude + '&' + 'latitude=' + latitude,
+            error: ajaxErrorHandler
+        }).then(showStatistic);
+    })
 }
