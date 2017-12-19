@@ -1,6 +1,6 @@
 allprojects {
     group = 'com.artificial-city-simulator'
-    version = '0.0.12-SNAPSHOT'
+    version = '0.2.0-SNAPSHOT'
 
     ext {
         applicationName = 'artificial-city-simulator'
