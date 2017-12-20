@@ -12,4 +12,5 @@ actuator:
   password: f19f555c0d327ea86fef73c5efd09697
 
 management.contextPath: /actuator
+azure.basic.url: http://artificial-city-simulation.azurewebsites.net
 logging.file: log/artificial-city-simulator.log
