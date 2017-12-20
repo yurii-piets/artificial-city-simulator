@@ -1,5 +1,4 @@
-#osm.map.file.path: osm/map-kiev-pznk.osm
-osm.map.file.path: osm/map-piastowska-debug.osm
+osm.map.file.path: osm/map-kiev-pznk.osm
 
 simulation:
   map.correction.reachable.max: 5.0
