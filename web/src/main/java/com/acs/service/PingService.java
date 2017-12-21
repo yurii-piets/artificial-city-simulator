@@ -1,4 +1,4 @@
-package com.acs;
+package com.acs.service;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -16,7 +16,7 @@ public class PingService {
     @Value("${azure.basic.url}")
     private String azureUrl;
 
-    @Scheduled(fixedDelay = 5 * 1000 * 60)
+    @Scheduled(fixedDelay = 1 * 1000 * 60)
     public void ping() {
         RestTemplate restTemplate = new RestTemplate();
         String pingUrl = azureUrl + "/ping";
