@@ -13,4 +13,3 @@ actuator:
 
 management.contextPath: /actuator
 azure.basic.url: http://artificial-city-simulation.azurewebsites.net
-logging.file: log/artificial-city-simulator.log

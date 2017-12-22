@@ -22,7 +22,7 @@ function initGoogleMap(centerLocation) {
     setInterval(
         initAgents,
         // initAgentsWithPagination,
-        200);
+        400);
 
     setInterval(processDeadAgents, 1000);
 }
