@@ -49,7 +49,7 @@ public class StaticsController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/statics/lights")
     public ResponseEntity<?> lights() {
-        Set<StaticPoint> lights =  parserService.getStatics().stream()
+        Set<StaticPoint> lights = parserService.getStatics().stream()
                 .filter(light -> light.getType() == StaticType.LIGHTS)
                 .collect(Collectors.toSet());
 

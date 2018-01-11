@@ -10,9 +10,7 @@ import java.util.LinkedList;
 public class Road {
 
     private final Long id = id();
-
     private Deque<Location> points = new LinkedList<>();
-
     private RoadType type;
 
     public Road(RoadType roadType) {

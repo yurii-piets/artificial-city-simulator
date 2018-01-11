@@ -67,7 +67,7 @@ function showVertex(vertex) {
     vertexMarkers.push(marker)
 }
 
-function showStartVertex(startVertex){
+function showStartVertex(startVertex) {
     var marker = new google.maps.Marker({
         position: {lat: startVertex.location.latitude, lng: startVertex.location.longitude},
         label: startVertex.id.toString(),

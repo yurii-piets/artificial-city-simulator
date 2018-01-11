@@ -26,7 +26,7 @@ function getAndDrawWay(id) {
 }
 
 function updateLights(box) {
-    if(box === null || box === undefined){
+    if (box === null || box === undefined) {
         box = document.getElementById('lights');
     }
 

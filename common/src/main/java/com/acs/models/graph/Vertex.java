@@ -39,7 +39,7 @@ public class Vertex {
     }
 
     public void setAgent(Agent agent) {
-        if(agent != null && !agent.equals(this.agent)){
+        if (agent != null && !agent.equals(this.agent)) {
             agentsCount = agentsCount + 1;
         }
 

@@ -22,6 +22,8 @@ public class GraphService {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 
+    private final ParserService parserService;
+
     @Value("${simulation.map.correction.reachable.max}")
     private Double maxReachable;
 
@@ -30,8 +32,6 @@ public class GraphService {
 
     @Getter
     private Graph graph = new Graph();
-
-    private final ParserService parserService;
 
     @Autowired
     public GraphService(ParserService parserService) {

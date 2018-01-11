@@ -25,17 +25,17 @@ public class Agent implements Comparable<Agent> {
         this.vertex = vertex;
     }
 
-    public void setVertex(Vertex vertex) {
-        this.vertex = vertex;
-        if(vertex != null) {
-            this.location = vertex.getLocation();
-        }
-    }
-
     private static Long staticId = 1L;
 
     private static Long id() {
         return staticId++;
+    }
+
+    public void setVertex(Vertex vertex) {
+        this.vertex = vertex;
+        if (vertex != null) {
+            this.location = vertex.getLocation();
+        }
     }
 
     @Override
@@ -43,4 +43,3 @@ public class Agent implements Comparable<Agent> {
         return id.compareTo(o.id);
     }
 }
-

@@ -45,7 +45,7 @@ public class AgentPoolController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/objects")
-    public ResponseEntity<Set<Agent>> agentsObjectsPost(@RequestBody Set<Long> ids){
+    public ResponseEntity<Set<Agent>> agentsObjectsPost(@RequestBody Set<Long> ids) {
         Set<Agent> agents = agentPool.getAgents().stream()
                 .filter(a -> ids.contains(a.getId()))
                 .collect(Collectors.toSet());
@@ -54,7 +54,7 @@ public class AgentPoolController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/dead/ids")
-    public ResponseEntity<Set<Long>> deadAgents(){
+    public ResponseEntity<Set<Long>> deadAgents() {
         Set<Long> deadAgentsIds = agentPool.getDeadAgents().stream()
                 .map(Agent::getId)
                 .collect(Collectors.toSet());
