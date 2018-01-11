@@ -14,6 +14,8 @@ public class StaticPoint {
 
     private volatile boolean locked = false;
 
+    private Relation relation;
+
     public StaticPoint(Location location, StaticType type) {
         this.location = location;
         this.type = type;
