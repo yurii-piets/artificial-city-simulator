@@ -74,6 +74,7 @@ public class LightsSimulatorImpl implements LightsSimulator {
 
             if (DistanceAlgorithm.distance(rootLight.getLocation(), light.getLocation()) < REACHABLE_DISTANCE) {
                 relation.addStaticPoint(light);
+                light.setRelation(relation);
             }
         }
     }
