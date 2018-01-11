@@ -6,7 +6,7 @@ import com.acs.models.graph.Vertex;
 import com.acs.models.statics.StaticPoint;
 import com.acs.pool.def.AgentPool;
 import com.acs.service.GraphService;
-import com.acs.simulator.def.Simulator;
+import com.acs.simulator.def.AgentSimulator;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 @Service
-public class AgentSimulator implements Simulator {
+public class AgentSimulatorImpl implements AgentSimulator {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 
@@ -32,8 +32,8 @@ public class AgentSimulator implements Simulator {
     private final Queue<Agent> queueToAppear = new LinkedBlockingQueue<>();
 
     @Autowired
-    public AgentSimulator(AgentPool pool,
-                          GraphService graphService) {
+    public AgentSimulatorImpl(AgentPool pool,
+                              GraphService graphService) {
         this.pool = pool;
         this.graphService = graphService;
     }

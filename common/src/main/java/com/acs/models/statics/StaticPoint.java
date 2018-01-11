@@ -4,7 +4,7 @@ import com.acs.models.Location;
 import lombok.Data;
 
 @Data
-public class StaticPoint {
+public class StaticPoint implements Comparable<StaticPoint> {
 
     private final Long id = id();
 
@@ -25,5 +25,10 @@ public class StaticPoint {
 
     private static Long id() {
         return staticId++;
+    }
+
+    @Override
+    public int compareTo(StaticPoint o) {
+        return id.compareTo(o.getId());
     }
 }
