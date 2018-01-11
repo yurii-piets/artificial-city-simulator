@@ -43,6 +43,9 @@ public class LightsSimulatorImpl implements LightsSimulator {
 
     private void initRelations() {
         logger.info("Searching for lights relations.");
+        // TODO: 11/01/2018 find all lights that can be reachable from current vertex in distance
+        // TODO: 11/01/2018 check if light is not already in relations
+        // TODO: 11/01/2018 add light to relation
     }
 
     private void initLightsWithoutRelations() {

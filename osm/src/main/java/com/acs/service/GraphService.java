@@ -129,6 +129,7 @@ public class GraphService {
             Location location = staticPoint.getLocation();
             Vertex vertex = graph.getClosestVertexForLocation(location);
             vertex.addStaticPoint(staticPoint);
+            staticPoint.setVertex(vertex);
         }
     }
 
