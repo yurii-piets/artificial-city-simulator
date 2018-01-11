@@ -7,14 +7,14 @@ import java.util.Date;
 @Service
 public class TimeService {
 
-    private final Date startTime = new Date();
+    private final Date startDate = new Date();
 
     public Double countTimeDifference() {
-        Date actualTime = new Date();
-        long diff = actualTime.getTime() - startTime.getTime();
+        Date actualDate = new Date();
 
-        double diffHours = (double) diff / (60 * 60 * 1000) % 24;
+        long diffMillis = actualDate.getTime() - startDate.getTime();
+        double diffBasic = (double) diffMillis / (60 * 60 * 1000);
 
-        return diffHours;
+        return (diffBasic / 24) + (diffBasic % 24);
     }
 }
