@@ -27,6 +27,7 @@ public class ApplicationStartup {
     public void postConstruct() {
         logger.info("Starting agent simulation.");
         agentSimulator.simulate();
+
         logger.info("Starting lights simulation.");
         lightsSimulator.simulate();
     }
