@@ -47,6 +47,15 @@ public class StaticsController {
         return new ResponseEntity<>(types, HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/statics/lights")
+    public ResponseEntity<?> lights() {
+        Set<StaticPoint> lights =  parserService.getStatics().stream()
+                .filter(light -> light.getType() == StaticType.LIGHTS)
+                .collect(Collectors.toSet());
+
+        return new ResponseEntity<>(lights, HttpStatus.OK);
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/ways/ids")
     public ResponseEntity waysIds() {
         Set<Long> ids = parserService.getRoads().stream()
