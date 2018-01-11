@@ -6,7 +6,7 @@ function showStatistic(stat) {
         map: map
     });
 
-    statisticMarker.addListener('click', function () {
+    statisticMarker.addListener('rightclick', function () {
         statisticMarker.setMap(null);
     })
 }
