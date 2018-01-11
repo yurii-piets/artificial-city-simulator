@@ -2,7 +2,6 @@ package com.acs.models.statics;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class Relation {
 
@@ -23,9 +22,5 @@ public class Relation {
 
     public void addStaticPoint(StaticPoint staticPoint) {
         members.add(staticPoint);
-    }
-
-    public void addAllStaticPoints(Set<StaticPoint> reachableLights) {
-        members.addAll(reachableLights);
     }
 }

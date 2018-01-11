@@ -2,6 +2,7 @@ package com.acs.models.statics;
 
 import com.acs.models.Location;
 import com.acs.models.graph.Vertex;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 @Data
@@ -15,8 +16,10 @@ public class StaticPoint implements Comparable<StaticPoint> {
 
     private volatile boolean locked = false;
 
+    @JsonIgnore
     private Relation relation;
 
+    @JsonIgnore
     private Vertex vertex;
 
     public StaticPoint(Location location, StaticType type) {

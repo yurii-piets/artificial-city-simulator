@@ -1,5 +1,6 @@
 package com.acs.simulator.impl;
 
+import com.acs.algorithm.DistanceAlgorithm;
 import com.acs.models.statics.Relation;
 import com.acs.models.statics.StaticPoint;
 import com.acs.models.statics.StaticType;
@@ -12,6 +13,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.TimeUnit;
@@ -20,11 +22,13 @@ import java.util.stream.Collectors;
 @Service
 public class LightsSimulatorImpl implements LightsSimulator {
 
+    private static final int REACHABLE_DISTANCE = 50;
+
     private final Logger logger = LogManager.getLogger(this.getClass());
 
     private final Set<StaticPoint> lights;
 
-    private final Set<Relation> relations = new ConcurrentSkipListSet<>();
+    private final Set<Relation> relations = new HashSet<>();
 
     private final Set<StaticPoint> withoutRelations = new ConcurrentSkipListSet<>();
 
@@ -43,9 +47,35 @@ public class LightsSimulatorImpl implements LightsSimulator {
 
     private void initRelations() {
         logger.info("Searching for lights relations.");
-        // TODO: 11/01/2018 find all lights that can be reachable from current vertex in distance
-        // TODO: 11/01/2018 check if light is not already in relations
-        // TODO: 11/01/2018 add light to relation
+        for (StaticPoint light : lights) {
+            if (light.getRelation() != null) {
+                continue;
+            }
+
+            Relation relation = new Relation();
+            relations.add(relation);
+
+            relation.addStaticPoint(light);
+            light.setRelation(relation);
+
+            findAndInitRelatedLights(light, relation);
+        }
+    }
+
+    private void findAndInitRelatedLights(StaticPoint rootLight, Relation relation) {
+        for (StaticPoint light : lights) {
+            if (rootLight == light) {
+                continue;
+            }
+
+            if (light.getRelation() != null) {
+                continue;
+            }
+
+            if (DistanceAlgorithm.distance(rootLight.getLocation(), light.getLocation()) < REACHABLE_DISTANCE) {
+                relation.addStaticPoint(light);
+            }
+        }
     }
 
     private void initLightsWithoutRelations() {
