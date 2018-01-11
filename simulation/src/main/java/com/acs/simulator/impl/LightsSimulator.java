@@ -26,6 +26,8 @@ public class LightsSimulator implements Simulator {
 
     private final Set<Relation> relations = new ConcurrentSkipListSet<>();
 
+    private final Set<StaticPoint> withoutRelations = new ConcurrentSkipListSet<>();
+
     @Autowired
     public LightsSimulator(ParserService parserService) {
         this.lights = parserService.getStatics().stream()
@@ -36,10 +38,16 @@ public class LightsSimulator implements Simulator {
     @PostConstruct
     public void postConstruct() {
         initRelations();
+        initLightsWithoutRelations();
     }
 
     private void initRelations() {
-        // TODO: 11/01/2018 algorithm to find relations
+    }
+
+    private void initLightsWithoutRelations() {
+        lights.stream()
+                .filter(light -> light.getRelation() == null)
+                .forEach(withoutRelations::add);
     }
 
     @Async
@@ -57,6 +65,7 @@ public class LightsSimulator implements Simulator {
 
     private void oneStep() {
         relations.forEach(Relation::next);
+        withoutRelations.forEach(light -> light.setLocked(!light.isLocked()));
     }
 
     @Override
