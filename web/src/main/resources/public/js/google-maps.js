@@ -20,9 +20,9 @@ function initGoogleMap(centerLocation) {
     initWays();
 
     setInterval(
-        // initAgents,
-        initAgentsWithPagination,
-        200);
+        initAgents,
+        // initAgentsWithPagination,
+        500);
 
     setInterval(processDeadAgents, 1000);
 }
