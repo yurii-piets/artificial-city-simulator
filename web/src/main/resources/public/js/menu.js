@@ -1,4 +1,7 @@
-var checkboxPattern = "<li style=\"list-style: none;\"><input type=\"checkbox\" onclick=\"onMenuCheckBoxAction(this);\" class=\"checkTypes\" value=\"${value}\">${value}</li>";
+var CHECKBOX_PATTERN = "<li style=\"list-style: none;\">" +
+    "<input type=\"checkbox\" onclick=\"onMenuCheckBoxAction(this);\" class=\"checkTypes\" value=\"${value}\" id =\"${value}\">${value}" +
+    "</li>";
+var TYPE_REPLACE_PATTERN = /\${value}/g;
 var menuOpen = false;
 
 function onMenuBarClick() {
@@ -25,7 +28,7 @@ function createListOfWayTypes() {
     }).then(function (wayTypes) {
         var ul = $('#road-type-enumeration');
         wayTypes.forEach(function (type) {
-            var html = checkboxPattern.replace("${value}", type).replace("${value}", type);
+            var html = CHECKBOX_PATTERN.replace(TYPE_REPLACE_PATTERN, type);
             ul.html(ul.html() + html);
         });
     });
@@ -38,7 +41,7 @@ function createListOfStaticsTypes() {
     }).then(function (staticTypes) {
         var ul = $('#static-type-enumeration');
         staticTypes.forEach(function (type) {
-            var html = checkboxPattern.replace("${value}", type).replace("${value}", type);
+            var html = CHECKBOX_PATTERN.replace(TYPE_REPLACE_PATTERN, type);
             ul.html(ul.html() + html);
         });
     });
@@ -47,6 +50,11 @@ function createListOfStaticsTypes() {
 function onMenuCheckBoxAction(box) {
     if (cachedTypesMap[box.value] === undefined) {
         console.log(box.value + " contains 0 values");
+        return;
+    }
+
+    if (box.value === 'lights' && box.checked) {
+        updateLights(box);
         return;
     }
 

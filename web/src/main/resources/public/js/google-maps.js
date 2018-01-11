@@ -25,6 +25,8 @@ function initGoogleMap(centerLocation) {
         400);
 
     setInterval(processDeadAgents, 1000);
+
+    setInterval(updateLights, 5000);
 }
 
 function initMapListener() {
