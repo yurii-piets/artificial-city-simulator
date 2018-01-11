@@ -1,6 +1,6 @@
 package com.acs.rest.controller;
 
-import com.acs.PingService;
+import com.acs.service.PingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
