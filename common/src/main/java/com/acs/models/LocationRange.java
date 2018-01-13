@@ -7,6 +7,7 @@ import lombok.Getter;
 @Builder
 public class LocationRange {
 
+    // TODO: 13/01/2018 change fields to location
     private Double minLat;
     private Double maxLat;
 
