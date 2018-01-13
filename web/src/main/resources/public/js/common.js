@@ -1,5 +1,4 @@
 const REST_URL = "http://localhost:8080/";
-// const REST_URL = "/";
 
 function ajaxErrorHandler(jqXHR, exception) {
     var msg = '';

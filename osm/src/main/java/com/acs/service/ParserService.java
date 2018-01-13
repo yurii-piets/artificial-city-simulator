@@ -35,10 +35,10 @@ import java.util.Map;
 @Service
 public class ParserService {
 
+    private final Logger logger = LogManager.getLogger(this.getClass());
+
     @Value("${osm.map.file.path}")
     private String OSM_MAP_FILE;
-
-    private final Logger logger = LogManager.getLogger(this.getClass());
 
     @Getter
     private List<StaticPoint> statics = new ArrayList<>();
@@ -139,7 +139,7 @@ public class ParserService {
             Document document = documentBuilder.parse(file);
             org.w3c.dom.Element root = document.getDocumentElement();
             NodeList bounds = root.getElementsByTagName("bounds");
-            org.w3c.dom.Node bound =  bounds.item(0);
+            org.w3c.dom.Node bound = bounds.item(0);
 
             String minLat = bound.getAttributes().getNamedItem("minlat").getNodeValue();
             String maxLat = bound.getAttributes().getNamedItem("maxlat").getNodeValue();

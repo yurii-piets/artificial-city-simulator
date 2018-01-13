@@ -30,7 +30,7 @@ public enum RoadType {
      */
     YES, NO, PROPOSED, UNCLASSIFIED, UNKNOWN, OTHER;
 
-    public static Boolean isInCarGroup(RoadType roadType){
+    public static Boolean isInCarGroup(RoadType roadType) {
         return roadType == RoadType.PRIMARY_LINK
                 || roadType == RoadType.SECONDARY_LINK
                 || roadType == RoadType.PRIMARY

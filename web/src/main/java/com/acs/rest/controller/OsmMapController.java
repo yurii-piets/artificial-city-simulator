@@ -21,7 +21,7 @@ public class OsmMapController {
     }
 
     @RequestMapping(path = "/center")
-    public ResponseEntity<Location> center(){
+    public ResponseEntity<Location> center() {
         LocationRange locationRange = parserService.getLocationRange();
         Location locationCenter = new Location((locationRange.getMinLng() + locationRange.getMaxLng()) / 2,
                 (locationRange.getMinLat() + locationRange.getMaxLat()) / 2);

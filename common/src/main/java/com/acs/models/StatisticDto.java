@@ -1,10 +1,8 @@
 package com.acs.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Value;
 
-@Data
-@AllArgsConstructor
+@Value
 public class StatisticDto {
 
     private final Location location;
