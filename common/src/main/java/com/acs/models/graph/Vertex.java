@@ -20,9 +20,10 @@ public class Vertex {
 
     private final Location location;
 
-    private Agent agent;
-
     private Integer agentsCount = 0;
+
+    @JsonIgnore
+    private Agent agent;
 
     @JsonIgnore
     private List<StaticPoint> staticPoints = new LinkedList<>();
@@ -39,7 +40,7 @@ public class Vertex {
     }
 
     public void setAgent(Agent agent) {
-        if(agent != null && !agent.equals(this.agent)){
+        if (agent != null && !agent.equals(this.agent)) {
             agentsCount = agentsCount + 1;
         }
 

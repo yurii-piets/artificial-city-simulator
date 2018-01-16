@@ -2,7 +2,7 @@ plugins {
     id 'org.springframework.boot' version '1.5.4.RELEASE'
 }
 
-processResources{
+processResources {
     doLast {
         if (version.contains('RELEASE')) {
             File file = file("${buildDir}/resources/main/public/js/common.js")
@@ -18,7 +18,7 @@ processResources{
     }
 }
 
-dependencies{
+dependencies {
     compile project(":common")
     compile project(":osm")
     compile project(":simulation")

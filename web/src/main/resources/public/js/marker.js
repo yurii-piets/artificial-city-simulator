@@ -38,7 +38,7 @@ function cachePolylineForWay(way) {
 
 function deleteMarker(id) {
     var deadAgentMarker = agentMarkers[id];
-    if(deadAgentMarker !== undefined){
+    if (deadAgentMarker !== undefined) {
         deadAgentMarker.setMap(null);
     }
 }
@@ -59,6 +59,14 @@ function getIconForAgentType(agentType) {
             return "http://maps.google.com/mapfiles/ms/icons/green-dot.png";
         case "UNKNOWN":
             return "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
+    }
+}
+
+function getIconForLight(light) {
+    if (light.locked) {
+        return "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
+    } else {
+        return "http://maps.google.com/mapfiles/ms/icons/green-dot.png";
     }
 }
 

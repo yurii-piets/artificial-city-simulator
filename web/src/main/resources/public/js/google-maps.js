@@ -20,11 +20,13 @@ function initGoogleMap(centerLocation) {
     initWays();
 
     setInterval(
-        // initAgents,
-        initAgentsWithPagination,
-        200);
+        initAgents,
+        // initAgentsWithPagination,
+        500);
 
     setInterval(processDeadAgents, 1000);
+
+    setInterval(updateLights, 5000);
 }
 
 function initMapListener() {

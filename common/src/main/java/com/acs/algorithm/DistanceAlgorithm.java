@@ -11,9 +11,10 @@ public class DistanceAlgorithm {
 
     /**
      * Calculates a great-circle distance (distance between two points on the surface of a sphere) using Haversine formula.
-     *
+     * <p>
      * param Location location1 location of first point
      * param Location location2 location of second point
+     *
      * @return Distance rounded to full meters
      * @see <a href="https://en.wikipedia.org/wiki/Haversine_formula">http://wikipedia.org</a>
      */

@@ -39,7 +39,7 @@ public class AgentPoolImpl implements AgentPool {
     }
 
     @Override
-    public void kill(Agent agent){
+    public void kill(Agent agent) {
         agents.remove(agent);
         deadAgents.add(agent);
     }

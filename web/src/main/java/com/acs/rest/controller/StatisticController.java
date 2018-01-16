@@ -49,7 +49,7 @@ public class StatisticController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/uptime")
-    public ResponseEntity<Double> uptime(){
+    public ResponseEntity<Double> uptime() {
         Double uptime = timeService.countTimeDifference();
         return new ResponseEntity<>(uptime, HttpStatus.OK);
     }

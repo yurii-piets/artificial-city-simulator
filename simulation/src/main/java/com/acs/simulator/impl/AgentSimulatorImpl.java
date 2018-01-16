@@ -6,13 +6,12 @@ import com.acs.models.graph.Vertex;
 import com.acs.models.statics.StaticPoint;
 import com.acs.pool.def.AgentPool;
 import com.acs.service.GraphService;
-import com.acs.simulator.def.Simulator;
+import com.acs.simulator.def.AgentSimulator;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.Queue;
@@ -21,9 +20,8 @@ import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-@Primary
-@Component
-public class RSimulator implements Simulator {
+@Service
+public class AgentSimulatorImpl implements AgentSimulator {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 
@@ -34,13 +32,10 @@ public class RSimulator implements Simulator {
     private final Queue<Agent> queueToAppear = new LinkedBlockingQueue<>();
 
     @Autowired
-    public RSimulator(AgentPool pool,
-                      GraphService graphService,
-                      StaticSimulator staticSimulator) {
+    public AgentSimulatorImpl(AgentPool pool,
+                              GraphService graphService) {
         this.pool = pool;
         this.graphService = graphService;
-//        uncomment next line when bug with 0 vertices will be fixed
-//        staticSimulator.startLightsDaemon();
     }
 
     @PostConstruct
@@ -58,9 +53,9 @@ public class RSimulator implements Simulator {
 
     private void createRandomAgent(Set<Vertex> startVertices) {
         Vertex vertex = randomValueFromSet(startVertices);
-        if(vertex == null){
+        if (vertex == null) {
             vertex = randomValueFromSet(graphService.getGraph().getVertices());
-            if(vertex == null) {
+            if (vertex == null) {
                 return;
             }
         }
@@ -118,9 +113,9 @@ public class RSimulator implements Simulator {
             pool.kill(agent);
             return null;
         } else if (reachableVertices.size() == 1) {
-            Vertex vertex = reachableVertices.stream().findFirst().get();
+            Vertex vertex = reachableVertices.stream().findFirst().orElse(null);
 
-            if (vertex == agent.getVertex()) {
+            if (vertex != null && vertex == agent.getVertex()) {
                 vertex.setAgent(null);
                 pool.kill(agent);
                 return null;
@@ -210,7 +205,7 @@ public class RSimulator implements Simulator {
                     }
                 }
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                logger.error("Unexpected: ", e);
             }
         }).start();
     }
