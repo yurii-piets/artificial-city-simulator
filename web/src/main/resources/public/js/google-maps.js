@@ -21,7 +21,6 @@ function initGoogleMap(centerLocation) {
 
     setInterval(
         initAgents,
-        // initAgentsWithPagination,
         500);
 
     setInterval(processDeadAgents, 1000);

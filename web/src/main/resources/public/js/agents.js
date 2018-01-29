@@ -1,10 +1,16 @@
+var lastRequestSuccessful = true;
+
 function initAgents() {
-    $.ajax({
-        url: REST_URL + 'agents/objects',
-        error: ajaxErrorHandler
-    }).then(function (agents) {
-        agents.forEach(createMarkerForAgent);
-    });
+    if (lastRequestSuccessful) {
+        lastRequestSuccessful = false;
+        $.ajax({
+            url: REST_URL + 'agents/objects',
+            error: ajaxErrorHandler
+        }).then(function (agents) {
+            agents.forEach(createMarkerForAgent);
+            lastRequestSuccessful = true;
+        });
+    }
 }
 
 function processDeadAgents() {
