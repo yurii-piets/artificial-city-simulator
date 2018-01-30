@@ -28,6 +28,7 @@ subprojects {
         compile 'org.springframework.boot:spring-boot-starter-web:1.5.4.RELEASE'
 
         testCompile 'junit:junit:4.12'
+        testCompile group: 'org.springframework', name: 'spring-test', version: '2.5'
         testCompile group: 'org.mockito', name: 'mockito-all', version: '1.9.5'
     }
 }

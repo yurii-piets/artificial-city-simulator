@@ -2,19 +2,21 @@ package com.acs.service;
 
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Service
 public class TimeService {
 
-    private final Date startDate = new Date();
+    private final LocalDateTime startDateTime = LocalDateTime.now();
 
     public Double countTimeDifference() {
-        Date actualDate = new Date();
+        LocalDateTime actualDateTime = LocalDateTime.now();
 
-        long diffMillis = actualDate.getTime() - startDate.getTime();
-        double diffBasic = (double) diffMillis / (60 * 60 * 1000);
+        LocalDateTime tempDateTime = LocalDateTime.from(startDateTime);
+        double hours = tempDateTime.until(actualDateTime, ChronoUnit.HOURS);
+        double minutes = tempDateTime.until(actualDateTime, ChronoUnit.MINUTES);
 
-        return (diffBasic / 24) + (diffBasic % 24);
+        return hours + (minutes % 60 / 60);
     }
 }
