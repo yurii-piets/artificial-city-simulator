@@ -8,7 +8,6 @@ import com.acs.service.ParserService;
 import com.acs.simulator.def.LightsSimulator;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +31,6 @@ public class LightsSimulatorImpl implements LightsSimulator {
 
     private final Set<StaticPoint> withoutRelations = new ConcurrentSkipListSet<>();
 
-    @Autowired
     public LightsSimulatorImpl(ParserService parserService) {
         this.lights = parserService.getStatics().stream()
                 .filter(point -> point.getType() == StaticType.LIGHTS)

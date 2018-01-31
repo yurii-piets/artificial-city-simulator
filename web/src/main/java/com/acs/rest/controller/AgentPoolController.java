@@ -2,9 +2,7 @@ package com.acs.rest.controller;
 
 import com.acs.models.agent.Agent;
 import com.acs.pool.def.AgentPool;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,16 +15,10 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/agents")
+@RequiredArgsConstructor
 public class AgentPoolController {
 
-    private final Logger logger = LogManager.getLogger(this.getClass());
-
     private final AgentPool agentPool;
-
-    @Autowired
-    public AgentPoolController(AgentPool agentPool) {
-        this.agentPool = agentPool;
-    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/ids")
     public ResponseEntity<Set<Long>> agentsIds() {

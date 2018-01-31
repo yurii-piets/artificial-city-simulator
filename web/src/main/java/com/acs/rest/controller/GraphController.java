@@ -4,7 +4,6 @@ import com.acs.models.graph.Edge;
 import com.acs.models.graph.Graph;
 import com.acs.models.graph.Vertex;
 import com.acs.service.GraphService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +19,6 @@ public class GraphController {
 
     private final Graph graph;
 
-    @Autowired
     public GraphController(GraphService graphService) {
         this.graph = graphService.getGraph();
     }

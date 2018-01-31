@@ -9,15 +9,16 @@ import com.acs.models.statics.Road;
 import com.acs.models.statics.RoadType;
 import com.acs.models.statics.StaticPoint;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 
 @Service
+@RequiredArgsConstructor
 public class GraphService {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
@@ -32,11 +33,6 @@ public class GraphService {
 
     @Getter
     private Graph graph = new Graph();
-
-    @Autowired
-    public GraphService(ParserService parserService) {
-        this.parserService = parserService;
-    }
 
     @PostConstruct
     public void postConstruct() {

@@ -4,21 +4,17 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class JsonPatchService {
 
     private final ObjectMapper mapper;
-
-    @Autowired
-    public JsonPatchService(ObjectMapper mapper) {
-        this.mapper = mapper;
-    }
 
     public <T> Optional patch(String updateBody, T target) throws IOException, JsonPatchException {
         JsonNode patchedNode;

@@ -4,9 +4,9 @@ import com.acs.models.agent.Agent;
 import com.acs.pool.def.AgentPool;
 import com.acs.service.JsonPatchService;
 import com.github.fge.jsonpatch.JsonPatchException;
+import lombok.RequiredArgsConstructor;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +19,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping(value = "/agent")
+@RequiredArgsConstructor
 public class AgentManagementController {
 
     private final AgentPool agentPool;
@@ -26,13 +27,6 @@ public class AgentManagementController {
     private final JsonPatchService patchService;
 
     private final Logger logger = LogManager.getLogger(this.getClass());
-
-    @Autowired
-    public AgentManagementController(AgentPool agentAgentPool,
-                                     JsonPatchService patchService) {
-        this.agentPool = agentAgentPool;
-        this.patchService = patchService;
-    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{agentId}")
     public ResponseEntity agent(@PathVariable Long agentId) {

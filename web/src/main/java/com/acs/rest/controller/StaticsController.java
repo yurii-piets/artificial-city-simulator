@@ -5,7 +5,7 @@ import com.acs.models.statics.RoadType;
 import com.acs.models.statics.StaticPoint;
 import com.acs.models.statics.StaticType;
 import com.acs.service.ParserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,14 +21,10 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping
+@RequiredArgsConstructor
 public class StaticsController {
 
     private final ParserService parserService;
-
-    @Autowired
-    public StaticsController(ParserService parserService) {
-        this.parserService = parserService;
-    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/statics")
     public ResponseEntity statics() {
