@@ -4,8 +4,10 @@ import com.acs.models.Location;
 import com.acs.models.StatisticDto;
 import com.acs.models.graph.Graph;
 import com.acs.models.graph.Vertex;
+import com.acs.service.GraphService;
 import com.acs.service.TimeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +25,12 @@ public class StatisticController {
     private final Graph graph;
 
     private final TimeService timeService;
+
+    @Autowired
+    public StatisticController(GraphService graphService, TimeService timeService) {
+        this.graph = graphService.getGraph();
+        this.timeService = timeService;
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity statistic(@RequestParam Double longitude, @RequestParam Double latitude) {
