@@ -1,4 +1,4 @@
-package com.acs.document;
+package com.acs.database.document;
 
 import com.acs.models.Location;
 import com.acs.models.agent.Agent;
