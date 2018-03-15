@@ -3,13 +3,19 @@ package com.acs.service;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import static com.acs.service.PingService.PING_PROFILE;
+
 @Service
+@Profile(PING_PROFILE)
 public class PingService {
+
+    public final static String PING_PROFILE = "ping";
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 
