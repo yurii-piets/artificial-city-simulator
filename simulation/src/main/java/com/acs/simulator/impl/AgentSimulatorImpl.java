@@ -8,8 +8,8 @@ import com.acs.pool.def.AgentPool;
 import com.acs.service.GraphService;
 import com.acs.simulator.def.AgentSimulator;
 import lombok.RequiredArgsConstructor;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 

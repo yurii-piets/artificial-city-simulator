@@ -7,6 +7,11 @@ simulation:
     max: 1000
     distance: 2
 
+mongo:
+  host: localhost
+  port: 27017
+  database.name: artificial-city-database
+
 actuator:
   username: actuator
   password: f19f555c0d327ea86fef73c5efd09697
