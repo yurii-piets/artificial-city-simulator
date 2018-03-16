@@ -13,7 +13,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
@@ -31,12 +30,6 @@ public class AgentSimulatorImpl implements AgentSimulator {
     private final GraphService graphService;
 
     private final Queue<Agent> queueToAppear = new LinkedBlockingQueue<>();
-
-    @PostConstruct
-    public void postConstruct() {
-        initRandomAgents();
-        initDaemonForQueueToAppear();
-    }
 
     private void initRandomAgents() {
         Set<Vertex> startVertices = graphService.getGraph().getStartVertices();
@@ -71,6 +64,9 @@ public class AgentSimulatorImpl implements AgentSimulator {
     @Async
     @Override
     public void simulate() {
+        initRandomAgents();
+        initDaemonForQueueToAppear();
+
         try {
             while (!Thread.interrupted()) {
                 oneStep();

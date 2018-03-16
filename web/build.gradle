@@ -22,7 +22,7 @@ processResources {
 
             if (file.exists()) {
                 String content = file.getText('UTF-8')
-                content = content.replaceAll("REST_URL = \".*\";", "REST_URL = \"/\";")
+                content = content.replaceAll("REST_URL = \".*\";", "REST_URL = \"/acs/\";")
                 file.write(content, 'UTF-8')
             } else {
                 println 'WARNING: REST_URL cannot be set.'

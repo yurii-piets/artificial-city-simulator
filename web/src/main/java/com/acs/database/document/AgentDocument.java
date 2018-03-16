@@ -4,21 +4,23 @@ import com.acs.models.Location;
 import com.acs.models.agent.Agent;
 import com.acs.models.agent.AgentType;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
-@Document
+@Document(collection = "agents")
+@NoArgsConstructor
 public class AgentDocument {
 
     @Id
-    private final Long id;
+    private Long id;
 
-    private final Location location;
+    private Location location;
 
-    private final AgentType type;
+    private AgentType type;
 
-    private final Long vertexId;
+    private Long vertexId;
 
     public AgentDocument(Agent agent) {
         this.id = agent.getId();

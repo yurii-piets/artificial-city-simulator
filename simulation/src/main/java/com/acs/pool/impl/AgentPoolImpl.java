@@ -6,6 +6,7 @@ import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 
@@ -36,6 +37,11 @@ public class AgentPoolImpl implements AgentPool {
     @Override
     public void save(Agent agent) {
         agents.add(agent);
+    }
+
+    @Override
+    public void saveAll(Collection<Agent> agents) {
+        this.agents.addAll(agents);
     }
 
     @Override

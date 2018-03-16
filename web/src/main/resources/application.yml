@@ -1,11 +1,12 @@
-osm.map.file.path: osm/map-kiev-pznk.osm
+osm.map.file.path: osm/map-piastowska-debug.osm
 
 simulation:
   map.correction.reachable.max: 5.0
   cell.size: 2.0
   unit:
-    max: 1000
+    max: 10
     distance: 2
+    import: true
 
 server:
   servlet.contextPath: /acs
@@ -15,6 +16,8 @@ mongo:
   host: localhost
   port: 27017
   database.name: artificial-city-database
+
+spring.profiles.active:
 
 actuator:
   username: actuator

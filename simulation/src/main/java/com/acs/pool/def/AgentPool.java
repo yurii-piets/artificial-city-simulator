@@ -2,11 +2,13 @@ package com.acs.pool.def;
 
 import com.acs.models.agent.Agent;
 
+import java.util.Collection;
 import java.util.Set;
 
 public interface AgentPool {
 
     void save(Agent agent);
+    void saveAll(Collection<Agent> agents);
     void update(Agent agent);
     void changeAgentsAmount(Integer count);
     void removeById(Long id);

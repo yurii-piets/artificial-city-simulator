@@ -7,10 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
 public class Agent implements Comparable<Agent> {
 
-    private final Long id = id();
+    private final Long id;
 
     private Location location;
 
@@ -18,6 +17,22 @@ public class Agent implements Comparable<Agent> {
 
     @JsonIgnore
     private Vertex vertex;
+
+    @Builder
+    public Agent(Location location, AgentType type, Vertex vertex) {
+        this.location = location;
+        this.type = type;
+        this.vertex = vertex;
+        this.id = id();
+    }
+
+    @Builder
+    public Agent(Location location, AgentType type, Vertex vertex, Long id) {
+        this.location = location;
+        this.type = type;
+        this.vertex = vertex;
+        this.id = id;
+    }
 
     public void setVertex(Vertex vertex) {
         this.vertex = vertex;

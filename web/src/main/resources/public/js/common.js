@@ -1,4 +1,4 @@
-const REST_URL = "http://localhost:8080/acs";
+const REST_URL = "http://localhost:8080/acs/";
 
 function ajaxErrorHandler(jqXHR, exception) {
     var msg = '';
