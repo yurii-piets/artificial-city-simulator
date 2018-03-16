@@ -68,7 +68,10 @@ public class AgentService {
                                 .type(ad.getType())
                                 .location(ad.getLocation())
                                 .id(ad.getId())
-                                .vertex(graph.getClosestVertexForLocation(ad.getLocation()))
+                                .vertex(graph.getVertexById(ad.getId()) == null
+                                        ? graph.getClosestVertexForLocation(ad.getLocation())
+                                        : graph.getVertexById(ad.getId())
+                                )
                                 .build())
                         .collect(Collectors.toList());
 
