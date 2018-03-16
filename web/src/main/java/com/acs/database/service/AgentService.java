@@ -49,13 +49,13 @@ public class AgentService {
                 .map(AgentDocument::new)
                 .collect(Collectors.toList());
 
-        List<AgentDocument> deadAgentDocuments = agentPool.getDeadAgents()
+        List<Long> deadAgentDocumentIds = agentPool.getDeadAgents()
                 .stream()
-                .map(AgentDocument::new)
+                .map(Agent::getId)
                 .collect(Collectors.toList());
 
         agentRepository.saveAll(activeAgentDocuments);
-        agentRepository.deleteAll(deadAgentDocuments);
+        agentRepository.deleteAllById(deadAgentDocumentIds);
     }
 
     public void restoreAgents() {
