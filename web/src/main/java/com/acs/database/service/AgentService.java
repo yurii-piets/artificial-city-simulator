@@ -41,7 +41,7 @@ public class AgentService {
     @Value("${simulation.unit.import}")
     private Boolean importAgentOnStartup;
 
-    @Scheduled(fixedDelay = 1 * 1000 * 60)
+    @Scheduled(fixedDelay = 15 * 1000 * 60)
     public void saveAgents() {
         logger.info("Saving agents to database.");
         List<AgentDocument> activeAgentDocuments = agentPool.getAgents()
