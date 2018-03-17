@@ -12,8 +12,8 @@ subprojects {
     apply plugin: 'idea'
     apply plugin: 'maven'
 
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+    sourceCompatibility = 1.9
+    targetCompatibility = 1.9
 
     repositories {
         mavenCentral()
@@ -23,7 +23,7 @@ subprojects {
     }
 
     dependencies {
-        compile 'org.projectlombok:lombok:1.16.16'
+        compile 'org.projectlombok:lombok:1.16.20'
         compile("org.springframework.boot:spring-boot-starter-web:2.0.0.RELEASE")
 
         testCompile 'junit:junit:4.12'

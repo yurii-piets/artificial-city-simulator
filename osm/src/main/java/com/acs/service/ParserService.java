@@ -147,10 +147,10 @@ public class ParserService {
             String maxLng = bound.getAttributes().getNamedItem("maxlon").getNodeValue();
 
             this.locationRange = LocationRange.builder()
-                    .minLat(new Double(minLat))
-                    .maxLat(new Double(maxLat))
-                    .minLng(new Double(minLng))
-                    .maxLng(new Double(maxLng))
+                    .minLat(Double.valueOf(minLat))
+                    .maxLat(Double.valueOf(maxLat))
+                    .minLng(Double.valueOf(minLng))
+                    .maxLng(Double.valueOf(maxLng))
                     .build();
 
         } catch (IOException | SAXException | ParserConfigurationException e) {
