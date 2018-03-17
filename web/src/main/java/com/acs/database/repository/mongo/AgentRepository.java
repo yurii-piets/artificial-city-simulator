@@ -1,4 +1,4 @@
-package com.acs.database.repository;
+package com.acs.database.repository.mongo;
 
 import com.acs.database.document.AgentDocument;
 import org.springframework.data.mongodb.repository.MongoRepository;
