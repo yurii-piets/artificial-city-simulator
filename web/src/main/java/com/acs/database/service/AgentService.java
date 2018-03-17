@@ -41,7 +41,7 @@ public class AgentService {
     @Value("${simulation.unit.import}")
     private Boolean importAgentOnStartup;
 
-    @Scheduled(fixedDelay = 15 * 1000 * 60)
+    @Scheduled(fixedDelay = 1 * 1000 * 60)
     public void saveAgents() {
         logger.info("Saving agents to database.");
         List<AgentDocument> activeAgentDocuments = agentPool.getAgents()
@@ -54,8 +54,8 @@ public class AgentService {
                 .map(Agent::getId)
                 .collect(Collectors.toList());
 
+        deadAgentDocumentIds.forEach(agentRepository::deleteById);
         agentRepository.saveAll(activeAgentDocuments);
-        agentRepository.deleteAllById(deadAgentDocumentIds);
     }
 
     public void restoreAgents() {
