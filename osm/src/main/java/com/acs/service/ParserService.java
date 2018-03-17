@@ -10,6 +10,7 @@ import info.pavie.basicosmparser.controller.OSMParser;
 import info.pavie.basicosmparser.model.Element;
 import info.pavie.basicosmparser.model.Node;
 import info.pavie.basicosmparser.model.Way;
+import lombok.AccessLevel;
 import lombok.Getter;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
@@ -33,20 +34,19 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Getter
 public class ParserService {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 
+    @Getter(AccessLevel.NONE)
     @Value("${osm.map.file.path}")
     private String OSM_MAP_FILE;
 
-    @Getter
     private List<StaticPoint> statics = new ArrayList<>();
 
-    @Getter
     private List<Road> roads = new ArrayList<>();
 
-    @Getter
     private LocationRange locationRange;
 
     @PostConstruct
