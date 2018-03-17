@@ -5,7 +5,6 @@ import com.acs.pool.def.AgentPool;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -37,44 +36,37 @@ public class AgentPoolImpl implements AgentPool {
         return agents.values();
     }
 
-    @Async
     @Override
     public void save(Agent agent) {
         agents.put(agent.getId(), agent);
     }
 
-    @Async
     @Override
     public void saveAll(Collection<Agent> agents) {
         agents.forEach(a -> this.agents.put(a.getId(), a));
     }
 
-    @Async
     @Override
     public void kill(Agent agent) {
         agents.remove(agent.getId());
         deadAgents.add(agent);
     }
 
-    @Async
     @Override
     public void removeById(Long id) {
         agents.remove(id);
     }
 
-    @Async
     @Override
     public void update(Agent agent) {
         agents.put(agent.getId(), agent);
     }
 
-    @Async
     @Override
     public void changeAgentsAmount(Integer count) {
         maxUnits = count;
     }
 
-    @Async
     @Override
     public void killAll() {
         agents.values().forEach(this::kill);
