@@ -1,6 +1,6 @@
 package com.acs.service;
 
-import com.acs.database.service.AgentService;
+import com.acs.database.service.AgentPersistenceService;
 import com.acs.simulator.def.AgentSimulator;
 import com.acs.simulator.def.LightsSimulator;
 import lombok.AllArgsConstructor;
@@ -20,11 +20,11 @@ public class ApplicationStartup {
 
     private final LightsSimulator lightsSimulator;
 
-    private final AgentService agentService;
+    private final AgentPersistenceService agentPersistenceService;
 
     @PostConstruct
     public void postConstruct() {
-        agentService.restoreAgents();
+        agentPersistenceService.restoreAgents();
 
         logger.info("Starting agent simulation.");
         agentSimulator.simulate();

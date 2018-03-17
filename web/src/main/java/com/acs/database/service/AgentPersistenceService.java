@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class AgentService {
+public class AgentPersistenceService {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 
@@ -30,9 +30,9 @@ public class AgentService {
     private final Graph graph;
 
     @Autowired
-    public AgentService(AgentRepository agentRepository,
-                        AgentPool agentPool,
-                        GraphService graphService) {
+    public AgentPersistenceService(AgentRepository agentRepository,
+                                   AgentPool agentPool,
+                                   GraphService graphService) {
         this.agentRepository = agentRepository;
         this.agentPool = agentPool;
         this.graph = graphService.getGraph();
