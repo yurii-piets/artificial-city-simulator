@@ -5,7 +5,10 @@ import com.acs.models.Location;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Getter
@@ -14,7 +17,7 @@ public class Graph {
 
     private Set<Edge> edges = new HashSet<>();
 
-    private Set<Vertex> vertices = new HashSet<>();
+    private Map<Long, Vertex> vertices = new HashMap<>();
 
     private Set<Vertex> startVertices = new HashSet<>();
 
@@ -29,8 +32,8 @@ public class Graph {
         Vertex sourceVertex = findVertexOrCreateNew(sourceLocation);
         Vertex destinationVertex = findVertexOrCreateNew(destinationLocation);
 
-        vertices.add(sourceVertex);
-        vertices.add(destinationVertex);
+        vertices.put(sourceVertex.getId(), sourceVertex);
+        vertices.put(destinationVertex.getId(), destinationVertex);
 
         sourceVertex.addReachableVertex(destinationVertex);
 
@@ -52,7 +55,7 @@ public class Graph {
     }
 
     private Vertex findVertexByLocation(Location source) {
-        return vertices.stream()
+        return vertices.values().stream()
                 .filter(v -> v.getLocation().equals(source))
                 .findFirst()
                 .orElse(null);
@@ -62,7 +65,7 @@ public class Graph {
         Vertex closestVertex = null;
         Double minDistance = Double.MAX_VALUE;
 
-        for (Vertex vertex : vertices) {
+        for (Vertex vertex : vertices.values()) {
             if (vertex.getLocation().equals(location)) {
                 return vertex;
             }
@@ -75,5 +78,13 @@ public class Graph {
         }
 
         return closestVertex;
+    }
+
+    public Vertex getVertexById(Long id) {
+        return vertices.get(id);
+    }
+
+    public Collection<Vertex> getVertices() {
+        return vertices.values();
     }
 }

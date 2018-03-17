@@ -8,12 +8,12 @@ import com.acs.pool.def.AgentPool;
 import com.acs.service.GraphService;
 import com.acs.simulator.def.AgentSimulator;
 import lombok.RequiredArgsConstructor;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
+import java.util.Collection;
 import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
@@ -32,12 +32,6 @@ public class AgentSimulatorImpl implements AgentSimulator {
 
     private final Queue<Agent> queueToAppear = new LinkedBlockingQueue<>();
 
-    @PostConstruct
-    public void postConstruct() {
-        initRandomAgents();
-        initDaemonForQueueToAppear();
-    }
-
     private void initRandomAgents() {
         Set<Vertex> startVertices = graphService.getGraph().getStartVertices();
         while (pool.getAgents().size() < pool.getMaxUnits()) {
@@ -45,7 +39,7 @@ public class AgentSimulatorImpl implements AgentSimulator {
         }
     }
 
-    private void createRandomAgent(Set<Vertex> startVertices) {
+    private void createRandomAgent(Collection<Vertex> startVertices) {
         Vertex vertex = randomValueFromSet(startVertices);
         if (vertex == null) {
             vertex = randomValueFromSet(graphService.getGraph().getVertices());
@@ -71,6 +65,9 @@ public class AgentSimulatorImpl implements AgentSimulator {
     @Async
     @Override
     public void simulate() {
+        initRandomAgents();
+        initDaemonForQueueToAppear();
+
         try {
             while (!Thread.interrupted()) {
                 oneStep();
@@ -204,7 +201,7 @@ public class AgentSimulatorImpl implements AgentSimulator {
         }).start();
     }
 
-    private Vertex randomValueFromSet(Set<Vertex> set) {
+    private Vertex randomValueFromSet(Collection<Vertex> set) {
         int size = set.size();
         if (size == 0) {
             return null;

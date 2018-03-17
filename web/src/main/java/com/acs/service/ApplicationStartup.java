@@ -1,10 +1,11 @@
 package com.acs.service;
 
+import com.acs.database.service.AgentPersistenceService;
 import com.acs.simulator.def.AgentSimulator;
 import com.acs.simulator.def.LightsSimulator;
 import lombok.AllArgsConstructor;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -19,8 +20,12 @@ public class ApplicationStartup {
 
     private final LightsSimulator lightsSimulator;
 
+    private final AgentPersistenceService agentPersistenceService;
+
     @PostConstruct
     public void postConstruct() {
+        agentPersistenceService.restoreAgents();
+
         logger.info("Starting agent simulation.");
         agentSimulator.simulate();
 
