@@ -41,8 +41,15 @@ public class AgentPersistenceService {
     @Value("${simulation.unit.import}")
     private Boolean importAgentOnStartup;
 
+    @Value("${simulation.unit.export}")
+    private Boolean exportAgents;
+
     @Scheduled(fixedDelay = 15 * 1000 * 60)
     public void saveAgents() {
+        if (!exportAgents) {
+            return;
+        }
+
         logger.info("Saving agents to database.");
         List<AgentDocument> activeAgentDocuments = agentPool.getAgents()
                 .stream()
@@ -59,24 +66,27 @@ public class AgentPersistenceService {
     }
 
     public void restoreAgents() {
-        if (importAgentOnStartup) {
-            if (agentRepository.count() > 0) {
-                logger.info("Restoring agents from database.");
-                List<Agent> agents = agentRepository.findAll().stream()
-                        .map(ad -> Agent.builder()
-                                .location(ad.getLocation())
-                                .type(ad.getType())
-                                .location(ad.getLocation())
-                                .id(ad.getId())
-                                .vertex(graph.getVertexById(ad.getId()) == null
-                                        ? graph.getClosestVertexForLocation(ad.getLocation())
-                                        : graph.getVertexById(ad.getId())
-                                )
-                                .build())
-                        .collect(Collectors.toList());
-
-                agentPool.saveAll(agents);
-            }
+        if (!importAgentOnStartup) {
+            return;
         }
+        if (agentRepository.count() < 1) {
+            return;
+        }
+
+        logger.info("Restoring agents from database.");
+        List<Agent> agents = agentRepository.findAll().stream()
+                .map(ad -> Agent.builder()
+                        .location(ad.getLocation())
+                        .type(ad.getType())
+                        .location(ad.getLocation())
+                        .id(ad.getId())
+                        .vertex(graph.getVertexById(ad.getId()) == null
+                                ? graph.getClosestVertexForLocation(ad.getLocation())
+                                : graph.getVertexById(ad.getId())
+                        )
+                        .build())
+                .collect(Collectors.toList());
+
+        agentPool.saveAll(agents);
     }
 }
