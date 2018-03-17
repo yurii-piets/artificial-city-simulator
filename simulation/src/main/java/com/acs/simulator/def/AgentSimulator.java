@@ -1,7 +1,4 @@
 package com.acs.simulator.def;
 
-public interface AgentSimulator {
-
-    void simulate();
-    void resetSimulation();
+public interface AgentSimulator extends Simulator {
 }
