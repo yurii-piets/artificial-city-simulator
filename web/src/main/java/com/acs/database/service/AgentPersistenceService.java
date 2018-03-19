@@ -1,7 +1,7 @@
 package com.acs.database.service;
 
 import com.acs.database.document.AgentDocument;
-import com.acs.database.repository.mongo.AgentRepository;
+import com.acs.database.repository.mongo.AgentMongoRepository;
 import com.acs.models.agent.Agent;
 import com.acs.models.graph.Graph;
 import com.acs.pool.def.AgentPool;
@@ -23,17 +23,17 @@ public class AgentPersistenceService {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 
-    private final AgentRepository agentRepository;
+    private final AgentMongoRepository agentMongoRepository;
 
     private final AgentPool agentPool;
 
     private final Graph graph;
 
     @Autowired
-    public AgentPersistenceService(AgentRepository agentRepository,
+    public AgentPersistenceService(AgentMongoRepository agentMongoRepository,
                                    AgentPool agentPool,
                                    GraphService graphService) {
-        this.agentRepository = agentRepository;
+        this.agentMongoRepository = agentMongoRepository;
         this.agentPool = agentPool;
         this.graph = graphService.getGraph();
     }
@@ -61,24 +61,24 @@ public class AgentPersistenceService {
                 .map(Agent::getId)
                 .collect(Collectors.toList());
 
-        deadAgentDocumentIds.forEach(agentRepository::deleteById);
-        agentRepository.saveAll(activeAgentDocuments);
+        deadAgentDocumentIds.forEach(agentMongoRepository::deleteById);
+        agentMongoRepository.saveAll(activeAgentDocuments);
 
         logger.info("Saved agents number: [" + activeAgentDocuments.size() + "]");
         logger.info("Deleted agents number: [" + deadAgentDocumentIds.size() + "]");
-        logger.info("Database size: [" + agentRepository.count() + "]");
+        logger.info("Database size: [" + agentMongoRepository.count() + "]");
     }
 
     public void restoreAgents() {
         if (!importAgentOnStartup) {
             return;
         }
-        if (agentRepository.count() < 1) {
+        if (agentMongoRepository.count() < 1) {
             return;
         }
 
-        logger.info("Restoring agents from database: [" + agentRepository.count() + "]");
-        List<Agent> agents = agentRepository.findAll().stream()
+        logger.info("Restoring agents from database: [" + agentMongoRepository.count() + "]");
+        List<Agent> agents = agentMongoRepository.findAll().stream()
                 .map(ad -> Agent.builder()
                         .location(ad.getLocation())
                         .type(ad.getType())
