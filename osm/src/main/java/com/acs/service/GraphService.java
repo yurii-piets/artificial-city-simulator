@@ -144,7 +144,6 @@ public class GraphService {
     }
 
     private Double scale(Double s, Double d, int i, Double n) {
-        Double res = ((d - s) * i / n) + s;
-        return res;
+        return ((d - s) * i / n) + s;
     }
 }

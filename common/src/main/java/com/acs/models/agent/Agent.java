@@ -18,7 +18,6 @@ public class Agent implements Comparable<Agent> {
     @JsonIgnore
     private Vertex vertex;
 
-    @Builder
     public Agent(Location location, AgentType type, Vertex vertex) {
         this.location = location;
         this.type = type;
@@ -32,6 +31,9 @@ public class Agent implements Comparable<Agent> {
         this.type = type;
         this.vertex = vertex;
         this.id = id;
+        if(id > staticId) {
+            staticId = id + 1;
+        }
     }
 
     public void setVertex(Vertex vertex) {

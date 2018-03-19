@@ -50,7 +50,6 @@ public class AgentPersistenceService {
             return;
         }
 
-        logger.info("Saving agents to database.");
         List<AgentDocument> activeAgentDocuments = agentPool.getAgents()
                 .stream()
                 .map(AgentDocument::new)
@@ -63,6 +62,10 @@ public class AgentPersistenceService {
 
         deadAgentDocumentIds.forEach(agentRepository::deleteById);
         agentRepository.saveAll(activeAgentDocuments);
+
+        logger.info("Saved agents number: [" + activeAgentDocuments.size() + "]");
+        logger.info("Deleted agents number: [" + deadAgentDocumentIds.size() + "]");
+        logger.info("Database size: [" + agentRepository.count() + "]");
     }
 
     public void restoreAgents() {
@@ -73,16 +76,16 @@ public class AgentPersistenceService {
             return;
         }
 
-        logger.info("Restoring agents from database.");
+        logger.info("Restoring agents from database: [" + agentRepository.count() + "]");
         List<Agent> agents = agentRepository.findAll().stream()
                 .map(ad -> Agent.builder()
                         .location(ad.getLocation())
                         .type(ad.getType())
                         .location(ad.getLocation())
                         .id(ad.getId())
-                        .vertex(graph.getVertexById(ad.getId()) == null
+                        .vertex(graph.getVertexById(ad.getVertexId()) == null
                                 ? graph.getClosestVertexForLocation(ad.getLocation())
-                                : graph.getVertexById(ad.getId())
+                                : graph.getVertexById(ad.getVertexId())
                         )
                         .build())
                 .collect(Collectors.toList());
