@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
 @Service
 @AllArgsConstructor
@@ -31,5 +32,11 @@ public class ApplicationStartup {
 
         logger.info("Starting lights simulation.");
         lightsSimulator.simulate();
+    }
+
+    @PreDestroy
+    public void preDestroy(){
+        logger.info("called");
+        agentPersistenceService.saveAgents();
     }
 }

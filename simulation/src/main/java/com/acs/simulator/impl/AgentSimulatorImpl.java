@@ -47,12 +47,7 @@ public class AgentSimulatorImpl implements AgentSimulator {
                 return;
             }
         }
-        Agent agent = Agent.builder()
-                .type(AgentType.CAR)
-                .location(vertex.getLocation())
-                .build();
-
-        agent.setVertex(vertex);
+        Agent agent = new Agent(vertex.getLocation(), AgentType.CAR, vertex);
         pool.save(agent);
 
         if (checkAndSetNextVertex(agent, vertex)) {
@@ -106,7 +101,7 @@ public class AgentSimulatorImpl implements AgentSimulator {
         } else if (reachableVertices.size() == 1) {
             Vertex vertex = reachableVertices.stream().findFirst().orElse(null);
 
-            if (vertex != null && vertex == agent.getVertex()) {
+            if (vertex == agent.getVertex()) {
                 vertex.setAgent(null);
                 pool.kill(agent);
                 return null;
