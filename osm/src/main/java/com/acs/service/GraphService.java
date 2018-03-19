@@ -15,8 +15,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-
 @Service
 @RequiredArgsConstructor
 public class GraphService {
@@ -34,8 +32,7 @@ public class GraphService {
     @Getter
     private Graph graph = new Graph();
 
-    @PostConstruct
-    public void postConstruct() {
+    public void processGraph() {
         initGraph();
         connectCloseVertices();
         rescaleGraph();

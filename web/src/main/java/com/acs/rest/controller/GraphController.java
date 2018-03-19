@@ -1,9 +1,9 @@
 package com.acs.rest.controller;
 
 import com.acs.models.graph.Edge;
-import com.acs.models.graph.Graph;
 import com.acs.models.graph.Vertex;
 import com.acs.service.GraphService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,17 +15,14 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/graph")
+@RequiredArgsConstructor
 public class GraphController {
 
-    private final Graph graph;
-
-    public GraphController(GraphService graphService) {
-        this.graph = graphService.getGraph();
-    }
+    private final GraphService graphService;
 
     @RequestMapping(path = "/edges/ids")
     public ResponseEntity<Set<Long>> edges() {
-        Set<Long> ids = graph.getEdges().stream()
+        Set<Long> ids = graphService.getGraph().getEdges().stream()
                 .map(Edge::getId)
                 .collect(Collectors.toSet());
 
@@ -34,7 +31,7 @@ public class GraphController {
 
     @RequestMapping(path = "/edge/{id}")
     public ResponseEntity<Edge> edge(@PathVariable Long id) {
-        Edge edge = graph.getEdges().stream()
+        Edge edge = graphService.getGraph().getEdges().stream()
                 .filter(e -> e.getId().equals(id))
                 .findFirst()
                 .orElse(null);
@@ -44,7 +41,7 @@ public class GraphController {
 
     @RequestMapping(path = "/vertices/ids")
     public ResponseEntity<Set<Long>> vertices() {
-        Set<Long> ids = graph.getVertices().stream()
+        Set<Long> ids = graphService.getGraph().getVertices().stream()
                 .map(Vertex::getId)
                 .collect(Collectors.toSet());
 
@@ -53,7 +50,7 @@ public class GraphController {
 
     @RequestMapping(path = "/vertex/{id}")
     public ResponseEntity<Vertex> vertex(@PathVariable Long id) {
-        Vertex vertex = graph.getVertices().stream()
+        Vertex vertex = graphService.getGraph().getVertices().stream()
                 .filter(e -> e.getId().equals(id))
                 .findFirst()
                 .orElse(null);
@@ -63,7 +60,7 @@ public class GraphController {
 
     @RequestMapping(path = "/startVertices")
     public ResponseEntity<Set<Vertex>> startVertices() {
-        Set<Vertex> startVertices = graph.getStartVertices();
+        Set<Vertex> startVertices = graphService.getGraph().getStartVertices();
 
         return new ResponseEntity<>(startVertices, HttpStatus.OK);
     }

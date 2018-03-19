@@ -23,8 +23,12 @@ public class ApplicationStartup {
 
     private final AgentPersistenceService agentPersistenceService;
 
+    private final GraphService graphService;
+
     @PostConstruct
     public void postConstruct() {
+        graphService.processGraph();
+
         agentPersistenceService.restoreAgents();
 
         logger.info("Starting agent simulation.");
