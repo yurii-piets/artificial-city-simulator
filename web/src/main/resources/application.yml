@@ -6,8 +6,12 @@ simulation:
   unit:
     max: 10
     distance: 2
-    import: true
-    export: true
+    import: false
+    export: false
+
+graph:
+  import: true
+  export: true
 
 server:
   servlet.contextPath: /acs
