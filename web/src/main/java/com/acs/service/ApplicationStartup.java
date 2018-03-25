@@ -1,6 +1,6 @@
 package com.acs.service;
 
-import com.acs.database.service.AgentPersistenceService;
+import com.acs.database.service.GraphPersistenceService;
 import com.acs.simulator.def.AgentSimulator;
 import com.acs.simulator.def.LightsSimulator;
 import lombok.AllArgsConstructor;
@@ -21,7 +21,7 @@ public class ApplicationStartup {
 
     private final LightsSimulator lightsSimulator;
 
-    private final AgentPersistenceService agentPersistenceService;
+    private final GraphPersistenceService agentPersistenceService;
 
     private final GraphService graphService;
 

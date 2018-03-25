@@ -11,7 +11,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,13 +43,13 @@ public class AgentPersistenceService {
     @Value("${simulation.unit.export}")
     private Boolean exportAgents;
 
-    @Scheduled(fixedDelay = 15 * 1000 * 60)
+//    @Scheduled(fixedDelay = 15 * 1000 * 60)
     public void saveAgents() {
         if (!exportAgents) {
             return;
         }
 
-        logger.info("Saving agents to database.");
+        logger.info("Saving agents to mongo database.");
         List<AgentDocument> activeAgentDocuments = agentPool.getAgents()
                 .stream()
                 .map(AgentDocument::new)

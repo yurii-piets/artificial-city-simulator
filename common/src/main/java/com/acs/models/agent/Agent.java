@@ -5,18 +5,30 @@ import com.acs.models.graph.Vertex;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.neo4j.ogm.annotation.Id;
+import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Relationship;
 
 @Data
+@NodeEntity
+@EqualsAndHashCode(of = "id")
 public class Agent implements Comparable<Agent> {
 
-    private final Long id;
+    @Id
+    private Long id;
 
     private Location location;
 
     private AgentType type;
 
     @JsonIgnore
+    @Relationship
     private Vertex vertex;
+
+    public Agent() {
+        this.id = id();
+    }
 
     public Agent(Location location, AgentType type, Vertex vertex) {
         this.location = location;
@@ -31,7 +43,14 @@ public class Agent implements Comparable<Agent> {
         this.type = type;
         this.vertex = vertex;
         this.id = id;
-        if(id > staticId) {
+        if (id > staticId) {
+            staticId = id + 1;
+        }
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+        if (id >= staticId) {
             staticId = id + 1;
         }
     }

@@ -42,7 +42,7 @@ public class AgentPoolImpl implements AgentPool {
     }
 
     @Override
-    public void saveAll(Collection<Agent> agents) {
+    public void saveAll(Iterable<Agent> agents) {
         agents.forEach(a -> this.agents.put(a.getId(), a));
     }
 

@@ -1,8 +1,11 @@
 package com.acs.models.statics;
 
+import org.neo4j.ogm.annotation.NodeEntity;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@NodeEntity
 public class Relation {
 
     private List<StaticPoint> members = new ArrayList<>();

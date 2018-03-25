@@ -48,7 +48,8 @@ public class Graph {
         Vertex vertex = findVertexByLocation(location);
 
         if (vertex == null) {
-            vertex = new Vertex(location);
+            vertex = new Vertex();
+            vertex.setLocation(location);
         }
 
         return vertex;
