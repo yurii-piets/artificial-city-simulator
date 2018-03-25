@@ -10,7 +10,6 @@ import info.pavie.basicosmparser.controller.OSMParser;
 import info.pavie.basicosmparser.model.Element;
 import info.pavie.basicosmparser.model.Node;
 import info.pavie.basicosmparser.model.Way;
-import lombok.AccessLevel;
 import lombok.Getter;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
@@ -39,9 +38,8 @@ public class ParserService {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 
-    @Getter(AccessLevel.NONE)
     @Value("${osm.map.file.path}")
-    private String OSM_MAP_FILE;
+    private String osmMapFile;
 
     private List<StaticPoint> statics = new ArrayList<>();
 
@@ -54,8 +52,8 @@ public class ParserService {
         try {
             OSMParser p = new OSMParser();
 
-            logger.info("Parsing file: " + OSM_MAP_FILE);
-            ClassPathResource classPathResource = new ClassPathResource(OSM_MAP_FILE);
+            logger.info("Parsing file: " + osmMapFile);
+            ClassPathResource classPathResource = new ClassPathResource(osmMapFile);
 
             InputStream inputStream = classPathResource.getInputStream();
             File osmFile = File.createTempFile("map", ".osm");

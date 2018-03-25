@@ -14,7 +14,7 @@ public class Neo4jConfig {
 
     @Bean
     public SessionFactory getSessionFactory() {
-        return new SessionFactory(configuration(), "com.acs.database.node");
+        return new SessionFactory(configuration(), "com.acs.models.node");
     }
 
     @Bean
