@@ -25,6 +25,7 @@ subprojects {
     dependencies {
         compile 'org.projectlombok:lombok:1.16.20'
         compile("org.springframework.boot:spring-boot-starter-web:2.0.0.RELEASE")
+        compile group: 'org.springframework.data', name: 'spring-data-neo4j', version: '5.0.5.RELEASE'
 
         testCompile 'junit:junit:4.12'
         testCompile group: 'org.springframework', name: 'spring-test', version: '2.5'
