@@ -1,5 +1,6 @@
 package com.acs.models.graph;
 
+import com.acs.converter.LocationConverter;
 import com.acs.models.Location;
 import com.acs.models.agent.Agent;
 import com.acs.models.statics.StaticPoint;
@@ -10,6 +11,7 @@ import lombok.Setter;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
+import org.neo4j.ogm.annotation.typeconversion.Convert;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -25,20 +27,21 @@ public class Vertex {
     @Id
     private Long id;
 
+    @Convert(LocationConverter.class)
     private Location location;
 
     private Integer agentsCount = 0;
 
     @JsonIgnore
-    @Relationship
+    @Relationship(type = "CONTAINS")
     private Agent agent;
 
     @JsonIgnore
-    @Relationship
+    @Relationship(type = "CONTAINS_STATIC")
     private List<StaticPoint> staticPoints = new LinkedList<>();
 
     @JsonIgnore
-    @Relationship
+    @Relationship(type = "CAN_REACHED")
     private Set<Vertex> reachableVertices = new HashSet<>();
 
     public Vertex() {

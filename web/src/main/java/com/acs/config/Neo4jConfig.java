@@ -14,7 +14,10 @@ public class Neo4jConfig {
 
     @Bean
     public SessionFactory getSessionFactory() {
-        return new SessionFactory(configuration(), "com.acs.models.node");
+        return new SessionFactory(configuration(),
+                "com.acs.models.agent",
+                "com.acs.models.graph",
+                "com.acs.models.statics");
     }
 
     @Bean
@@ -25,7 +28,7 @@ public class Neo4jConfig {
     @Bean
     public org.neo4j.ogm.config.Configuration configuration() {
         return new org.neo4j.ogm.config.Configuration.Builder()
-                .uri("bolt://localhost:7687")
+                .uri("http://localhost:7474")
                 .build();
     }
 }

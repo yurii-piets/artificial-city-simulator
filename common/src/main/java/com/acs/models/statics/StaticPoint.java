@@ -1,5 +1,6 @@
 package com.acs.models.statics;
 
+import com.acs.converter.LocationConverter;
 import com.acs.models.Location;
 import com.acs.models.graph.Vertex;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -8,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
+import org.neo4j.ogm.annotation.typeconversion.Convert;
 
 @Data
 @NodeEntity
@@ -17,6 +19,7 @@ public class StaticPoint implements Comparable<StaticPoint> {
     @Id
     private Long id;
 
+    @Convert(LocationConverter.class)
     private Location location;
 
     private StaticType type;
@@ -24,11 +27,11 @@ public class StaticPoint implements Comparable<StaticPoint> {
     private volatile boolean locked = false;
 
     @JsonIgnore
-    @Relationship
+    @Relationship(type = "IS_IN_RELATION")
     private Relation relation;
 
     @JsonIgnore
-    @Relationship
+    @Relationship(type = "IS_OM")
     private Vertex vertex;
 
     public StaticPoint() {

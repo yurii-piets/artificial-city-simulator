@@ -1,5 +1,6 @@
 package com.acs.models.agent;
 
+import com.acs.converter.LocationConverter;
 import com.acs.models.Location;
 import com.acs.models.graph.Vertex;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -9,6 +10,7 @@ import lombok.EqualsAndHashCode;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
+import org.neo4j.ogm.annotation.typeconversion.Convert;
 
 @Data
 @NodeEntity
@@ -18,12 +20,13 @@ public class Agent implements Comparable<Agent> {
     @Id
     private Long id;
 
+    @Convert(LocationConverter.class)
     private Location location;
 
     private AgentType type;
 
     @JsonIgnore
-    @Relationship
+    @Relationship(type = "IS_ON_VERTEX")
     private Vertex vertex;
 
     public Agent() {

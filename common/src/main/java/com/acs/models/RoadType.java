@@ -1,4 +1,4 @@
-package com.acs.models.statics;
+package com.acs.models;
 
 public enum RoadType {
 

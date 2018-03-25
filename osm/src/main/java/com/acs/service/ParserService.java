@@ -2,8 +2,8 @@ package com.acs.service;
 
 import com.acs.models.Location;
 import com.acs.models.LocationRange;
-import com.acs.models.statics.Road;
-import com.acs.models.statics.RoadType;
+import com.acs.models.Road;
+import com.acs.models.RoadType;
 import com.acs.models.statics.StaticPoint;
 import com.acs.models.statics.StaticType;
 import info.pavie.basicosmparser.controller.OSMParser;

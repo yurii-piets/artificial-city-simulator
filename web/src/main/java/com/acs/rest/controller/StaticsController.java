@@ -1,7 +1,7 @@
 package com.acs.rest.controller;
 
-import com.acs.models.statics.Road;
-import com.acs.models.statics.RoadType;
+import com.acs.models.Road;
+import com.acs.models.RoadType;
 import com.acs.models.statics.StaticPoint;
 import com.acs.models.statics.StaticType;
 import com.acs.service.ParserService;

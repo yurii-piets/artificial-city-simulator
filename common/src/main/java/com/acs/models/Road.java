@@ -1,6 +1,5 @@
-package com.acs.models.statics;
+package com.acs.models;
 
-import com.acs.models.Location;
 import lombok.Getter;
 
 import java.util.Deque;
