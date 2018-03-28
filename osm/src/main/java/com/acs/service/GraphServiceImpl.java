@@ -8,8 +8,10 @@ import com.acs.models.graph.Vertex;
 import com.acs.models.Road;
 import com.acs.models.RoadType;
 import com.acs.models.statics.StaticPoint;
+import com.acs.service.def.GraphService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +19,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class GraphService {
+public class GraphServiceImpl implements GraphService {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 
@@ -29,6 +31,7 @@ public class GraphService {
     @Value("${simulation.cell.size}")
     private Double cellSize;
 
+    @Setter
     @Getter
     private Graph graph = new Graph();
 

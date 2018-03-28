@@ -5,7 +5,7 @@ import com.acs.models.agent.AgentType;
 import com.acs.models.graph.Vertex;
 import com.acs.models.statics.StaticPoint;
 import com.acs.pool.def.AgentPool;
-import com.acs.service.GraphService;
+import com.acs.service.def.GraphService;
 import com.acs.simulator.def.AgentSimulator;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;

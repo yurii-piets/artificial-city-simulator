@@ -8,7 +8,7 @@ import com.acs.database.repository.neo4j.StaticPointRepository;
 import com.acs.database.repository.neo4j.VertexRepository;
 import com.acs.models.agent.Agent;
 import com.acs.models.graph.Graph;
-import com.acs.models.graph.Vertex;
+import com.acs.models.node.GraphNode;
 import com.acs.pool.def.AgentPool;
 import com.acs.service.ParserService;
 import lombok.RequiredArgsConstructor;
@@ -51,9 +51,6 @@ public class GraphPersistenceService {
     @Value("${simulation.unit.export}")
     private Boolean exportAgents;
 
-    @Value("${graph.import}")
-    private Boolean importGraph;
-
     @Value("${graph.export}")
     private Boolean exportGraph;
 
@@ -65,7 +62,20 @@ public class GraphPersistenceService {
         throw new NotImplementedException();
     }
 
-    @Scheduled(fixedDelay = 1 * 1000 * 60)
+    public void saveGraph(Graph graph) {
+        if(!exportGraph) {
+            return;
+        }
+
+        GraphNode graphNode = new GraphNode(graph);
+        graphRepository.save(graphNode, 3);
+    }
+
+    public Graph restoreGraph(){
+         return new Graph(graphRepository.findAll().iterator().next());
+    }
+
+    @Scheduled(fixedDelay = 15 * 1000 * 60)
     public void saveAgents() {
         if (!exportAgents) {
             return;
@@ -80,11 +90,7 @@ public class GraphPersistenceService {
                 .collect(Collectors.toList());
 
         for(Agent agent: activeAgents){
-            Vertex vertex = agent.getVertex();
-            // TODO: 28/03/2018 fix saving relationships
-            agent.setVertex(null);
-            agentRepository.save(agent);
-            agent.setVertex(vertex);
+            agentRepository.save(agent, 2);
         }
         deadAgentIds.forEach(agentRepository::deleteById);
 

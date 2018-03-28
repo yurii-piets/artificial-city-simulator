@@ -6,17 +6,21 @@ import com.acs.models.graph.Vertex;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 import org.neo4j.ogm.annotation.typeconversion.Convert;
 
 @Data
-@NodeEntity
+@NodeEntity(label = "static_point")
 @EqualsAndHashCode(of = "id")
 public class StaticPoint implements Comparable<StaticPoint> {
 
     @Id
+    @GeneratedValue
+    private Long gid;
+
     private Long id;
 
     @Convert(LocationConverter.class)

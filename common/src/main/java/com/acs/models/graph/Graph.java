@@ -2,36 +2,35 @@ package com.acs.models.graph;
 
 import com.acs.algorithm.DistanceAlgorithm;
 import com.acs.models.Location;
+import com.acs.models.node.GraphNode;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.neo4j.ogm.annotation.GeneratedValue;
-import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Relationship;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @NodeEntity
 @NoArgsConstructor
 public class Graph {
 
-    @Id
-    @GeneratedValue
-    private Long id;
-
-    @Relationship
     private Set<Edge> edges = new HashSet<>();
 
-    @Relationship
     private Map<Long, Vertex> vertices = new HashMap<>();
 
-    @Relationship
     private Set<Vertex> startVertices = new HashSet<>();
+
+    public Graph(GraphNode graphNode) {
+        this.edges = graphNode.getEdges();
+        this.vertices = graphNode.getVertices().stream()
+                .collect(Collectors.toMap(Vertex::getId, v -> v));
+        this.startVertices = graphNode.getStartVertices();
+    }
 
     public boolean addEdge(Edge edge) {
         Location source = edge.getSource().getLocation();

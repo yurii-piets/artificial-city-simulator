@@ -2,7 +2,7 @@ package com.acs.rest.controller;
 
 import com.acs.models.graph.Edge;
 import com.acs.models.graph.Vertex;
-import com.acs.service.GraphService;
+import com.acs.service.def.GraphService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

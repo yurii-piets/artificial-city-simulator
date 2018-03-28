@@ -3,7 +3,7 @@ package com.acs.rest.controller;
 import com.acs.models.Location;
 import com.acs.models.StatisticDto;
 import com.acs.models.graph.Vertex;
-import com.acs.service.GraphService;
+import com.acs.service.def.GraphService;
 import com.acs.service.TimeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

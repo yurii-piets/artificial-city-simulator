@@ -5,7 +5,7 @@ import com.acs.database.repository.mongo.AgentMongoRepository;
 import com.acs.models.agent.Agent;
 import com.acs.models.graph.Graph;
 import com.acs.pool.def.AgentPool;
-import com.acs.service.GraphService;
+import com.acs.service.def.GraphService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

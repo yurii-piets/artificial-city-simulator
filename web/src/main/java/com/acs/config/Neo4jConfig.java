@@ -17,6 +17,7 @@ public class Neo4jConfig {
         return new SessionFactory(configuration(),
                 "com.acs.models.agent",
                 "com.acs.models.graph",
+                "com.acs.models.node",
                 "com.acs.models.statics");
     }
 

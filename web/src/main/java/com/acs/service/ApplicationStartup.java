@@ -1,18 +1,21 @@
 package com.acs.service;
 
 import com.acs.database.service.GraphPersistenceService;
+import com.acs.models.graph.Graph;
+import com.acs.service.def.GraphService;
 import com.acs.simulator.def.AgentSimulator;
 import com.acs.simulator.def.LightsSimulator;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ApplicationStartup {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
@@ -25,9 +28,23 @@ public class ApplicationStartup {
 
     private final GraphService graphService;
 
+    @Value("${graph.import}")
+    private Boolean importGraph;
+
     @PostConstruct
     public void postConstruct() {
-        graphService.processGraph();
+        if (importGraph) {
+            graphService.processGraph();
+            graphPersistenceService.saveGraph(graphService.getGraph());
+        } else {
+            Graph graph = graphPersistenceService.restoreGraph();
+            if(graph != null) {
+                graphService.setGraph(graph);
+            } else {
+                graphService.processGraph();
+                graphPersistenceService.saveGraph(graphService.getGraph());
+            }
+        }
 
         graphPersistenceService.restoreAgents();
 
@@ -39,7 +56,7 @@ public class ApplicationStartup {
     }
 
     @PreDestroy
-    public void preDestroy(){
+    public void preDestroy() {
         logger.info("called");
         graphPersistenceService.saveAgents();
     }
