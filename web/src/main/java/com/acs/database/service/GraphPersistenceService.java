@@ -8,6 +8,7 @@ import com.acs.database.repository.neo4j.StaticPointRepository;
 import com.acs.database.repository.neo4j.VertexRepository;
 import com.acs.models.agent.Agent;
 import com.acs.models.graph.Graph;
+import com.acs.models.graph.Vertex;
 import com.acs.pool.def.AgentPool;
 import com.acs.service.ParserService;
 import lombok.RequiredArgsConstructor;
@@ -78,7 +79,13 @@ public class GraphPersistenceService {
                 .map(Agent::getId)
                 .collect(Collectors.toList());
 
-        activeAgents.forEach(agentRepository::save);
+        for(Agent agent: activeAgents){
+            Vertex vertex = agent.getVertex();
+            // TODO: 28/03/2018 fix saving relationships
+            agent.setVertex(null);
+            agentRepository.save(agent);
+            agent.setVertex(vertex);
+        }
         deadAgentIds.forEach(agentRepository::deleteById);
 
         logger.info("Saved agents number: [" + activeAgents.size() + "]");

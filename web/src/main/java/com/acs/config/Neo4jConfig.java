@@ -28,7 +28,7 @@ public class Neo4jConfig {
     @Bean
     public org.neo4j.ogm.config.Configuration configuration() {
         return new org.neo4j.ogm.config.Configuration.Builder()
-                .uri("http://localhost:7474")
+                .uri("http://127.0.0.1:7474/")
                 .build();
     }
 }
