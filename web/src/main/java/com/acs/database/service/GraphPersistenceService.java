@@ -67,7 +67,7 @@ public class GraphPersistenceService {
 
     @Scheduled(fixedDelay = 1 * 1000 * 60)
     public void saveAgents() {
-        if (!exportGraph) {
+        if (!exportAgents) {
             return;
         }
 

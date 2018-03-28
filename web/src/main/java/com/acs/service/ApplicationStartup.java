@@ -21,7 +21,7 @@ public class ApplicationStartup {
 
     private final LightsSimulator lightsSimulator;
 
-    private final GraphPersistenceService agentPersistenceService;
+    private final GraphPersistenceService graphPersistenceService;
 
     private final GraphService graphService;
 
@@ -29,7 +29,7 @@ public class ApplicationStartup {
     public void postConstruct() {
         graphService.processGraph();
 
-        agentPersistenceService.restoreAgents();
+        graphPersistenceService.restoreAgents();
 
         logger.info("Starting agent simulation.");
         agentSimulator.simulate();
@@ -41,6 +41,6 @@ public class ApplicationStartup {
     @PreDestroy
     public void preDestroy(){
         logger.info("called");
-        agentPersistenceService.saveAgents();
+        graphPersistenceService.saveAgents();
     }
 }
