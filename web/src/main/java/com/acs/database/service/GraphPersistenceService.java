@@ -1,7 +1,6 @@
 package com.acs.database.service;
 
 import com.acs.database.repository.neo4j.AgentRepository;
-import com.acs.database.repository.neo4j.EdgeRepository;
 import com.acs.database.repository.neo4j.GraphRepository;
 import com.acs.models.agent.Agent;
 import com.acs.models.graph.Graph;
@@ -27,8 +26,6 @@ public class GraphPersistenceService {
     private final AgentRepository agentRepository;
 
     private final GraphRepository graphRepository;
-
-    private final EdgeRepository edgeRepository;
 
     private final AgentPool agentPool;
 
@@ -64,7 +61,7 @@ public class GraphPersistenceService {
         return new Graph(graphNodes.iterator().next());
     }
 
-    @Scheduled(fixedDelay = 15 * 1000 * 60)
+    @Scheduled(fixedDelay = 1 * 1000 * 60)
     public void saveAgents() {
         if (!exportAgents) {
             return;
@@ -73,18 +70,21 @@ public class GraphPersistenceService {
         logger.info("Saving agents to NEO4J database.");
         Collection<Agent> activeAgents = agentPool.getAgents();
 
-        List<Long> deadAgentIds = agentPool.getDeadAgents()
+        List<Long> deadAgentGids = agentPool.getDeadAgents()
                 .stream()
-                .map(Agent::getId)
+                .map(Agent::getGid)
                 .collect(Collectors.toList());
 
         for (Agent agent : activeAgents) {
             agentRepository.save(agent, 2);
         }
-        deadAgentIds.forEach(agentRepository::deleteById);
+
+        for(Long deadId : deadAgentGids){
+            agentRepository.deleteById(deadId);
+        }
 
         logger.info("Saved agents number: [" + activeAgents.size() + "]");
-        logger.info("Deleted agents number: [" + deadAgentIds.size() + "]");
+        logger.info("Deleted agents number: [" + deadAgentGids.size() + "]");
         logger.info("Database size: [" + agentRepository.count() + "]");
     }
 
