@@ -26,7 +26,10 @@ public class Graph {
     private Set<Vertex> startVertices = new HashSet<>();
 
     public Graph(GraphNode graphNode) {
-        this.edges = graphNode.getEdges();
+        graphNode.getVertices().stream()
+                .map(Vertex::getEdges)
+                .flatMap(Collection::stream)
+                .map(edges::add);
         this.vertices = graphNode.getVertices().stream()
                 .collect(Collectors.toMap(Vertex::getId, v -> v));
         this.startVertices = graphNode.getStartVertices();
@@ -48,7 +51,9 @@ public class Graph {
 
         sourceVertex.addReachableVertex(destinationVertex);
 
-        return edges.add(new Edge(sourceVertex, destinationVertex));
+        Edge edge = new Edge(sourceVertex, destinationVertex);
+        sourceVertex.addEdge(edge);
+        return edges.add(edge);
     }
 
     public boolean addStartVertex(Vertex vertex) {

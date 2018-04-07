@@ -34,16 +34,16 @@ public class ApplicationStartup {
     @PostConstruct
     public void postConstruct() {
         if (importGraph) {
-            graphService.processGraph();
-            graphPersistenceService.saveGraph(graphService.getGraph());
-        } else {
             Graph graph = graphPersistenceService.restoreGraph();
-            if(graph != null) {
+            if (graph != null) {
                 graphService.setGraph(graph);
             } else {
                 graphService.processGraph();
                 graphPersistenceService.saveGraph(graphService.getGraph());
             }
+        } else {
+            graphService.processGraph();
+            graphPersistenceService.saveGraph(graphService.getGraph());
         }
 
         graphPersistenceService.restoreAgents();

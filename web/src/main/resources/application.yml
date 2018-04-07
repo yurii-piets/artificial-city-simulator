@@ -16,11 +16,17 @@ graph:
 server:
   servlet.contextPath: /acs
   port: 8080
+  http2.enabled: true
 
 mongo:
   host: localhost
   port: 27017
   database.name: artificial-city-database
+
+neo4j:
+  protocol: http
+  host: 127.0.0.1
+  port: 7474
 
 spring.profiles.active:
 

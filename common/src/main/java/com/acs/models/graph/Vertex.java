@@ -37,7 +37,7 @@ public class Vertex {
     private Integer agentsCount = 0;
 
     @JsonIgnore
-    @Relationship(type = "CONTAINS")
+    @Relationship(type = "CONTAINS_AGENT")
     private Agent agent;
 
     @JsonIgnore
@@ -45,7 +45,11 @@ public class Vertex {
     private List<StaticPoint> staticPoints = new LinkedList<>();
 
     @JsonIgnore
-    @Relationship(type = "CAN_REACHED")
+    @Relationship(type = "EDGE")
+    private List<Edge> edges = new LinkedList<>();
+
+    @JsonIgnore
+    @Relationship(type = "REACHES")
     private Set<Vertex> reachableVertices = new HashSet<>();
 
     public Vertex() {
@@ -58,6 +62,10 @@ public class Vertex {
 
     public void addReachableVertex(Vertex vertex) {
         reachableVertices.add(vertex);
+    }
+
+    public void addEdge(Edge edge) {
+        edges.add(edge);
     }
 
     public void setId(Long id) {

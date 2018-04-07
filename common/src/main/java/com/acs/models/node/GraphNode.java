@@ -1,6 +1,5 @@
 package com.acs.models.node;
 
-import com.acs.models.graph.Edge;
 import com.acs.models.graph.Graph;
 import com.acs.models.graph.Vertex;
 import lombok.Data;
@@ -22,9 +21,6 @@ public class GraphNode {
     @GeneratedValue
     private Long id;
 
-    @Relationship(type = "EDGES")
-    private Set<Edge> edges = new HashSet<>();
-
     @Relationship(type = "VERTICES")
     private Set<Vertex> vertices = new HashSet<>();
 
@@ -32,7 +28,6 @@ public class GraphNode {
     private Set<Vertex> startVertices = new HashSet<>();
 
     public GraphNode(Graph graph) {
-        this.edges = graph.getEdges();
         this.vertices = new HashSet<>(graph.getVertices());
         this.startVertices = graph.getStartVertices();
     }

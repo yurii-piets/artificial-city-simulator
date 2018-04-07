@@ -1,6 +1,7 @@
 package com.acs.config;
 
 import org.neo4j.ogm.session.SessionFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
@@ -11,6 +12,15 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableNeo4jRepositories(basePackages = "com.acs.database.repository.neo4j")
 @EnableTransactionManagement
 public class Neo4jConfig {
+
+    @Value("${neo4j.protocol}")
+    private String protocol;
+
+    @Value("${neo4j.host}")
+    private String host;
+
+    @Value("${neo4j.port}")
+    private String port;
 
     @Bean
     public SessionFactory getSessionFactory() {
@@ -29,7 +39,7 @@ public class Neo4jConfig {
     @Bean
     public org.neo4j.ogm.config.Configuration configuration() {
         return new org.neo4j.ogm.config.Configuration.Builder()
-                .uri("http://127.0.0.1:7474/")
+                .uri(protocol + "://" + host + ":" + port)
                 .build();
     }
 }
