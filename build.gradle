@@ -24,6 +24,7 @@ subprojects {
 
     dependencies {
         compile 'org.projectlombok:lombok:1.16.20'
+        compile 'com.google.guava:guava:24.1-jre'
         compile("org.springframework.boot:spring-boot-starter-web:2.0.0.RELEASE")
         compile group: 'org.springframework.data', name: 'spring-data-neo4j', version: '5.0.5.RELEASE'
 

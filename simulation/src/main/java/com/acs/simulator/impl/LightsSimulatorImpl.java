@@ -6,39 +6,42 @@ import com.acs.models.statics.StaticPoint;
 import com.acs.models.statics.StaticType;
 import com.acs.service.ParserService;
 import com.acs.simulator.def.LightsSimulator;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+@Setter
 @Service
+@RequiredArgsConstructor
 public class LightsSimulatorImpl implements LightsSimulator {
 
     private static final int REACHABLE_DISTANCE = 50;
 
     private final Logger logger = LogManager.getLogger(this.getClass());
 
-    private final Set<StaticPoint> lights;
+    private final ParserService parserService;
 
-    private final Set<Relation> relations = new HashSet<>();
+    private Set<StaticPoint> lights;
 
-    private final Set<StaticPoint> withoutRelations = new ConcurrentSkipListSet<>();
+    private Set<Relation> relations = new HashSet<>();
 
-    public LightsSimulatorImpl(ParserService parserService) {
+    private Set<StaticPoint> withoutRelations = new ConcurrentSkipListSet<>();
+
+    @Override
+    public void prepare() {
         this.lights = parserService.getStatics().stream()
                 .filter(point -> point.getType() == StaticType.LIGHTS)
                 .collect(Collectors.toSet());
-    }
 
-    @PostConstruct
-    public void postConstruct() {
         initRelations();
         initLightsWithoutRelations();
     }

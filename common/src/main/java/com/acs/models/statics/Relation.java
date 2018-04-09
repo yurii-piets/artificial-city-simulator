@@ -1,6 +1,5 @@
 package com.acs.models.statics;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
@@ -21,7 +20,6 @@ public class Relation {
     @Relationship(type = "IS_IN_RELATION")
     private List<StaticPoint> members = new ArrayList<>();
 
-    @JsonIgnore
     private int current = 0;
 
     public void next() {

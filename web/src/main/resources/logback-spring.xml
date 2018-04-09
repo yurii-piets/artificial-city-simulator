@@ -20,4 +20,7 @@
     </root>
     <logger name="com.acs" level="debug"/>
 
+    <logger name="org.springframework.data.neo4j">
+        <level value="ERROR"/>
+    </logger>
 </configuration>

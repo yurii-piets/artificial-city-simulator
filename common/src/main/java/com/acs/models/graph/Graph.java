@@ -28,8 +28,7 @@ public class Graph {
     public Graph(GraphNode graphNode) {
         graphNode.getVertices().stream()
                 .map(Vertex::getEdges)
-                .flatMap(Collection::stream)
-                .map(edges::add);
+                .forEach(edges::addAll);
         this.vertices = graphNode.getVertices().stream()
                 .collect(Collectors.toMap(Vertex::getId, v -> v));
         this.startVertices = graphNode.getStartVertices();

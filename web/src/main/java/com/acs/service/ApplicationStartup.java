@@ -42,6 +42,7 @@ public class ApplicationStartup {
                 graphPersistenceService.saveGraph(graphService.getGraph());
             }
         } else {
+            lightsSimulator.prepare();
             graphService.processGraph();
             graphPersistenceService.saveGraph(graphService.getGraph());
         }

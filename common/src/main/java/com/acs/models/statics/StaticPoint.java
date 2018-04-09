@@ -35,7 +35,7 @@ public class StaticPoint implements Comparable<StaticPoint> {
     private Relation relation;
 
     @JsonIgnore
-    @Relationship(type = "IS_OM")
+    @Relationship(type = "IS_ON")
     private Vertex vertex;
 
     public StaticPoint() {
