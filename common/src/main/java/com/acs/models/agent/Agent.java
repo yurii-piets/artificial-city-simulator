@@ -1,36 +1,23 @@
 package com.acs.models.agent;
 
-import com.acs.converter.LocationConverter;
 import com.acs.models.Location;
 import com.acs.models.graph.Vertex;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.neo4j.ogm.annotation.GeneratedValue;
-import org.neo4j.ogm.annotation.Id;
-import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Relationship;
-import org.neo4j.ogm.annotation.typeconversion.Convert;
 
 @Data
-@NodeEntity(label = "agent")
 @EqualsAndHashCode(of = "id")
 public class Agent implements Comparable<Agent> {
 
-    @Id
-    @GeneratedValue
-    private Long gid;
-
     private Long id;
 
-    @Convert(LocationConverter.class)
     private Location location;
 
     private AgentType type;
 
     @JsonIgnore
-    @Relationship(type = "IS_ON_VERTEX")
     private Vertex vertex;
 
     public Agent() {

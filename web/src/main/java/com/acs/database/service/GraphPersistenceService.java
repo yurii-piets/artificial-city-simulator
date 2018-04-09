@@ -7,7 +7,7 @@ import com.acs.database.repository.neo4j.StaticPointRepository;
 import com.acs.database.repository.neo4j.VertexRepository;
 import com.acs.models.agent.Agent;
 import com.acs.models.graph.Graph;
-import com.acs.models.graph.Vertex;
+import com.acs.models.node.AgentNode;
 import com.acs.models.node.GraphNode;
 import com.acs.models.statics.Relation;
 import com.acs.models.statics.StaticPoint;
@@ -25,10 +25,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 @RequiredArgsConstructor
@@ -100,39 +98,33 @@ public class GraphPersistenceService {
         }
 
         logger.info("Saving agents to NEO4J database.");
-//        Collection<Agent> activeAgents = agentPool.getAgents();
 
-
-        vertexRepository.dropOldRelations();
-
-        List<Long> deadAgentGids = agentPool.getDeadAgents()
+        List<AgentNode> activeAgentNodes = agentPool.getAgents()
                 .stream()
-                .map(Agent::getGid)
-                .filter(Objects::nonNull)
+                .map(AgentNode::new)
                 .collect(Collectors.toList());
 
-        Set<Vertex> verticesToUpdate = agentPool.getAgents().stream()
-                .map(Agent::getVertex)
-                .filter(Objects::nonNull)
-                .filter(v -> v.getAgent() != null)
-                .collect(Collectors.toSet());
+        List<Long> deadAgentIds = agentPool.getDeadAgents()
+                .stream()
+                .map(Agent::getId)
+                .collect(Collectors.toList());
 
-        for (Vertex vertex : verticesToUpdate) {
-            Optional<Vertex> updatableVertexOptional = vertexRepository.findById(vertex.getGid());
-            if (!updatableVertexOptional.isPresent()) {
-                continue;
+        Iterable<AgentNode> allAgents = agentRepository.findAll();
+        for (AgentNode activeAgent : activeAgentNodes) {
+            for (AgentNode agentNode : allAgents) {
+                if (agentNode.equals(activeAgent)) {
+                    activeAgent.setId(agentNode.getId());
+                }
             }
-            Vertex updatableVertex = updatableVertexOptional.get();
-            updatableVertex.setAgent(vertex.getAgent());
-            vertexRepository.save(updatableVertex, 3);
         }
 
-        for (Long deadId : deadAgentGids) {
-            agentRepository.deleteById(deadId);
+        agentRepository.saveAll(activeAgentNodes);
+        for (Long deadAgentId : deadAgentIds) {
+            agentRepository.deleteAgentNodeByAgentId(deadAgentId);
         }
 
-        logger.info("Saved agents number: [" + verticesToUpdate.size() + "]");
-        logger.info("Deleted agents number: [" + deadAgentGids.size() + "]");
+        logger.info("Saved agents number: [" + activeAgentNodes.size() + "]");
+        logger.info("Deleted agents number: [" + deadAgentIds.size() + "]");
         logger.info("Database size: [" + agentRepository.count() + "]");
     }
 
@@ -145,7 +137,22 @@ public class GraphPersistenceService {
         }
 
         logger.info("Restoring agents from database: [" + agentRepository.count() + "]");
-        Iterable<Agent> agents = agentRepository.findAll(5);
+        Graph graph = graphService.getGraph();
+
+        Iterable<AgentNode> agentNodes = agentRepository.findAll(2);
+
+        List<Agent> agents = StreamSupport.stream(agentNodes.spliterator(), false)
+                .map(an -> Agent.builder()
+                        .location(an.getLocation())
+                        .type(an.getType())
+                        .location(an.getLocation())
+                        .id(an.getAgentId())
+                        .vertex(graph.getVertexById(an.getVertexId()) == null
+                                ? graph.getClosestVertexForLocation(an.getLocation())
+                                : graph.getVertexById(an.getVertexId())
+                        )
+                        .build())
+                .collect(Collectors.toList());
 
         agentPool.saveAll(agents);
     }

@@ -5,13 +5,13 @@ import com.acs.models.Location;
 import com.acs.models.agent.Agent;
 import com.acs.models.statics.StaticPoint;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
+import org.neo4j.ogm.annotation.Transient;
 import org.neo4j.ogm.annotation.typeconversion.Convert;
 
 import java.util.HashSet;
@@ -22,7 +22,7 @@ import java.util.Set;
 @Setter
 @Getter
 @NodeEntity(label = "vertex")
-@EqualsAndHashCode(of = "id")
+//@EqualsAndHashCode(of = "agentId")
 public class Vertex {
 
     @Id
@@ -37,7 +37,7 @@ public class Vertex {
     private Integer agentsCount = 0;
 
     @JsonIgnore
-    @Relationship(type = "CONTAINS_AGENT")
+    @Transient
     private Agent agent;
 
     @JsonIgnore

@@ -23,4 +23,8 @@
     <logger name="org.springframework.data.neo4j">
         <level value="ERROR"/>
     </logger>
+
+    <logger name="org.neo4j">
+        <level value="ERROR"/>
+    </logger>
 </configuration>
