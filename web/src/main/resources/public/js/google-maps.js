@@ -19,9 +19,7 @@ function initGoogleMap(centerLocation) {
     initStatics();
     initWays();
 
-    setInterval(
-        initAgents,
-        500);
+    setInterval(initAgents, 500);
 
     setInterval(processDeadAgents, 1000);
 

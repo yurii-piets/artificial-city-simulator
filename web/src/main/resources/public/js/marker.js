@@ -6,8 +6,7 @@ function createMarkerForAgent(agent) {
         agentMarkers[agent.id] = new google.maps.Marker({
             position: {lat: agent.location.latitude, lng: agent.location.longitude},
             map: map,
-            icon: 'img/car-marker.png',
-            // icon: getIconForAgentType(agent.type),
+            icon: getIconForAgentType(agent.type)
         });
     } else {
         agentMarkers[agent.id].setPosition({lat: agent.location.latitude, lng: agent.location.longitude});
@@ -50,7 +49,7 @@ function getIconForAgentType(agentType) {
         case "CYCLE":
             return "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png";
         case "CAR":
-            return "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
+            return "img/car-marker.png";
         case "BUS":
             return "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
         case "TRAM":

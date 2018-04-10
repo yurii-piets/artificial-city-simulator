@@ -5,7 +5,7 @@ function initAgents() {
         lastRequestSuccessful = false;
         $.ajax({
             url: REST_URL + 'agents/objects',
-            error: ajaxErrorHandler
+            error: onAgentLoadError
         }).then(function (agents) {
             agents.forEach(createMarkerForAgent);
             lastRequestSuccessful = true;
@@ -20,4 +20,9 @@ function processDeadAgents() {
     }).then(function (ids) {
         ids.forEach(deleteMarker);
     });
+}
+
+function onAgentLoadError(jqXHR, exception){
+    lastRequestSuccessful = true;
+    ajaxErrorHandler(jqXHR, exception);
 }

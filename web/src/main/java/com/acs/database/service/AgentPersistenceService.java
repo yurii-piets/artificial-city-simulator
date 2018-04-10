@@ -9,7 +9,6 @@ import com.acs.service.GraphService;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -27,21 +26,12 @@ public class AgentPersistenceService {
 
     private final AgentPool agentPool;
 
-    private final Graph graph;
+    private final GraphService graphService;
 
-    @Autowired
-    public AgentPersistenceService(AgentRepository agentRepository,
-                                   AgentPool agentPool,
-                                   GraphService graphService) {
-        this.agentRepository = agentRepository;
-        this.agentPool = agentPool;
-        this.graph = graphService.getGraph();
-    }
-
-    @Value("${simulation.unit.import}")
+    @Value("${mongo.import}")
     private Boolean importAgentOnStartup;
 
-    @Value("${simulation.unit.export}")
+    @Value("${mongo.export}")
     private Boolean exportAgents;
 
     @Scheduled(fixedDelay = 15 * 1000 * 60)
@@ -77,6 +67,7 @@ public class AgentPersistenceService {
         }
 
         logger.info("Restoring agents from database: [" + agentRepository.count() + "]");
+        Graph graph = graphService.getGraph();
         List<Agent> agents = agentRepository.findAll().stream()
                 .map(ad -> Agent.builder()
                         .location(ad.getLocation())
