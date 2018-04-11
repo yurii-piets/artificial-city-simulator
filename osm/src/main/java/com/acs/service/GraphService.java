@@ -8,6 +8,7 @@ import com.acs.models.graph.Vertex;
 import com.acs.models.statics.Road;
 import com.acs.models.statics.RoadType;
 import com.acs.models.statics.StaticPoint;
+import com.google.common.collect.Sets;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
@@ -16,6 +17,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -131,16 +135,12 @@ public class GraphService {
 
     private void initStartVertex() {
         logger.info("Initializing start vertices.");
-        nextVertex:
-        for (Vertex vertex : graph.getVertices()) {
-            for (Edge edge : graph.getEdges()) {
-                if (edge.getDestination().equals(vertex)) {
-                    continue nextVertex;
-                }
-            }
-
-            graph.addStartVertex(vertex);
-        }
+        Set<Vertex> reachableVertices = graph.getVertices().stream()
+                .map(Vertex::getReachableVertices)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toSet());
+        Set<Vertex> difference = Sets.difference(Sets.newHashSet(graph.getVertices()), reachableVertices);
+        graph.addStartVertices(difference);
     }
 
     private Double scale(Double s, Double d, int i, Double n) {

@@ -40,8 +40,8 @@ public class Graph {
         return edges.add(new Edge(sourceVertex, destinationVertex));
     }
 
-    public boolean addStartVertex(Vertex vertex) {
-        return startVertices.add(vertex);
+    public boolean addStartVertices(Collection<Vertex> vertices) {
+        return startVertices.addAll(vertices);
     }
 
     private Vertex findVertexOrCreateNew(Location location) {

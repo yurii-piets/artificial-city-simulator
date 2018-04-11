@@ -31,7 +31,7 @@ public class Agent implements Comparable<Agent> {
         this.type = type;
         this.vertex = vertex;
         this.id = id;
-        if(id > staticId) {
+        if(id >= staticId) {
             staticId = id + 1;
         }
     }
