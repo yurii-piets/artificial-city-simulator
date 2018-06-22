@@ -4,7 +4,7 @@ simulation:
   map.correction.reachable.max: 5.0
   cell.size: 2.0
   unit:
-    max: 10
+    max: 1000
     distance: 2
 
 server:
@@ -15,8 +15,8 @@ mongo:
   host: localhost
   port: 27017
   database.name: artificial-city-database
-  import: true
-  export: true
+  import: false
+  export: false
 
 spring.profiles.active:
 

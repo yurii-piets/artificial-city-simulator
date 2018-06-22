@@ -27,6 +27,8 @@ subprojects {
         compile 'com.google.guava:guava:24.1-jre'
         compile("org.springframework.boot:spring-boot-starter-web:2.0.0.RELEASE")
 
+        compile group: 'org.springframework', name: 'spring-webflux', version: '5.0.7.RELEASE'
+
         testCompile 'junit:junit:4.12'
         testCompile group: 'org.springframework', name: 'spring-test', version: '2.5'
         testCompile group: 'org.mockito', name: 'mockito-all', version: '1.9.5'
