@@ -1,10 +1,27 @@
-var lastRequestSuccessful = true;
+var es = [];
+var MAX_REQUEST_AMOUNT = 25;
 
 function initAgents() {
-    var stockEventSource = new EventSource("/acs/agents/objects");
-    stockEventSource.onmessage = function (e) {
-        createMarkerForAgent(JSON.parse(e.data));
-    };
+
+    if (es.length >= MAX_REQUEST_AMOUNT) {
+        for (var i = 0; i < es.length; ++i) {
+            if (es[i].readyState === EventSource.CLOSED) {
+                es = es.slice(i, 1);
+            }
+        }
+    }
+
+    while (es.length >= MAX_REQUEST_AMOUNT) {
+        es.pop().close();
+    }
+
+    if (es.length <= MAX_REQUEST_AMOUNT) {
+        var stockEventSource = new EventSource("/acs/agents/objects");
+        stockEventSource.onmessage = function (e) {
+            createMarkerForAgent(JSON.parse(e.data));
+        };
+        es.add(stockEventSource);
+    }
 }
 
 function processDeadAgents() {
