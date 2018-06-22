@@ -18,5 +18,5 @@ function ajaxErrorHandler(jqXHR, exception) {
         msg = 'Uncaught Error.\n' + jqXHR.responseText;
     }
 
-    console.log(msg);
+    console.log(exception);
 }

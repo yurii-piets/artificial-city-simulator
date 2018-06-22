@@ -1,16 +1,10 @@
 var lastRequestSuccessful = true;
 
 function initAgents() {
-    if (lastRequestSuccessful) {
-        lastRequestSuccessful = false;
-        $.ajax({
-            url: REST_URL + 'agents/objects',
-            error: onAgentLoadError
-        }).then(function (agents) {
-            agents.forEach(createMarkerForAgent);
-            lastRequestSuccessful = true;
-        });
-    }
+    var stockEventSource = new EventSource("/acs/agents/objects");
+    stockEventSource.onmessage = function (e) {
+        createMarkerForAgent(JSON.parse(e.data));
+    };
 }
 
 function processDeadAgents() {
@@ -22,7 +16,7 @@ function processDeadAgents() {
     });
 }
 
-function onAgentLoadError(jqXHR, exception){
+function onAgentLoadError(jqXHR, exception) {
     lastRequestSuccessful = true;
     ajaxErrorHandler(jqXHR, exception);
 }

@@ -4,7 +4,7 @@ simulation:
   map.correction.reachable.max: 5.0
   cell.size: 2.0
   unit:
-    max: 1000
+    max: 10
     distance: 2
 
 server:

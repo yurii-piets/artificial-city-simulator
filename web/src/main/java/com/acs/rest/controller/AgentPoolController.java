@@ -4,12 +4,11 @@ import com.acs.models.agent.Agent;
 import com.acs.pool.def.AgentPool;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -37,11 +36,10 @@ public class AgentPoolController {
         return new ResponseEntity<>(agents, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/objects", produces = "application/stream+json")
+    @GetMapping(value = "/objects", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Agent> agentsObjects() {
         Collection<Agent> agents = agentPool.getAgents();
-
-        return Flux.fromIterable(agents).delayElements(Duration.of(500L, ChronoUnit.MILLIS));
+        return Flux.fromIterable(agents);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/objects")
